@@ -1,13 +1,13 @@
-import { Metadata } from "next";
+import { constructMetadata } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
 import ProjectDetail from "@/components/sections/ProjectDetail";
 import CommunityProgrammes from "@/components/sections/CommunityProgrammes";
 import CTABanner from "@/components/sections/CTABanner";
 
-export const metadata: Metadata = {
-    title: 'Our Projects & Programmes | Yuva Ekta India Foundation',
+export const metadata = constructMetadata({
+    title: 'Our Projects & Programmes',
     description: 'Four active projects and seven community programmes delivering education, digital literacy, women\'s livelihood, and nutrition across Sohna Block, Gurugram.',
-};
+});
 
 export default function ProjectsPage() {
     return (

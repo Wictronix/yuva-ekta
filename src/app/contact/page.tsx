@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { constructMetadata } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
 import ContactDetails from "@/components/sections/ContactDetails";
 import ContactForm from "@/components/sections/ContactForm";
@@ -6,10 +6,10 @@ import VolunteerSection from "@/components/sections/VolunteerSection";
 import MapEmbed from "@/components/sections/MapEmbed";
 import CTABanner from "@/components/sections/CTABanner";
 
-export const metadata: Metadata = {
-    title: 'Contact Us | Yuva Ekta India Foundation',
+export const metadata = constructMetadata({
+    title: 'Contact Us',
     description: 'Get in touch with Yuva Ekta India Foundation for donations, volunteering, CSR partnerships, or media enquiries. Call, email, or fill our contact form.',
-};
+});
 
 export default function ContactPage() {
     return (

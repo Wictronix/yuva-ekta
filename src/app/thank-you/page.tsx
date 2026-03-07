@@ -1,11 +1,12 @@
-import { Metadata } from "next";
+import { constructMetadata } from "@/lib/seo";
 import { CheckCircle2, ArrowRight, Share2, Mail } from "lucide-react";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-    title: 'Thank You | Yuva Ekta India Foundation',
+export const metadata = constructMetadata({
+    title: 'Thank You',
     description: 'We are deeply grateful for your support. Your donation will make a real difference in Gurugram.',
-};
+    noIndex: true,
+});
 
 export default function ThankYouPage() {
     return (

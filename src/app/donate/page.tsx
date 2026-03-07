@@ -1,12 +1,12 @@
-import { Metadata } from "next";
+import { constructMetadata } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
 import DonateForm from "@/components/sections/DonateForm";
 import Credentials from "@/components/sections/Credentials";
 
-export const metadata: Metadata = {
-    title: 'Donate Now | Yuva Ekta India Foundation',
+export const metadata = constructMetadata({
+    title: 'Donate Now',
     description: 'Support grassroot communities in Gurugram. Your donations are tax-exempt under Section 80G. Choose a project or contribute to our general fund.',
-};
+});
 
 export default function DonatePage() {
     return (
