@@ -144,7 +144,7 @@ export default function Footer() {
                     </p>
 
                     {/* Powered By Section */}
-                    <div className="flex items-center gap-5 group order-1 md:order-2">
+                    {/* <div className="flex items-center gap-5 group order-1 md:order-2">
                         <span className="text-[8px] uppercase tracking-[0.5em] text-white/10 font-bold whitespace-nowrap">Powered by</span>
                         <Link
                             href="https://wictronix.com"
@@ -158,7 +158,7 @@ export default function Footer() {
                                 className="object-contain invert hue-rotate-180 opacity-50 group-hover:opacity-100 transition-opacity"
                             />
                         </Link>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </footer>
