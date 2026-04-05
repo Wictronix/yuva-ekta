@@ -11,7 +11,7 @@ export default function CampaignUpdates({ updates }: { updates: UpdateItem[] }) 
         </p>
       </div>
     );
-  }
+  } 
 
   return (
     <div className="space-y-8">
