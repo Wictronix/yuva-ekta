@@ -64,7 +64,7 @@ export default function DonationsClient({ donations }: { donations: any[] }) {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val || "all")}>
           <SelectTrigger className="w-[180px] bg-white border-brand-brown/10">
             <Filter className="w-4 h-4 mr-2 text-brand-brown/60" />
             <SelectValue placeholder="Status" />

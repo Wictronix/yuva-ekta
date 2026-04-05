@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 export const revalidate = 0;
 
 export default async function EditCampaignPage({ params }: { params: { id: string } }) {
-  const supabase = await createClient();
+  const supabase = (await createClient()) as any;
   const { id } = await params;
 
   const { data: campaign, error } = await supabase

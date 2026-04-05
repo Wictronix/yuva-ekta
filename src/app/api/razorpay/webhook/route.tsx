@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     const payload = JSON.parse(rawBody);
     const event = payload.event;
     
-    const supabase = createAdminClient();
+    const supabase = createAdminClient() as any;
 
     if (event === 'payment.captured') {
         const paymentDetails = payload.payload.payment.entity;
@@ -46,44 +46,50 @@ export async function POST(req: Request) {
             // Cast to any to access joined fields safely in TS
             const d = donation as any; 
             
-            // Generate receipt number
-            const { data: rpcData } = await supabase.rpc('generate_receipt_number');
-            const receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
-            
-            // Generate PDF
-            const pdfBuffer = await generateReceiptPDF({
-                receiptNumber,
-                date: new Date().toISOString(),
-                donorName: d.donor.name,
-                donorEmail: d.donor.email,
-                donorPhone: d.donor.phone,
-                amount: d.amount,
-                paymentId,
-                campaignName: d.campaign?.title
-            });
-            
-            // Upload PDF to R2
-            const r2Key = `receipts/${receiptNumber}.pdf`;
-            const receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, 'application/pdf');
-            
-            // Send Email
-            const resend = getResend();
-            await resend.emails.send({
-                from: `Yuva Ekta <${EMAIL_FROM}>`,
-                replyTo: EMAIL_REPLY_TO,
-                to: [d.donor.email],
-                subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
-                react: (
-                    <DonationReceiptEmail 
-                        donorName={d.donor.name}
-                        amount={Number(d.amount)}
-                        date={new Date().toISOString()}
-                        receiptNumber={receiptNumber}
-                        receiptUrl={receiptUrl}
-                        campaignName={d.campaign?.title}
-                    />
-                )
-            });
+            // Check if verify-payment API already generated the receipt
+            let receiptNumber = d.receipt_number;
+            let receiptUrl = d.receipt_url;
+
+            if (!receiptUrl) {
+                // Generate receipt number
+                const { data: rpcData } = await supabase.rpc('generate_receipt_number');
+                receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
+                
+                // Generate PDF
+                const pdfBuffer = await generateReceiptPDF({
+                    receiptNumber,
+                    date: new Date().toISOString(),
+                    donorName: d.donor.name,
+                    donorEmail: d.donor.email,
+                    donorPhone: d.donor.phone,
+                    amount: d.amount,
+                    paymentId,
+                    campaignName: d.campaign?.title
+                });
+                
+                // Upload PDF to R2
+                const r2Key = `receipts/${receiptNumber}.pdf`;
+                receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, 'application/pdf');
+                
+                // Send Email
+                const resend = getResend();
+                await resend.emails.send({
+                    from: `Yuva Ekta <${EMAIL_FROM}>`,
+                    replyTo: EMAIL_REPLY_TO,
+                    to: [d.donor.email],
+                    subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
+                    react: (
+                        <DonationReceiptEmail 
+                            donorName={d.donor.name}
+                            amount={Number(d.amount)}
+                            date={new Date().toISOString()}
+                            receiptNumber={receiptNumber}
+                            receiptUrl={receiptUrl}
+                            campaignName={d.campaign?.title}
+                        />
+                    )
+                });
+            }
             
             // Update donation record
             await supabase.from('donations').update({

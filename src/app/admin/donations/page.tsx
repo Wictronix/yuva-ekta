@@ -4,7 +4,7 @@ import DonationsClient from "./DonationsClient";
 export const revalidate = 0;
 
 export default async function DonationsPage() {
-  const supabase = await createClient();
+  const supabase = (await createClient()) as any;
   const { data: donations } = await supabase
     .from("donations")
     .select("*, donor:donors(*), campaign:campaigns(id, title)")

@@ -5,7 +5,7 @@ import { constructMetadata } from "@/lib/seo";
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const supabase = await createClient();
+  const supabase = (await createClient()) as any;
   const { data: campaign } = await supabase
     .from("campaigns")
     .select("title, short_desc")
@@ -24,7 +24,7 @@ export const revalidate = 60; // ISR revalidate every 60s
 
 export default async function CampaignPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const supabase = await createClient();
+  const supabase = (await createClient()) as any;
   
   const { data: campaign, error } = await supabase
     .from("campaigns")

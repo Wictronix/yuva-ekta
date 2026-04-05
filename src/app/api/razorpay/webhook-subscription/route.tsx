@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     const payload = JSON.parse(rawBody);
     const event = payload.event;
     
-    const supabase = createAdminClient();
+    const supabase = createAdminClient() as any;
 
     // 1. Handle Subscription Payment (recurring charges)
     if (event === 'subscription.charged') {

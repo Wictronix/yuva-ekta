@@ -1,8 +1,11 @@
 export const SITE = {
   name: 'Yuva Ekta India Foundation',
+  description: 'Yuva Ekta India Foundation is a non-profit organisation dedicated to empowering communities through education, healthcare, environment, and women empowerment initiatives across India.',
   address: 'H-56, South City 1, Gurugram, Haryana - 122001',
+  addressAlt: 'Registered Office: South City 1, Gurugram',
   phone1: '+91 99999 99999',
   phone2: '+91 88888 88888',
+  whatsapp: '+91 99999 99999',
   email: 'yuvaekta2018@gmail.com',
   registrationNo: '03485/2018',
   regNo: '03485/2018',

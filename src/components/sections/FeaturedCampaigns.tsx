@@ -3,7 +3,7 @@ import CampaignCard from "@/components/campaigns/CampaignCard";
 import Link from "next/link";
 
 export default async function FeaturedCampaigns() {
-  const supabase = await createClient();
+  const supabase = (await createClient()) as any;
   const { data: campaigns } = await supabase
     .from("campaigns")
     .select("id, slug, title, short_desc, cover_image_url, category, campaign_goal, amount_raised, target_people")
@@ -31,7 +31,7 @@ export default async function FeaturedCampaigns() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {campaigns.slice(0, 3).map((campaign) => (
+          {campaigns.slice(0, 3).map((campaign: any) => (
             <CampaignCard key={campaign.id} campaign={campaign} />
           ))}
         </div>

@@ -122,7 +122,7 @@ const ReceiptDocument = ({ r }: { r: ReceiptProps }) => (
           <Text>{SITE.address}</Text>
           <Text>80G Reg: {SITE.registrationNo}</Text>
           <Text>Email: {SITE.email}</Text>
-          <Text>Phone: {SITE.phone}</Text>
+          <Text>Phone: {SITE.phone1}</Text>
         </View>
       </View>
 

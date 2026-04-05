@@ -4,7 +4,7 @@ import SubscriptionsClient from "./SubscriptionsClient";
 export const revalidate = 0;
 
 export default async function SubscriptionsPage() {
-  const supabase = await createClient();
+  const supabase = (await createClient()) as any;
   const { data: subscriptions } = await supabase
     .from("subscriptions")
     .select("*, donor:donors(*), campaign:campaigns(id, title)")

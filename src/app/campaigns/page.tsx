@@ -19,7 +19,7 @@ export default async function CampaignsList(props: {
   const categoryParam = searchParams?.category;
   const sortParam = searchParams?.sort;
 
-  const supabase = await createClient();
+  const supabase = (await createClient()) as any;
 
   let query = supabase
     .from("campaigns")
@@ -117,7 +117,7 @@ export default async function CampaignsList(props: {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {campaigns.map((campaign) => (
+              {campaigns.map((campaign: any) => (
                 <CampaignCard key={campaign.id} campaign={campaign} />
               ))}
             </div>

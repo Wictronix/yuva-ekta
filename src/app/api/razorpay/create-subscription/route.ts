@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     const amountInPaise = toPaise(total);
 
     const razorpay = getRazorpay();
-    const supabase = createAdminClient();
+    const supabase = createAdminClient() as any;
 
     // 1. Ensure Donor exists
     let donorId: string;
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
     const subscriptionOptions = {
       plan_id: plan.id,
       total_count: 120, // max 10 years
-      customer_notify: 1,
+      customer_notify: true,
       notes: {
         donorId,
         campaignId: campaignId || 'general',
@@ -78,7 +78,7 @@ export async function POST(req: Request) {
       },
     };
 
-    const subscription = await razorpay.subscriptions.create(subscriptionOptions);
+    const subscription = await razorpay.subscriptions.create(subscriptionOptions) as any;
 
     // 4. Create Subscription record in pending/created state
     const { error: subscriptionError } = await supabase.from("subscriptions").insert({

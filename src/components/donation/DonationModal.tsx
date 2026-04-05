@@ -46,7 +46,7 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
   const totalAmount = baseAmount + fee;
 
   const validateForm = () => {
-    if (!amount || amount < 100) return "Minimum donation amount is ₹100";
+    if (!amount || amount < 1) return "Minimum donation amount is ₹1";
     if (!donorDetails.name.trim()) return "Please enter your name";
     if (!donorDetails.email.includes("@")) return "Please enter a valid email address";
     if (donorDetails.phone.length < 10) return "Please enter a valid 10-digit phone number";
@@ -104,9 +104,13 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
           color: "#BF3475", // Brand Pink
         },
         handler: function (response: any) {
-          // Payment is successful, webhook will handle the rest
-          // Redirect to a success page
-          window.location.href = `/donate/success?payment_id=${response.razorpay_payment_id}`;
+          // Redirect to thank-you page with verification params
+          const params = new URLSearchParams({
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature,
+          });
+          window.location.href = `/donate/thank-you?${params.toString()}`;
         },
       };
 

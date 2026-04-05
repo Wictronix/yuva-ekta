@@ -1,0 +1,31 @@
+
+> yuva-ekta@0.1.0 build
+> next build
+
+ΓÜá Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\Atul Raj\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\Atul Raj\OneDrive\Desktop\code\yuva-ekta\package-lock.json
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+ΓÜá The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 21.8s
+  Running TypeScript ...
+Failed to compile.
+
+./src/components/sections/ContactDetails.tsx:67:49
+Type error: Property 'addressAlt' does not exist on type '{ name: string; address: string; phone1: string; phone2: string; whatsapp: string; email: string; registrationNo: string; regNo: string; pan: string; founded: string; tagline: string; upi: string; url: string; social: { ...; }; }'. Did you mean 'address'?
+
+  65 |                                 </p>
+  66 |                                 <p className="text-sm border-t border-white/10 pt-4 mt-4 text-white/40 italic">
+> 67 |                                     Also: {SITE.addressAlt}
+     |                                                 ^
+  68 |                                 </p>
+  69 |                             </div>
+  70 |                         </div>
+Next.js build worker exited with code: 1 and signal: null

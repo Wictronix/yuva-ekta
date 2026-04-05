@@ -21,8 +21,8 @@ export default async function AdminDashboard() {
     supabase.from("subscriptions").select("plan_amount, status").eq("status", "active")
   ]);
 
-  const totalRaised = (donations || []).reduce((acc, curr) => acc + curr.amount, 0);
-  const monthlyRecurring = (subscriptions || []).reduce((acc, curr) => acc + curr.plan_amount, 0);
+  const totalRaised = (donations as any[] || []).reduce((acc, curr) => acc + curr.amount, 0);
+  const monthlyRecurring = (subscriptions as any[] || []).reduce((acc, curr) => acc + curr.plan_amount, 0);
 
   return (
     <div className="max-w-6xl space-y-8">

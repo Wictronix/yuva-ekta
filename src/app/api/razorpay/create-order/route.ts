@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { amount, coverFee, campaignId, donorDetails } = body;
 
-    if (!amount || amount < 100) {
+    if (!amount || amount < 1) {
       return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
     }
 
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     const amountInPaise = toPaise(total);
 
     const razorpay = getRazorpay();
-    const supabase = createAdminClient();
+    const supabase = createAdminClient() as any;
 
     // 1. Ensure Donor exists
     let donorId: string;
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       .single();
 
     if (existingDonor) {
-      donorId = existingDonor.id;
+      donorId = (existingDonor as any).id;
       // Update phone if different
       await supabase.from("donors").update({ phone: donorDetails.phone, name: donorDetails.name }).eq("id", donorId);
     } else {
