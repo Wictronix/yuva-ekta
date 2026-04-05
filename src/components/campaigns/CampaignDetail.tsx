@@ -7,7 +7,7 @@ import ProgressWidget from "./ProgressWidget";
 import FundingBreakdown from "./FundingBreakdown";
 import ProductGrid from "./ProductGrid";
 import CampaignUpdates from "./CampaignUpdates";
-import DonationModal from "../donation/DonationModal";
+import DonationModal from "../donation/DonationModal"; 
 
 export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
