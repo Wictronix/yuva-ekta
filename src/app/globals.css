@@ -31,45 +31,48 @@
 }
 
 :root {
-  --primary: oklch(0.205 0 0);
+  /* Brand mappings — preserved from v1 */
+  --primary: var(--color-brand-pink);
   --primary-dark: var(--color-brand-pink-dark);
   --primary-light: var(--color-brand-pink-tint);
-  --secondary: oklch(0.97 0 0);
+  --secondary: var(--color-brand-green);
   --secondary-dark: var(--color-brand-green-dark);
   --secondary-light: var(--color-brand-green-tint);
-  --accent: oklch(0.97 0 0);
+  --accent: var(--color-brand-terra);
   --brown: var(--color-brand-brown);
   --brown-light: var(--color-brand-brown-tint);
   --surface: var(--color-surface);
-  --border: oklch(0.922 0 0);
-  --muted: oklch(0.97 0 0);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  /* shadcn system variables — mapped to brand */
+  --background: #F2F2F2;
+  --foreground: #1A1A2E;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A2E;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A2E;
+  --primary-foreground: #FFFFFF;
+  --secondary-foreground: #FFFFFF;
+  --muted: #F5EDE5;
+  --muted-foreground: #6B6B6B;
+  --accent-foreground: #FFFFFF;
+  --destructive: #D94A3D;
+  --border: #E0E0E0;
+  --input: #E0E0E0;
+  --ring: #BF3475;
+  --chart-1: #BF3475;
+  --chart-2: #6FA656;
+  --chart-3: #D94A3D;
+  --chart-4: #593414;
+  --chart-5: #F5EDE5;
+  --radius: 0.75rem;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1A1A2E;
+  --sidebar-primary: #BF3475;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #FCE8F0;
+  --sidebar-accent-foreground: #593414;
+  --sidebar-border: #E0E0E0;
+  --sidebar-ring: #BF3475;
 }
 
 a {

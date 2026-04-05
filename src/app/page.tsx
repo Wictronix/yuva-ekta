@@ -3,7 +3,7 @@ import HeroSection from "@/components/sections/HeroSection";
 import ImpactStrip from "@/components/sections/ImpactStrip";
 import AboutTeaser from "@/components/sections/AboutTeaser";
 import FocusAreas from "@/components/sections/FocusAreas";
-import FeaturedProjects from "@/components/sections/FeaturedProjects";
+import FeaturedCampaigns from "@/components/sections/FeaturedCampaigns";
 import HowToHelp from "@/components/sections/HowToHelp";
 import FounderQuote from "@/components/sections/FounderQuote";
 import Partners from "@/components/sections/Partners";
@@ -21,7 +21,7 @@ export default function Home() {
       <ImpactStrip />
       <AboutTeaser />
       <FocusAreas />
-      <FeaturedProjects />
+      <FeaturedCampaigns />
       <HowToHelp />
       <FounderQuote />
       <Partners />

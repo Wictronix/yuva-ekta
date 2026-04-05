@@ -1,10 +1,19 @@
+"use client";
+
 import { SITE, NAV_LINKS, FOCUS_AREAS } from "@/lib/constants";
 import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Heart, ShieldCheck, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+import { usePathname } from "next/navigation";
+
 export default function Footer() {
+    const pathname = usePathname();
+    const isAdminPage = pathname?.startsWith("/admin") || pathname?.startsWith("/auth");
+
+    if (isAdminPage) return null;
+
     return (
         <footer className="relative bg-[#1a110a] text-white pt-24 pb-12 mt-auto overflow-hidden">
             {/* Cinematic background depth */}
@@ -15,12 +24,12 @@ export default function Footer() {
                 {/* Brand Header Section */}
                 <div className="flex flex-col md:flex-row justify-between items-center md:items-center gap-8 mb-20 pb-12 border-b border-white/5 text-center md:text-left">
                     <Link href="/" className="flex flex-col sm:flex-row items-center gap-5 group">
-                        <div className="relative w-16 h-16 bg-white rounded-2xl p-2 shadow-2xl transition-transform group-hover:scale-105 duration-500">
+                        <div className="relative w-16 h-16 bg-white rounded-full shadow-2xl transition-transform group-hover:scale-105 duration-500 overflow-hidden flex items-center justify-center p-0.5">
                             <Image
                                 src="/yuva-ekta-logo.jpg"
                                 alt={SITE.name}
                                 fill
-                                className="object-contain p-1"
+                                className="object-contain"
                             />
                         </div>
                         <div className="flex flex-col items-center sm:items-start">
