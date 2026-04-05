@@ -1,532 +1,666 @@
-# CONTENT
-## Yuva Ekta India Foundation — Copy for Every Section
+# content.md
+## Yuva Ekta India Foundation — v2 Complete Page Copy
+
+> All v1 page copy (Home, About, Projects, Impact, Contact) from CONTENT_FINAL.md
+> remains unchanged. This document covers only the NEW content introduced in v2:
+> Campaigns pages, Donation Modal, Thank You (updated), Admin Portal, emails, and
+> the PDF receipt.
 
 ---
 
-> **Writing Tone:** Warm, grounded, hopeful. Avoid corporate language. Write like a community leader speaking from the heart — honest about the challenges, proud of the progress.
+## GLOBAL ADDITIONS
+
+### Navbar — new link
+Between "About" and "Projects":
+- **Label:** "Campaigns"
+- **href:** `/campaigns`
+
+### Meta description additions (SEO)
+
+```typescript
+// /campaigns
+title: 'Our Campaigns | Yuva Ekta India Foundation'
+description: 'Support verified grassroot campaigns in Gurugram — education, health, women\'s livelihood, and nutrition. Donate online. 80G tax receipt by email.'
+
+// /campaigns/[slug] — generated dynamically
+title: `${campaign.title} | Yuva Ekta India Foundation`
+description: campaign.short_desc
+```
 
 ---
 
-## GLOBAL
+---
 
-### Page Title Suffix
-`| Yuva Ekta India Foundation`
+## PAGE: CAMPAIGNS LISTING  `/campaigns`
 
-### Meta Description (default)
-`Yuva Ekta India Foundation is a registered NGO in Gurugram empowering grassroot communities through education, women's livelihood, health, and digital literacy. Donate today — 80G certified.`
+### Page Hero
+**Title:** "Our Campaigns"
+**Subtitle:** "Every campaign is a verified need, funded directly by donors like you."
+**Trust strip (pill badges):**
+80G Certified · NITI Aayog Registered · Reg. No. 03485 · Est. 2018
 
 ---
 
-## NAVBAR
-
-- Home
-- About
-- Projects
-- Impact
-- Contact
-- **Donate Now** ← CTA button
-
----
-
-## HOME PAGE
-
-### Hero
-
-**Headline:**
-`Empowering Communities, One Life at a Time`
-
-**Subheadline:**
-`A grassroot NGO in Gurugram bringing education, livelihood, and health to those who need it most.`
-
-**CTA 1:** `Donate Now`
-**CTA 2:** `See Our Work`
+### Filter Bar Labels
+- All Campaigns
+- Education
+- Health & Nutrition
+- Women's Livelihood
+- Environment
+- Sort: Most Urgent | Newest | Most Funded | Ending Soon
 
 ---
 
-### Impact Strip
+### Campaign Card Copy Patterns
 
-| Stat | Label |
-|---|---|
-| 1,000+ | Children Educated |
-| 100+ | Women Empowered |
-| 100 | Children Fed Daily |
-| 7+ | Years of Impact |
+Each card surfaces these values dynamically from Supabase. These are the label/format strings:
+
+```
+[cover image]
+[Category badge]
+[Campaign Title]
+[short_desc — 2 lines max]
+[Progress bar]
+"₹{amount_raised} raised of ₹{campaign_goal}"
+"Reaching {target_people} people"
+
+Button 1: "Donate Now"
+Button 2: "View Campaign"
+```
+
+**Empty state:**
+"No campaigns found for this filter. Browse all campaigns or check back soon — new campaigns are added regularly."
+CTA: "View All Campaigns"
 
 ---
 
-### About Teaser
+### Section below grid (CTA banner — same as v1 home)
+**Heading:** "Don't see the right campaign? Your donation still matters."
+**Body:** "A general donation goes to wherever it's needed most — across education, health, and livelihood programmes."
+**Button:** "Make a General Donation" → opens DonationModal with no campaign pre-selected
 
-**Heading:** `Who We Are`
+---
+
+---
+
+## PAGE: CAMPAIGN DETAIL  `/campaigns/[slug]`
+
+> All text fields below come from the database. This section defines the UI labels,
+> surrounding copy, and static strings that frame the dynamic content.
+
+---
+
+### Campaign Hero
+```
+[cover image — full width, dark overlay]
+[Category badge]
+[campaign.title — H1]
+[campaign.short_desc — subtitle]
+```
+
+**Trust badges row (always shown):**
+- ✅ 80G Tax Receipt via Email
+- 🏛️ Reg. No. 03485
+- 🔒 Secure Payment via Razorpay
+
+---
+
+### Progress Widget (sidebar / top on mobile)
+
+**Labels:**
+- "Campaign Goal" → `₹{campaign_goal}`
+- Progress bar: `{(amount_raised / campaign_goal * 100).toFixed(0)}% funded`
+- `₹{amount_raised}` raised
+- "Target: {target_people} people"
+
+**Button:** "Donate to This Campaign" → opens DonationModal
+
+**Below button (muted small text):**
+"🔒 Secure payment via Razorpay. 80G tax receipt sent to your email immediately after payment."
+
+---
+
+### Long Description
+Rendered as markdown. Content comes from `campaign.long_desc`.
+No surrounding static copy — the campaign's own text carries this section.
+
+---
+
+### Funding Breakdown Section
+
+**Heading:** "How Your Donation Is Used"
+**Subtext:** "Every rupee is accounted for. Here is exactly how funds raised for this campaign are deployed."
+
+Table/chart is dynamic from `campaign.funding_breakdown`.
+**Table headers:** Expense Head | Amount | Share
+
+**Footer note (muted):**
+"Amounts shown are based on monthly programme costs. Total may vary as the campaign reaches its goal."
+
+---
+
+### Products to Donate Section
+
+**Heading:** "Choose What You Want to Fund"
+**Subtext:** "Each item below represents a specific, tangible contribution. Select one and your donation goes directly to it."
+
+Each product card:
+```
+[product image — optional]
+[product.name — H4]
+[product.impact — body, 2 lines]
+[₹{product.price}]
+[Donate ₹{product.price}] → DonationModal(defaultAmount=product.price)
+```
+
+**Below grid (muted small):**
+"Or donate any amount — every rupee helps."
+CTA: "Donate a Custom Amount" → opens DonationModal
+
+---
+
+### Campaign Updates Section
+
+**Heading:** "Impact Updates"
+**Subtext:** "Our team posts regular updates from the ground so you can see exactly what your donation is doing."
+
+Each update card:
+```
+📅 {update.date — formatted as "15 March 2025"}
+[update.title — H4]
+[update.body — paragraph]
+[update.image — if available]
+```
+
+**Empty state (no updates yet):**
+"Updates will be posted here as the campaign progresses. Check back soon."
+
+---
+
+### Bottom CTA (after all sections)
+
+**Text:** "Ready to make an impact?"
+**Button (brand-pink, large):** "Donate to {campaign.title}" → DonationModal
+
+---
+
+---
+
+## DONATION MODAL
+
+### Modal Header
+```
+[×]
+Donate to Yuva Ekta India Foundation
+[campaign.title — muted, if campaign passed]   OR
+"General Fund" if no campaign
+```
+
+---
+
+### Tab Labels
+- "One-time" (default active)
+- "Monthly"
+
+---
+
+### One-time Tab
+
+**Amount selector heading:** "Choose an amount"
+
+```
+Preset buttons: ₹500 | ₹1,000 | ₹2,500 | ₹5,000
+Custom input placeholder: "Enter amount in ₹"
+Minimum: ₹100
+```
+
+**Transaction fee toggle:**
+```
+☐ Cover the transaction fee (2.5%)
+    Helps us receive your full donation amount.
+
+    Your donation:      ₹1,000
+    Transaction fee:    ₹25
+    Total charged:      ₹1,025
+```
+(Fee toggle only shows when amount > 0. Fee % is configurable in `admin_settings`.)
+
+**Donor form labels:**
+```
+Full Name *         [__________]
+Email Address *     [__________]   ← receipt sent here
+Phone Number *      [__________]
+```
+
+**Below form (small, muted):**
+"🔒 Your information is never shared. You will receive your 80G tax receipt at this email."
+
+**Primary CTA button:**
+- Default: "Proceed to Pay" (disabled if form invalid)
+- With amount: "Proceed to Pay ₹{total}"
+
+**Below button:**
+"Powered by Razorpay · UPI · Cards · Net Banking · Wallets"
+
+---
+
+### Monthly Tab
+
+**Heading:** "Join as a Monthly Donor"
+**Subtext:** "Your monthly gift creates predictable hope. Cancel anytime."
+
+```
+Preset amounts: ₹500 | ₹1,500 | ₹5,000 | Custom
+```
+
+**What your gift does (dynamic based on selected amount):**
+```
+₹500/month  → "Funds 1 week of remedial classes for 5 children"
+₹1,500/month → "Covers 1 month of digital trainer salary"
+₹5,000/month → "Fully sponsors 1 project for 1 month"
+```
+(These strings are configured per campaign or use defaults above.)
+
+**Donor form:** Same as one-time tab.
+
+**Primary CTA:** "Start Monthly Giving — ₹{amount}/month"
+
+**Below button:**
+"🔒 First payment today. Subsequent payments auto-deducted monthly. To pause or cancel, simply reply to your receipt email."
+
+---
+
+### Processing State
+```
+[loading spinner — brand-pink]
+"Processing your payment..."
+"Please do not close this window."
+```
+
+---
+
+### Success State
+```
+[large ✅ icon — animated, brand-green]
+
+"Thank You, {donorName}! 🙏"
+
+"Your donation of ₹{total} has been received."
+"Transaction ID: {razorpay_payment_id}"
+
+[Email icon] "A receipt has been sent to {donorEmail}"
+[PDF icon] "Download your 80G receipt" → /api/pdf/receipt?donationId=xxx
+
+---
+
+"Spread the word:"
+[WhatsApp] [Copy Link]
+
+[Close]  [Explore More Campaigns]
+```
+
+---
+
+### Error State
+```
+[⚠️ icon]
+"Payment could not be completed."
+"{error message from Razorpay}"
+
+Possible reasons:
+• Payment was declined by your bank
+• Session timed out
+• Network issue
+
+[Try Again]  [Pay via Bank Transfer instead]
+```
+
+Bank transfer details shown if "Pay via Bank Transfer instead" clicked.
+
+---
+
+---
+
+## PAGE: THANK YOU  `/thank-you`
+
+Updated subtext only — structure unchanged from v1.
+
+**Headline:** "Thank You for Your Generosity! 🙏"
+
+**Subtext:**
+"Your donation has been received and your 80G receipt is on its way to your inbox. If you don't see it within a few minutes, please check your spam folder or contact us at yuvaekta2018@gmail.com."
+
+**What Happens Next (3 steps):**
+1. **Payment Confirmed** — "Your Razorpay receipt has been generated."
+2. **80G Receipt by Email** — "Your tax exemption receipt will arrive within a few minutes."
+3. **Funds Deployed** — "Your donation goes to active programmes immediately."
+
+**Share message:**
+"I just donated to Yuva Ekta India Foundation — a registered NGO empowering grassroot communities in Gurugram through education, livelihood, and health. Donations are 80G tax-exempt. Join me: https://yuvaektaindiafoundation.com/donate"
+
+---
+
+---
+
+## EMAIL: DONATION RECEIPT
+
+Sent via Resend immediately after payment success.
+
+### Subject line
+**One-time:** "Your donation to Yuva Ekta India Foundation — Receipt #{{receipt_number}}"
+**Recurring (first):** "Welcome, Monthly Donor! Your first gift to Yuva Ekta — Receipt #{{receipt_number}}"
+**Recurring (subsequent):** "Your monthly donation receipt — {{month}} {{year}} — Yuva Ekta India Foundation"
+
+---
+
+### Email HTML Template
+
+**Header:**
+- YEIF logo (white background)
+- Thin brand-pink top border (4px)
 
 **Body:**
-`Yuva Ekta India Foundation is a youth-led, community-focused NGO registered under the Haryana Registration and Regulation of Societies Act, 2012. We work in the villages and urban pockets of Gurugram — reaching the families and children that formal systems often leave behind.`
 
-`Founded by Mr. Balram Kumar, a social worker mentored and trained by Dr. Kiran Bedi, our foundation believes that lasting change begins at the grassroot level — not from the top down.`
+```
+Dear {donor.name},
 
-**Link:** `Read Our Full Story →`
+Thank you for your generous donation to Yuva Ekta India Foundation.
+Your contribution is already making a difference in the lives of
+children and families in Gurugram.
 
----
+─────────────────────────────────────────────
+  DONATION RECEIPT
+─────────────────────────────────────────────
+  Donor Name:        {donor.name}
+  Email:             {donor.email}
+  Phone:             {donor.phone}
+  Donation Amount:   ₹{donation.amount}
+  Transaction Fee:   ₹{donation.fee_amount}   ← shown only if covered
+  Total Charged:     ₹{donation.total_charged}
+  Campaign:          {campaign.title}          ← or "General Fund"
+  Type:              {One-time / Monthly}
+  Date:              {formatted date}
+  Razorpay Order ID: {razorpay_order_id}
+  Payment ID:        {razorpay_payment_id}
+─────────────────────────────────────────────
 
-### Key Focus Areas
+Your donation is eligible for a 50% tax deduction under Section 80G
+of the Income Tax Act, 1961. Your official 80G receipt is attached
+to this email as a PDF.
 
-**Section Heading:** `What We Work On`
+[  Download 80G Receipt (PDF)  ]   ← button linking to /api/pdf/receipt?donationId=xxx
 
-| Icon | Title | Description |
-|---|---|---|
-| 📚 | Remedial Education | Free classes, village libraries, and learning workshops for dropout and at-risk children |
-| 💻 | Digital Literacy | Free computer education for rural children aged 6–16 through our Digital Learning Centre |
-| 👩 | Women's Livelihood | Stitching, tailoring, and entrepreneurship training that creates real income for rural women |
-| 🍱 | Health & Nutrition | Daily nutritious meals for 100 malnourished and critically ill children |
+─────────────────────────────────────────────
+  ABOUT THIS ORGANISATION
+─────────────────────────────────────────────
+  Yuva Ekta India Foundation
+  Village Sehjawas, Panchayat Sohna, Block Gurgaon, Haryana – 122102
+  Registration No.:  03485 (Haryana Societies Act, 2012)
+  PAN:               AAATY6815D
+  80G Certificate:   [certificate number — add when known]
+  NITI Aayog:        Registered
+─────────────────────────────────────────────
 
----
+If you have any questions about your donation, please contact us:
+📧 yuvaekta2018@gmail.com
+📞 (+91) 8569923173
 
-### Featured Projects
+With gratitude,
+Balram Kumar & the Yuva Ekta Team
 
-**Section Heading:** `Our Active Projects`
+─────────────────────────────────────────────
+You are receiving this email because you made a donation to
+Yuva Ekta India Foundation. This is not a marketing email.
+```
 
-**Card 1 — Sakshar Sohna**
-`Supported by Expert Solutions for Non Profit`
-`Remedial education for 200+ children — from learning to read to setting up school libraries.`
-
-**Card 2 — Digital Saksharta**
-`Supported by Morning Star Foundation`
-`A Digital Learning Centre in Sehjawas Village with 30 computers, serving 50 children and youth.`
-
-**Card 3 — Mahila Ajeevika**
-`Supported by Srujna Charitable Trust`
-`Sewing machines, raw materials, and training — helping 50 women build their own income.`
-
-**Card 4 — Swastha Sohna**
-`Supported by Taj Gateway Resort`
-`Free food packets distributed daily to 100 malnourished children and children with critical illness.`
-
----
-
-### How to Help
-
-**Section Heading:** `Three Ways to Make a Difference`
-
-**Option 1 — Donate**
-`Make a one-time or monthly donation. 100% goes to our programs. Eligible for tax exemption under Section 80G.`
-CTA: `Donate Now →`
-
-**Option 2 — Buy Products**
-`Purchase handmade products crafted by our beneficiaries. Every purchase creates livelihood, not charity.`
-CTA: `See Products →`
-
-**Option 3 — Volunteer**
-`Bring your skills — teaching, technology, health, or management — and give a few hours a month.`
-CTA: `Volunteer With Us →`
-
----
-
-### Quote / Founder Statement
-
-> *"Every child deserves to learn. Every woman deserves to earn. Every family deserves dignity. That is why we do this work."*
-> — Balram Kumar, Founder, Yuva Ekta India Foundation
+**Footer:**
+- Thin brand-green bottom border
+- "© 2024 Yuva Ekta India Foundation. Education. Livelihood. Environment."
+- Unsubscribe link (legally required for transactional emails — even if just "contact us to opt out")
 
 ---
 
-### Partners Strip
+### Monthly Donor Welcome Email (additional section)
 
-**Heading:** `Our Generous Supporters`
+Inserted between the receipt table and the 80G note:
 
-- Morning Star Foundation
-- Srujna Charitable Trust
-- Taj Gateway Resort
-- Expert Solutions for Non Profit
+```
+─────────────────────────────────────────────
+  WELCOME TO THE YUVA EKTA FAMILY
+─────────────────────────────────────────────
+You are now a monthly donor. Here's what to expect:
 
----
-
-### CTA Banner
-
-**Headline:** `Together, we can change more lives.`
-**Subtext:** `Every rupee you give reaches a real family in Gurugram.`
-**Button:** `Donate Today`
-
----
-
-### Footer
-
-**Tagline:** `Education. Livelihood. Environment.`
-
-**About column:**
-`A registered NGO in Gurugram working for grassroot community upliftment since 2018.`
-
-**Legal line:**
-`Reg. No. 03485 | PAN: AAATY6815D | 80G & 12A Certified | CSR-1 Registered | NITI Aayog Registered`
-
-**Copyright:** `© 2024 Yuva Ekta India Foundation. All rights reserved.`
+• Your donation of ₹{amount} will be auto-deducted on the
+  {date} of every month.
+• You will receive a receipt email after each payment.
+• A consolidated 80G certificate will be sent at the end
+  of every financial year.
+• To cancel your monthly donation, email us at
+  yuvaekta2018@gmail.com — we will cancel within 2 working days.
+─────────────────────────────────────────────
+```
 
 ---
 
-## ABOUT PAGE
-
-### Page Hero
-**Title:** `About Us`
-**Subtitle:** `A story rooted in community, driven by purpose.`
-
 ---
 
-### Our Story
+## PDF: 80G DONATION RECEIPT
 
-**Heading:** `How It Began`
+Generated by `@react-pdf/renderer`. Downloaded via `/api/pdf/receipt?donationId=xxx`.
 
-`Yuva Ekta India Foundation was born out of a simple conviction: that the children and families at the margins of society deserve the same opportunities as everyone else.`
+### Layout (A4 portrait)
 
-`Founded on 21 November 2018 by Mr. Balram Kumar — a social worker inspired and mentored by Dr. Kiran Bedi — the foundation started its work in the villages around Sohna Block, Gurugram. What began with a handful of children attending remedial classes in a small room has grown into a multi-program NGO serving over 1,000 children, 100 women, and hundreds of families.`
+**Header block:**
+- YEIF logo (left)
+- "DONATION RECEIPT" (right, uppercase, brand-pink)
+- Receipt No.: YEIF-{year}-{sequential_number}
+- Date: {dd MMM yyyy}
 
-`We are registered under the Haryana Registration and Regulation of Societies Act, 2012 (Reg. No. 03485), and hold 80G, 12A, and CSR-1 certifications — because trust and accountability matter as much as impact.`
+**To / From block:**
+```
+Received from:                        Issued by:
+{donor.name}                          Yuva Ekta India Foundation
+{donor.email}                         Village Sehjawas, Sohna, Gurugram
+{donor.phone}                         Haryana – 122102
+                                      Reg. No.: 03485
+                                      PAN: AAATY6815D
+```
 
----
-
-### Vision & Mission Cards
-
-**Vision Card:**
-`To empower grassroot communities of Gurugram through direct interventions in Remedial Education, Life Skills, Livelihood, and Community Health and Nutrition.`
-
-**Mission Card:**
-`To be a leader in Community Development Initiatives through Projects and Campaigns aligned with achieving the Sustainable Development Goals.`
-
----
-
-### Founder Section
-
-**Name:** Balram Kumar
-**Title:** Founder & Social Worker
-
-**Bio:**
-`Balram Kumar has dedicated his life to community service in the villages of Sohna Block, Gurugram. A social worker by calling, he was mentored and trained by Dr. Kiran Bedi — India's first female IPS officer and a lifelong champion of grassroot change.`
-
-`Under Balram Kumar's leadership, Yuva Ekta India Foundation has been recognised by the Haryana Government, received accolades from the police commissioner, and featured extensively in local and regional media for its work in education, health, and environmental awareness.`
-
----
-
-### Credentials & Certifications
-
-| Credential | Details |
+**Receipt details table:**
+| | |
 |---|---|
-| Society Registration | Haryana Registration and Regulation of Societies Act, 2012 — Reg. No. 03485 |
-| PAN | AAATY6815D |
-| Date of Incorporation | 21 November 2018 |
-| 80G Certificate | Donations eligible for tax deduction under Income Tax Act |
-| 12A Certificate | Organisation's income exempt from Income Tax |
-| CSR-1 Registration | Eligible to receive Corporate Social Responsibility funds |
-| NITI Aayog | Registered on NITI Aayog's Darpan portal |
+| Campaign / Purpose | {campaign.title or "General Fund"} |
+| Donation Amount | ₹{donation.amount} |
+| Transaction Fee (if covered) | ₹{donation.fee_amount} |
+| Total Paid | ₹{donation.total_charged} |
+| Payment Mode | Razorpay (UPI / Card / Net Banking) |
+| Razorpay Order ID | {razorpay_order_id} |
+| Razorpay Payment ID | {razorpay_payment_id} |
+| Date of Payment | {dd MMM yyyy} |
+
+**80G declaration block (grey background):**
+```
+This receipt is issued under Section 80G of the Income Tax Act, 1961.
+Donations to Yuva Ekta India Foundation are eligible for 50% tax
+deduction subject to qualifying limits as per applicable tax laws.
+
+80G Certificate No.: [certificate number]
+Financial Year:      2024–25
+```
+
+**Signature block:**
+```
+Authorised Signatory
+Yuva Ekta India Foundation
+```
+(Placeholder line — admin prints and signs physical copy if needed.)
+
+**Footer:**
+"This is a computer-generated receipt and does not require a physical signature for digital tax filing."
 
 ---
 
-## PROJECTS PAGE
+---
 
-### Page Hero
-**Title:** `Our Projects & Programmes`
-**Subtitle:** `Four active projects. Seven community initiatives. One shared mission.`
+## ADMIN PORTAL — UI Labels & Copy
+
+### Dashboard
+
+**Page title:** "Admin Dashboard"
+
+**Stat card labels:**
+- "Total Raised (All Time)"
+- "Active Campaigns"
+- "Total Donors"
+- "Raised This Month"
+
+**Recent donations table heading:** "Recent Donations"
+**Column headers:** Donor | Campaign | Amount | Type | Date | Status | Receipt
+
+**Empty recent donations:** "No donations yet. Share your campaign links to start receiving donations."
 
 ---
 
-### Project 1 — Sakshar Sohna
+### Campaign Manager
 
-**Badge:** Supported by Expert Solutions for Non Profit
-**Tagline:** Remedial Education for Dropout and At-Risk Children
+**Page title:** "Campaigns"
+**Add button:** "+ New Campaign"
+**Search placeholder:** "Search campaigns by title..."
+**Table column headers:** Image | Title | Category | Goal | Raised | Status | Featured | Actions
 
-**Description:**
-`In the villages around Sohna Block, hundreds of children have slipped through the cracks of the formal education system. Sakshar Sohna exists to bring them back.`
+**Delete confirmation dialog:**
+Title: "Delete Campaign"
+Body: "Are you sure you want to permanently delete **{campaign.title}**? This action cannot be undone. Existing donation records linked to this campaign will be preserved."
+Confirm: "Delete Campaign" (red/destructive)
+Cancel: "Keep Campaign"
 
-`Through a team of trained educators, we run hourly remedial classes that build core skills — reading, writing, arithmetic, and comprehension. But we go beyond academics: we run leadership sessions, art and craft workshops, poetry workshops, and music and drama activities, because a child's development is never just about grades.`
-
-`One of our proudest achievements is the network of village libraries we have set up in government schools around Sohna Block — and the school students we have trained to run them independently.`
-
-**Stats:**
-- Target (2022–23): 200 children
-- Long-term objective: 1,000 dropout children mainstreamed into government schools
-- Monthly funding requirement: ₹30,000
-
-**Funding heads:** Educator salaries | Centre rent | Community mobilisation travel | Books and resources
+**Archive confirmation:**
+"Archiving this campaign will hide it from the public site but preserve all records. Continue?"
 
 ---
 
-### Project 2 — Digital Saksharta
+### Campaign Form
 
-**Badge:** Supported by Morning Star Foundation
-**Tagline:** Free Computer Education for Rural Children
+**Page title (new):** "Create New Campaign"
+**Page title (edit):** "Edit — {campaign.title}"
 
-**Description:**
-`In a world that runs on digital skills, rural children in Sehjawas Village were being left behind. Digital Saksharta changes that.`
+**Tab labels:** Basic Info | Funding Breakdown | Products to Donate | Updates & Impact
 
-`With the support of Morning Star Foundation, we have established a Digital Learning Centre equipped with 30 computers and a printer. The centre provides free computer education to 50 children and adolescents aged 6–16 years.`
+**Field labels:**
 
-`Every weekend, the centre opens for rural youth — providing free workshops on employability skills, computer operator jobs, and data entry training, directly linked to real employment opportunities.`
+*Basic Info tab:*
+- "Campaign Title *"
+- "URL Slug * (auto-generated, editable)"
+- "Category *"
+- "Status *"
+- "Short Description * (max 160 characters)" — shown on cards
+- "Long Description * (markdown supported)" — shown on campaign detail page
+- "Cover Image *"
+- "Show on Homepage (Featured)"
+- "Fundraising Goal (₹) *"
+- "Target Number of People *"
+- "Campaign End Date (optional)"
 
-**Stats:**
-- Target (2022–23): 240 children
-- Monthly funding requirement: ₹35,000
+*Funding Breakdown tab:*
+- "Add Budget Line" button
+- Column headers: Expense Head | Amount (₹) | Percentage | Remove
+- "Percentages will auto-calculate if left blank."
 
-**Funding heads:** Computer trainer salary | Centre rent | Community mobilisation travel | Learning materials and curriculum
+*Products to Donate tab:*
+- "Add Donatable Item" button
+- Field labels: Item Name | Impact Statement (what this item does) | Price (₹) | Photo (optional)
 
----
+*Updates & Impact tab:*
+- "Add Update" button
+- Field labels: Date | Update Title | What Happened (textarea) | Photo (optional)
 
-### Project 3 — Mahila Ajeevika
+**Save button:** "Save Campaign"
+**Cancel link:** "← Back to Campaigns"
 
-**Badge:** Supported by Srujna Charitable Trust
-**Tagline:** Building Women's Livelihoods Through Skills
-
-**Description:**
-`For many women in rural Gurugram, their skills in stitching and tailoring have never translated into income — simply because they lacked the tools and the market access.`
-
-`With support from Srujna Charitable Trust, Mahila Ajeevika provides sewing machines, raw materials, and business training to 50 rural women. We don't just teach skills — we help them set up stalls, procure orders, and build micro-enterprises.`
-
-`Each woman who participates is expected to earn an additional ₹5,000 per month — income that transforms her household and her standing in the community.`
-
-**Stats:**
-- Target (2022–23): 50 women
-- Expected income increase: ₹5,000/household/month
-- Monthly funding requirement: ₹45,000
-
-**Funding heads:** Skill trainer salary | Stall setup for income generation | Travel for orders | Exposure visits
-
----
-
-### Project 4 — Swastha Sohna
-
-**Badge:** Supported by Taj Gateway Resort
-**Tagline:** Daily Nutrition for Malnourished Children
-
-**Description:**
-`Hunger is not a statistic. It is a child who cannot concentrate in class, a body that cannot fight illness, a future dimmed by something as basic as food.`
-
-`Swastha Sohna provides daily nutritious food packets to 100 malnourished children and children with critical illnesses. The initiative is supported by Taj Gateway Resort and runs in partnership with Dil se Mehek (supporting children with congenital heart disease and cancer) and One Each One Feed.`
-
-`Every day, 100 children receive food they would not otherwise have.`
-
-**Stats:**
-- Beneficiaries: 100 children fed daily
-- Monthly funding requirement: ₹50,000
-
-**Funding heads:** Food packets | Travel to community and hospital | Volunteer stipend
+**Success toast:** "Campaign saved successfully."
+**Error toast:** "Failed to save campaign. Please check all required fields."
 
 ---
 
-### Community Programmes Intro
+### Image Uploader (inside Campaign Form)
 
-**Heading:** `Beyond the Projects — Community Initiatives`
-**Subtext:** `Seven grassroot programmes that build awareness, connection, and opportunity at the village level.`
+**Default state:**
+"Click to upload or drag and drop"
+"PNG, JPG, WebP · Max 5MB"
 
----
+**Uploading state:**
+"Uploading... {progress}%"
 
-### Programme Cards
+**Uploaded state:**
+"[image preview]"
+"Image uploaded successfully."
+"[Change Image]"
 
-**Khalbali**
-`A monthly or quarterly community mobilisation event where volunteers and educators visit villages, spread awareness about our programmes, and connect with elected representatives, anganwadi workers, and self-help groups.`
-
-**Shiksha Ka Saath**
-`Volunteer educators work directly in villages to help children read, write, and calculate — while also setting up libraries in government schools and training students to run them.`
-
-**Nukkad Sabha**
-`A street-level community forum where issues facing young people — education, employment, girls' futures — are discussed openly. Community members answer each other's questions. Partners include local government schools.`
-
-**Paramarsh**
-`Free career counselling at the end of every academic year for students from Class VIII to Class XII and their families — with government school teachers and local representatives supporting the process.`
-
-**Shiksha Aur Kaushal Mela**
-`An annual education and skill fair in the Sohna Block. Schools, colleges, and skill institutes from Gurugram come to share opportunities directly with village youth. Sarpanchs and teachers from neighbouring villages participate.`
-
-**Yuva Kaushal Centre**
-`Vocational training in computers and languages for adolescents and youth of all genders. Women also receive entrepreneurship training and are mentored through corporate CSR programmes.`
-
-**Swachta Aur Sanrakshan**
-`A community-driven cleanliness and water conservation programme, planned with Panchayats, women's groups, self-help groups, and village committees. Promotes plantation, sanitation, and environment protection.`
+**Error state:**
+"Upload failed. File must be under 5MB and in PNG, JPG, or WebP format."
 
 ---
 
-## IMPACT PAGE
+### Donor Database
 
-### Page Hero
-**Title:** `Our Impact`
-**Subtitle:** `Real numbers. Real families. Real change.`
+**Page title:** "Donors"
+**Search placeholder:** "Search by name, email, or phone..."
+**Export button:** "Export CSV"
+**Column headers:** Name | Email | Phone | Total Donated | Donations | First Donation | Last Donation
 
----
-
-### Impact Numbers
-
-| Number | Description |
-|---|---|
-| 1,000+ | Rural children receiving Remedial Education and Digital Literacy free of cost |
-| 100+ | Women involved in self-employment through Mahila Ajeevika |
-| 100 | Malnourished children served with daily nutritious food |
-| 50 | Computers in our Digital Learning Centre |
-| 7 | Community programmes running across Sohna Block |
-| ₹5,000 | Average monthly income increase per Mahila Ajeevika household |
+**No results state:**
+"No donors found matching your search."
 
 ---
 
-### How Your Donation Is Used
+### Donation Ledger
 
-**Heading:** `Where Every Rupee Goes`
+**Page title:** "Donations"
+**Export button:** "Export Filtered CSV"
+**Column headers:** Date | Donor | Email | Campaign | Amount | Fee | Total | Type | Status | Receipt
 
-| # | How It's Used |
-|---|---|
-| 1 | Laptops and Computers for the Digital Centre |
-| 2 | Reading and Learning Materials for Children |
-| 3 | Chairs and Benches at the Remedial Education Centre |
-| 4 | Sewing Machines for Skill Training Programs |
-| 5 | Professional Training Materials for Skill Development |
-| 6 | Dry Ration, Gas Cylinders, Utensils for Daily Meals |
-| 7 | Stationery for Children and Youth Centre |
-| 8 | Travel Expenses for Children from Remote Villages |
-| 9 | Bags and Uniforms for Attending Children |
-| 10 | Yoga Mats and Dari for Yoga and Meditation Sessions |
+**Filter labels:**
+- "From Date"
+- "To Date"
+- "Campaign: All Campaigns ▾"
+- "Type: All ▾ / One-time / Monthly"
+- "Status: All ▾ / Captured / Pending / Failed / Refunded"
 
----
+**Filter summary line:**
+"Showing {N} donations · ₹{total} total {for current filter}"
 
-### Wish List 2022–23
-
-**Heading:** `Your Contribution Can Make This Happen`
-**Subtext:** `Become a one-time, monthly, or quarterly donor and help us achieve our 2022–23 goals.`
-
-| Goal | Description |
-|---|---|
-| Free Remedial Classes | For 100 rural children |
-| Meals for Youth | 1,500 underprivileged children and youth |
-| Educational Fees | Sponsor schooling for 500 rural children |
-| Skill Training | Provide vocational training to 300 rural youth |
+**Receipt action:** "↓ PDF"
+**Mark refunded:** "Mark Refunded" (with confirmation: "This will update the status to 'Refunded' in your records but does not process the actual refund on Razorpay. Have you already issued the refund on the Razorpay dashboard?")
 
 ---
 
-## DONATE PAGE
+### Admin Sidebar Navigation
 
-### Page Hero
-**Title:** `Make a Difference Today`
-**Subtitle:** `Your gift is tax-exempt under Section 80G of the Income Tax Act.`
+```
+[YEIF logo]
+Admin Portal
 
----
+[Dashboard]
+[Campaigns]
+[Donors]
+[Donations]
+──────────
+[Settings]    ← transaction fee %, org details
+[Logout]
+```
 
-### Trust Signals
-- ✅ 80G Certified — Your donation is tax-deductible
-- ✅ 12A Certified — We're income-tax exempt
-- ✅ CSR-1 Registered — Eligible for corporate CSR funds
-- ✅ NITI Aayog Registered
-- ✅ Registered NGO since 2018
-
----
-
-### Donation Amount Selector
-**Heading:** `Choose Your Contribution`
-
-Preset amounts: `₹500` | `₹1,000` | `₹2,500` | `₹5,000` | `Other Amount`
-
-Project selector label: `Where would you like your donation to go?` *(optional)*
-
-**CTA Button:** `Proceed to Donate Securely →`
-
-**Below button:** `You will be redirected to our secure payment page. Powered by Razorpay.`
+**Settings page labels:**
+- "Transaction Fee Percentage" — "This percentage is added to the donation amount when the donor opts to cover the fee."
+- "Save Settings"
 
 ---
 
-### Adopt a Project
+### Admin Login Page
 
-**Heading:** `Adopt an Entire Project`
-**Subtext:** `Make a monthly contribution and become the primary sponsor of one of our projects.`
-
-| Project | Monthly Requirement | Action |
-|---|---|---|
-| Sakshar Sohna (Remedial Education) | ₹30,000/month | Adopt This Project |
-| Digital Saksharta (Digital Literacy) | ₹35,000/month | Adopt This Project |
-| Mahila Ajeevika (Women's Livelihood) | ₹45,000/month | Adopt This Project |
-| Swastha Sohna (Health & Nutrition) | ₹50,000/month | Adopt This Project |
-
-**Note:** `Issue a cheque in favour of Yuva Ekta India Foundation, or use the bank details below.`
-
----
-
-### Bank / UPI Details
-
-**Heading:** `Prefer Bank Transfer or UPI?`
-
-- **Account Name:** Yuva Ekta India Foundation
-- **Bank:** Union Bank of India
-- **Account Number:** 220711100001158
-- **IFSC Code:** UBIN0565091
-- **UPI ID:** Q64836034@ybl
-
----
-
-### Tax Benefit Note
-
-`All donations to Yuva Ekta India Foundation are eligible for tax deduction under Section 80G of the Income Tax Act, 1961. You will receive a receipt via email. Please retain it for your tax filing.`
-
----
-
-## THANK YOU PAGE
-
-### Success Message
-**Headline:** `Thank You for Your Generosity! 🙏`
-**Subtext:** `Your contribution is already making a difference in the lives of children and families in Gurugram.`
-
----
-
-### What Happens Next
-
-1. **Payment Receipt** — You'll receive a receipt from Razorpay on your email shortly.
-2. **80G Certificate** — Our team will send your tax exemption certificate within 7 working days.
-3. **Your Money at Work** — Funds are deployed to active projects immediately.
-
----
-
-### Share Message (pre-filled for WhatsApp / social)
-
-`I just supported Yuva Ekta India Foundation — a grassroot NGO empowering communities in Gurugram through education, livelihood, and health. Donations are 80G tax-exempt. Join me in making a difference: yuvaektaindiafoundation.org`
-
----
-
-### Back to Site
-
-**Button 1:** `Explore Our Projects`
-**Button 2:** `Back to Home`
-
----
-
-## CONTACT PAGE
-
-### Page Hero
-**Title:** `Get in Touch`
-**Subtitle:** `We'd love to hear from you — whether you want to donate, volunteer, or partner with us.`
-
----
-
-### Contact Details
-
-- **Contact Person:** Balram Kumar (Founder)
-- **Phone:** (+91) 8569923173 | (+91) 99909 11405
-- **Email:** yuvaekta2018@gmail.com
-- **Website:** www.yuvaektaindiafoundation.org
-- **Address:** Village Sehjawas, Panchayat Sohna, Block Gurgaon, Haryana
-  *(Also:)* Damdama Lake Road, Vill. Bahelpa, Gurugram, Haryana – 122102
-
----
-
-### Contact Form Labels
-
-- Full Name *
-- Email Address *
-- Phone Number
-- Subject (dropdown: General Enquiry | Donation | CSR Partnership | Volunteering | Media)
-- Message *
-- Submit: `Send Message`
-- Success: `Thank you! We'll get back to you within 2 working days.`
-
----
-
-### Volunteer Form
-
-**Heading:** `Volunteer With Us`
-**Subtext:** `We welcome volunteers with backgrounds in education, health, technology, design, and more.`
-
-Fields: Name | Email | Phone | Skills / Background | Availability (days/week) | Message
-
----
-
-## ERROR PAGE (404)
-
-**Heading:** `Oops, this page doesn't exist.`
-**Subtext:** `Let's get you back on track.`
-**CTA:** `Go to Home Page`
+**Heading:** "Yuva Ekta Admin"
+**Subheading:** "Sign in to manage campaigns, donors, and donations."
+**Email label:** "Email Address"
+**Password label:** "Password"
+**Button:** "Sign In"
+**Error:** "Invalid email or password. Please try again."
+**Footer note (small, muted):** "This portal is for authorised YEIF administrators only."
