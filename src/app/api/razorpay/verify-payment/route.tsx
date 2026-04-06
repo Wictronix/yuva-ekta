@@ -105,60 +105,59 @@ export async function POST(req: Request) {
       }
     }
 
-    // 4. Generate receipt PDF + upload to R2 + send email (non-blocking — failure won't affect thank-you page)
+    // 4. Generate receipt PDF + upload to R2 + send email
+    // We must await this block so Vercel doesn't kill the serverless function,
+    // but the try/catch ensures it won't break the client response if it fails.
     if (!alreadyProcessed) {
-      // Fire-and-forget with its own error handling
-      (async () => {
-        try {
-          const { data: rpcData } = await supabase.rpc("generate_receipt_number");
-          const receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
+      try {
+        const { data: rpcData } = await supabase.rpc("generate_receipt_number");
+        const receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
 
-          const pdfBuffer = await generateReceiptPDF({
-            receiptNumber,
-            date: new Date().toISOString(),
-            donorName: d.donor.name,
-            donorEmail: d.donor.email,
-            donorPhone: d.donor.phone,
-            amount: donationAmount,
-            paymentId: razorpay_payment_id,
-            campaignName: d.campaign?.title,
-          });
+        const pdfBuffer = await generateReceiptPDF({
+          receiptNumber,
+          date: new Date().toISOString(),
+          donorName: d.donor?.name || "Donor",
+          donorEmail: d.donor?.email || "",
+          donorPhone: d.donor?.phone || "",
+          amount: donationAmount,
+          paymentId: razorpay_payment_id,
+          campaignName: d.campaign?.title,
+        });
 
-          const r2Key = `receipts/${receiptNumber}.pdf`;
-          receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, "application/pdf");
+        const r2Key = `receipts/${receiptNumber}.pdf`;
+        receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, "application/pdf");
 
-          // Save receipt URL & number back to DB
-          const table = isSubscription ? "subscriptions" : "donations";
-          await supabase
-            .from(table)
-            .update({ receipt_url: receiptUrl, receipt_number: receiptNumber })
-            .eq("id", d.id);
+        // Save receipt URL & number back to DB
+        const table = isSubscription ? "subscriptions" : "donations";
+        await supabase
+          .from(table)
+          .update({ receipt_url: receiptUrl, receipt_number: receiptNumber })
+          .eq("id", d.id);
 
-          // Send email
-          const resend = getResend();
-          await resend.emails.send({
-            from: `Yuva Ekta <${EMAIL_FROM}>`,
-            replyTo: EMAIL_REPLY_TO,
-            to: [d.donor.email],
-            subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
-            react: (
-              <DonationReceiptEmail
-                donorName={d.donor.name}
-                amount={Number(donationAmount)}
-                date={new Date().toISOString()}
-                receiptNumber={receiptNumber}
-                receiptUrl={receiptUrl}
-                campaignName={d.campaign?.title}
-              />
-            ),
-          });
+        // Send email
+        const resend = getResend();
+        await resend.emails.send({
+          from: `Yuva Ekta <${EMAIL_FROM}>`,
+          replyTo: EMAIL_REPLY_TO,
+          to: [d.donor.email],
+          subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
+          react: (
+            <DonationReceiptEmail
+              donorName={d.donor?.name || "Donor"}
+              amount={Number(donationAmount)}
+              date={new Date().toISOString()}
+              receiptNumber={receiptNumber}
+              receiptUrl={receiptUrl}
+              campaignName={d.campaign?.title}
+            />
+          ),
+        });
 
-          console.log(`Receipt generated and emailed: ${receiptNumber} → ${d.donor.email}`);
-        } catch (receiptErr) {
-          // Log but don't crash — the payment is already confirmed
-          console.error("Receipt/email generation failed (non-critical):", receiptErr);
-        }
-      })();
+        console.log(`Receipt generated and emailed: ${receiptNumber} → ${d.donor.email}`);
+      } catch (receiptErr) {
+        // Log but don't crash — the payment is already confirmed
+        console.error("Receipt/email generation failed (non-critical):", receiptErr);
+      }
     }
 
     // 5. Return success immediately
