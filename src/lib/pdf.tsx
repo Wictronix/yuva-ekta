@@ -168,7 +168,7 @@ const ReceiptDocument = ({ r }: { r: ReceiptProps }) => (
 
       {/* Amount in words */}
       <View style={styles.section}>
-        <Text style={{ fontStyle: 'italic', color: '#6B6B6B', marginTop: 10 }}>
+        <Text style={{ color: '#6B6B6B', marginTop: 10 }}>
           This receipt is invalid without successful realization of payment.
         </Text>
       </View>
