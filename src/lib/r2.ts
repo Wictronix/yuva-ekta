@@ -67,15 +67,25 @@ export async function uploadBuffer(
   contentType: string
 ): Promise<string> {
   const client = getS3Client();
+  const accountId = process.env.R2_ACCOUNT_ID;
 
-  await client.send(
-    new PutObjectCommand({
-      Bucket: bucket,
-      Key: key,
-      Body: body,
-      ContentType: contentType,
-    })
-  );
+  console.log(`R2: Uploading to bucket "${bucket}" with key "${key}"`);
+  console.log(`R2: Endpoint: https://${accountId}.r2.cloudflarestorage.com`);
+
+  try {
+    await client.send(
+      new PutObjectCommand({
+        Bucket: bucket,
+        Key: key,
+        Body: body,
+        ContentType: contentType,
+      })
+    );
+    console.log(`R2: Upload successful for ${key}`);
+  } catch (error: any) {
+    console.error(`R2: Upload FAILED for ${key}. Error:`, error.message);
+    throw error;
+  }
 
   return `${R2_PUBLIC_URL}/${key}`;
 }

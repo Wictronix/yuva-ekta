@@ -3,24 +3,11 @@ import { Document, Page, Text, View, StyleSheet, Font } from "@react-pdf/rendere
 import { formatCurrency, formatDate } from "./utils";
 import { SITE } from "./constants";
 
-// Register fonts
-Font.register({
-  family: 'Inter',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyeMZhrib2Bg-4.ttf', fontWeight: 400 },
-    { src: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYMZhrib2Bg-4.ttf', fontWeight: 700 }
-  ]
-});
-
-Font.register({
-  family: 'Playfair',
-  src: 'https://fonts.gstatic.com/s/playfairdisplay/v30/nuFvD-vYSZviVYUb_rj3ij__anPXJzDwcbmjWBN2PKdFvXDXbtMK.ttf'
-});
-
+// Use standard PDF fonts to avoid network issues in Vercel
 const styles = StyleSheet.create({
   page: {
     padding: 50,
-    fontFamily: 'Inter',
+    fontFamily: 'Helvetica',
     fontSize: 10,
     color: '#1A1A2E',
   },
@@ -33,7 +20,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   title: {
-    fontFamily: 'Playfair',
+    fontFamily: 'Helvetica-Bold',
     fontSize: 24,
     color: '#BF3475',
     marginBottom: 5,
@@ -53,7 +40,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 12,
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
     marginBottom: 10,
     color: '#1A1A2E',
     backgroundColor: '#FCE8F0',
@@ -69,7 +56,7 @@ const styles = StyleSheet.create({
   },
   value: {
     flex: 1,
-    fontWeight: 700,
+    fontFamily: 'Helvetica-Bold',
   },
   footer: {
     position: 'absolute',
@@ -118,7 +105,7 @@ const ReceiptDocument = ({ r }: { r: ReceiptProps }) => (
           <Text style={styles.subtitle}>Date: {formatDate(r.date)}</Text>
         </View>
         <View style={styles.orgDetails}>
-          <Text style={{ fontWeight: 700, color: '#1A1A2E' }}>{SITE.name}</Text>
+          <Text style={{ fontFamily: 'Helvetica-Bold', color: '#1A1A2E' }}>{SITE.name}</Text>
           <Text>{SITE.address}</Text>
           <Text>80G Reg: {SITE.registrationNo}</Text>
           <Text>Email: {SITE.email}</Text>

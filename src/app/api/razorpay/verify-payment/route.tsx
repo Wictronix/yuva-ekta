@@ -113,7 +113,7 @@ export async function POST(req: Request) {
         const { data: rpcData } = await supabase.rpc("generate_receipt_number");
         const receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
 
-        let receiptUrl = d.receiptUrl || null;
+        receiptUrl = d.receipt_url || null;
         let pdfSuccess = false;
 
         try {
