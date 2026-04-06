@@ -13,7 +13,7 @@ export const SITE = {
   founded: '2018',
   tagline: 'Empowering Communities',
   upi: 'yuvaekta@upi',
-  url: 'http://localhost:3000',
+  url: process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ?? 'https://yuvaektaindiafoundation.org',
   social: {
     facebook: 'https://facebook.com/yuvaekta',
     instagram: 'https://instagram.com/yuvaekta',

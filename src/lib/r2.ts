@@ -29,7 +29,7 @@ function getS3Client(): S3Client {
 }
 
 // Bucket name
-export const BUCKET_ASSETS = process.env.R2_BUCKET_ASSETS ?? 'yuva-ekta-assets';
+export const BUCKET_ASSETS = process.env.R2_BUCKET ?? 'yuva-ekta-assets';
 export const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL ?? '';
 
 /**

@@ -4,10 +4,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { NAV_LINKS, SITE } from "@/lib/constants";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home, Info, Megaphone, Target, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import DonationModal from "../donation/DonationModal";
 import { usePathname } from "next/navigation";
+
+const NAV_ICONS: Record<string, any> = {
+  Home,
+  About: Info,
+  Campaigns: Megaphone,
+  "Focus Areas": Target,
+  Contact: Mail,
+};
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -24,6 +32,16 @@ export default function Navbar() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    // Prevent body scroll when mobile menu is open
+    useEffect(() => {
+      if (isMobileMenuOpen) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+      return () => { document.body.style.overflow = ""; };
+    }, [isMobileMenuOpen]);
 
     const isAdminPage = pathname?.startsWith("/admin") || pathname?.startsWith("/auth");
 
@@ -96,11 +114,12 @@ export default function Navbar() {
                 <button
                     className="md:hidden p-2 transition-colors relative z-50"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                 >
                     {isMobileMenuOpen ? (
-                        <X className={cn(isDarkText || isMobileMenuOpen ? "text-gray-900" : "text-white")} />
+                        <X size={24} className="text-gray-900" />
                     ) : (
-                        <Menu className={cn(isDarkText ? "text-gray-900" : "text-white")} />
+                        <Menu size={24} className={cn(isDarkText ? "text-gray-900" : "text-white")} />
                     )}
                 </button>
             </div>
@@ -108,29 +127,76 @@ export default function Navbar() {
             {/* Mobile Menu */}
             <div
                 className={cn(
-                    "fixed inset-0 bg-white z-40 flex flex-col items-center justify-center gap-8 transition-transform duration-500 md:hidden",
-                    isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+                    "fixed inset-0 bg-white z-40 flex flex-col transition-all duration-500 ease-out md:hidden",
+                    isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
                 )}
             >
-                {NAV_LINKS.map((link) => (
-                    <Link
-                        key={link.label}
-                        href={link.href}
-                        className="text-2xl font-bold text-gray-900 hover:text-brand-pink"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                {/* Mobile Menu Header */}
+                <div className="flex items-center gap-3 px-6 pt-6 pb-4 border-b border-brand-brown/5">
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gray-100">
+                        <Image
+                            src="/yuva-ekta-logo.jpg"
+                            alt="Yuva Ekta"
+                            fill
+                            className="object-contain"
+                        />
+                    </div>
+                    <div>
+                        <p className="font-black font-playfair text-base text-gray-900 leading-none">YUVA EKTA</p>
+                        <p className="text-[9px] uppercase tracking-widest font-bold text-brand-pink mt-0.5">India Foundation</p>
+                    </div>
+                </div>
+
+                {/* Mobile Nav Links */}
+                <div className="flex-1 flex flex-col px-6 py-6 gap-1 overflow-y-auto">
+                    {NAV_LINKS.map((link, index) => {
+                        const Icon = NAV_ICONS[link.label];
+                        const isActive = pathname === link.href || (link.href !== "/" && pathname?.startsWith(link.href));
+                        
+                        return (
+                            <Link
+                                key={link.label}
+                                href={link.href}
+                                className={cn(
+                                    "flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all group",
+                                    isActive
+                                        ? "bg-brand-pink/5 text-brand-pink"
+                                        : "text-gray-700 hover:bg-brand-offwhite hover:text-brand-pink"
+                                )}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                style={{
+                                    animationDelay: isMobileMenuOpen ? `${index * 50}ms` : "0ms",
+                                }}
+                            >
+                                {Icon && (
+                                    <div className={cn(
+                                        "w-9 h-9 rounded-lg flex items-center justify-center transition-colors",
+                                        isActive ? "bg-brand-pink/10" : "bg-brand-offwhite group-hover:bg-brand-pink/10"
+                                    )}>
+                                        <Icon size={18} className={isActive ? "text-brand-pink" : "text-brand-brown/60 group-hover:text-brand-pink"} />
+                                    </div>
+                                )}
+                                <span className="font-bold text-base">{link.label}</span>
+                            </Link>
+                        );
+                    })}
+                </div>
+
+                {/* Mobile Menu Footer */}
+                <div className="px-6 pb-8 pt-4 border-t border-brand-brown/5 space-y-3">
+                    <button
+                        onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            setIsDonateModalOpen(true);
+                        }}
+                        className="w-full py-4 bg-brand-pink text-white rounded-2xl text-base font-bold shadow-xl shadow-brand-pink/20 hover:bg-brand-pink-dark transition-all active:scale-[0.98]"
                     >
-                        {link.label}
-                    </Link>
-                ))}
-                <button
-                    onClick={() => {
-                        setIsMobileMenuOpen(false);
-                        setIsDonateModalOpen(true);
-                    }}
-                    className="px-10 py-4 bg-brand-pink text-white rounded-full text-lg font-bold shadow-2xl shadow-brand-pink/20"
-                >
-                    Donate Now
-                </button>
+                        ❤️ Donate Now
+                    </button>
+                    <p className="text-center text-xs text-brand-brown/40 font-bold">
+                        80G Tax Receipts • Secure Payments
+                    </p>
+                </div>
             </div>
         </nav>
         

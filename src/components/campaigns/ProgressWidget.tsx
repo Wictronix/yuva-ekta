@@ -50,16 +50,18 @@ export default function ProgressWidget({ campaign, onDonateClick }: ProgressWidg
         </div>
       )}
 
-      <button 
-        onClick={() => onDonateClick()}
-        className="w-full py-4 bg-brand-pink text-white rounded-xl font-black text-lg hover:bg-brand-pink-dark hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-brand-pink/30 mb-4"
-      >
-        Donate to This Campaign
-      </button>
+      <div className="hidden lg:block">
+        <button 
+          onClick={() => onDonateClick()}
+          className="w-full py-4 bg-brand-pink text-white rounded-xl font-black text-lg hover:bg-brand-pink-dark hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-brand-pink/30 mb-4"
+        >
+          Donate to This Campaign
+        </button>
 
-      <p className="text-xs text-center text-brand-brown/50 leading-relaxed px-2">
-        🔒 Secure payment via Razorpay. 80G tax receipt sent to your email immediately after payment.
-      </p>
+        <p className="text-xs text-center text-brand-brown/50 leading-relaxed px-2">
+          🔒 Secure payment via Razorpay. 80G tax receipt sent to your email immediately after payment.
+        </p>
+      </div>
     </div>
   );
 }

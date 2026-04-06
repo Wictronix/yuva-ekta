@@ -26,9 +26,10 @@ function ThankYouContent() {
     const verifyPayment = async () => {
       const paymentId = searchParams.get("razorpay_payment_id");
       const orderId = searchParams.get("razorpay_order_id");
+      const subscriptionId = searchParams.get("razorpay_subscription_id");
       const signature = searchParams.get("razorpay_signature");
 
-      if (!paymentId || !orderId || !signature) {
+      if (!paymentId || (!orderId && !subscriptionId) || !signature) {
         setStatus("error");
         return;
       }
@@ -39,7 +40,8 @@ function ThankYouContent() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             razorpay_payment_id: paymentId,
-            razorpay_order_id: orderId,
+            razorpay_order_id: orderId || undefined,
+            razorpay_subscription_id: subscriptionId || undefined,
             razorpay_signature: signature,
           }),
         });

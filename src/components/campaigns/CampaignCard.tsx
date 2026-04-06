@@ -7,10 +7,9 @@ import { formatCurrency } from "@/lib/utils";
 
 interface CampaignCardProps {
   campaign: Pick<Campaign, "id" | "slug" | "title" | "short_desc" | "cover_image_url" | "category" | "campaign_goal" | "amount_raised" | "target_people">;
-  onDonateClick?: (campaignId: string, campaignTitle: string) => void;
 }
 
-export default function CampaignCard({ campaign, onDonateClick }: CampaignCardProps) {
+export default function CampaignCard({ campaign }: CampaignCardProps) {
   const progress = campaign.campaign_goal 
     ? Math.min(100, Math.round((campaign.amount_raised / campaign.campaign_goal) * 100))
     : 0;
@@ -82,19 +81,13 @@ export default function CampaignCard({ campaign, onDonateClick }: CampaignCardPr
           </div>
         )}
 
-        {/* Actions */}
-        <div className="grid grid-cols-2 gap-3 mt-auto">
-          <button 
-            onClick={() => onDonateClick?.(campaign.id, campaign.title)}
-            className="w-full py-3 bg-brand-pink text-white rounded-xl font-bold text-sm hover:bg-brand-pink-dark transition-colors shadow-md shadow-brand-pink/20"
-          >
-            Donate Now
-          </button>
+        {/* Single CTA Button */}
+        <div className="mt-auto">
           <Link 
             href={`/campaigns/${campaign.slug}`}
-            className="w-full py-3 bg-brand-offwhite text-brand-brown rounded-xl font-bold text-sm hover:bg-brand-brown/5 transition-colors text-center"
+            className="block w-full py-3.5 bg-brand-pink text-white rounded-xl font-bold text-sm hover:bg-brand-pink-dark transition-colors shadow-md shadow-brand-pink/20 text-center"
           >
-            Read More
+            Donate Now
           </Link>
         </div>
       </div>

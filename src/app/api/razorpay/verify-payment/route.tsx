@@ -9,14 +9,17 @@ import { DonationReceiptEmail } from "@/lib/email-templates/DonationReceipt";
 /**
  * Called by the client after Razorpay checkout succeeds.
  * Verifies the payment signature and updates the donation status.
- * This is the primary status update mechanism (webhooks are the backup/production fallback).
+ *
+ * IMPORTANT: DB status is updated immediately after signature verification.
+ * PDF generation and email sending are secondary — their failure will NOT
+ * block the success response shown to the donor.
  */
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = body;
+    const { razorpay_order_id, razorpay_subscription_id, razorpay_payment_id, razorpay_signature } = body;
 
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+    if ((!razorpay_order_id && !razorpay_subscription_id) || !razorpay_payment_id || !razorpay_signature) {
       return NextResponse.json(
         { error: "Missing payment verification parameters" },
         { status: 400 }
@@ -24,112 +27,149 @@ export async function POST(req: Request) {
     }
 
     // 1. Verify the payment signature
+    // Orders: HMAC(orderId + "|" + paymentId)
+    // Subscriptions: HMAC(paymentId + "|" + subscriptionId)
+    const idToVerify = razorpay_order_id || razorpay_subscription_id;
     const isValid = verifyPaymentSignature({
-      orderId: razorpay_order_id,
+      orderId: idToVerify,
       paymentId: razorpay_payment_id,
       signature: razorpay_signature,
     });
 
     if (!isValid) {
+      console.error("Invalid payment signature for:", idToVerify);
       return NextResponse.json(
         { error: "Invalid payment signature" },
         { status: 400 }
       );
     }
 
-    // 2. Update the donation status in the database
+    // 2. Look up the donation/subscription record
     const supabase = createAdminClient() as any;
+    const isSubscription = !!razorpay_subscription_id;
 
-    const { data: donation, error: findError } = await supabase
-      .from("donations")
-      .select("id, status, donor_id, amount, campaign_id, receipt_url, receipt_number, donor:donors(*), campaign:campaigns(id, title)")
-      .eq("razorpay_order_id", razorpay_order_id)
-      .single();
+    let donationData: any = null;
+    let findError: any = null;
 
-    if (findError || !donation) {
-      console.error("Donation not found for order:", razorpay_order_id);
+    if (isSubscription) {
+      const { data, error } = await supabase
+        .from("subscriptions")
+        .select("id, status, donor_id, plan_amount, campaign_id, receipt_url, receipt_number, donor:donors(*), campaign:campaigns(id, title)")
+        .eq("razorpay_subscription_id", razorpay_subscription_id)
+        .single();
+      donationData = data;
+      findError = error;
+    } else {
+      const { data, error } = await supabase
+        .from("donations")
+        .select("id, status, donor_id, amount, campaign_id, receipt_url, receipt_number, donor:donors(*), campaign:campaigns(id, title)")
+        .eq("razorpay_order_id", razorpay_order_id)
+        .single();
+      donationData = data;
+      findError = error;
+    }
+
+    if (findError || !donationData) {
+      console.error("Record not found:", { razorpay_order_id, razorpay_subscription_id, findError });
       return NextResponse.json(
         { error: "Donation record not found" },
         { status: 404 }
       );
     }
 
-    let receiptUrl = donation.receipt_url;
-    const d = donation as any;
+    const d = donationData as any;
+    const donationAmount = isSubscription ? d.plan_amount : d.amount;
+    let receiptUrl = d.receipt_url;
+    const alreadyProcessed = (d.status === "captured" || d.status === "active") && receiptUrl;
 
-    // Only process if still pending (avoid double-updating from webhook + verify)
-    if (d.status === "pending" || !receiptUrl) {
-      // Generate receipt number
-      const { data: rpcData } = await supabase.rpc("generate_receipt_number");
-      const receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
+    // 3. IMMEDIATELY update the DB status (before anything else can fail)
+    if (!alreadyProcessed) {
+      if (isSubscription) {
+        await supabase
+          .from("subscriptions")
+          .update({ status: "active", razorpay_payment_id })
+          .eq("id", d.id);
+      } else {
+        await supabase
+          .from("donations")
+          .update({ status: "captured", razorpay_payment_id })
+          .eq("id", d.id);
 
-      // Generate PDF
-      const pdfBuffer = await generateReceiptPDF({
-        receiptNumber,
-        date: new Date().toISOString(),
-        donorName: d.donor.name,
-        donorEmail: d.donor.email,
-        donorPhone: d.donor.phone,
-        amount: d.amount,
-        paymentId: razorpay_payment_id,
-        campaignName: d.campaign?.title,
-      });
-
-      // Upload PDF to R2
-      const r2Key = `receipts/${receiptNumber}.pdf`;
-      receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, "application/pdf");
-
-      // Send Email
-      const resend = getResend();
-      await resend.emails.send({
-        from: `Yuva Ekta <${EMAIL_FROM}>`,
-        replyTo: EMAIL_REPLY_TO,
-        to: [d.donor.email],
-        subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
-        react: (
-          <DonationReceiptEmail
-            donorName={d.donor.name}
-            amount={Number(d.amount)}
-            date={new Date().toISOString()}
-            receiptNumber={receiptNumber}
-            receiptUrl={receiptUrl}
-            campaignName={d.campaign?.title}
-          />
-        ),
-      });
-
-      const { error: updateError } = await supabase
-        .from("donations")
-        .update({
-          status: "captured",
-          razorpay_payment_id,
-          receipt_url: receiptUrl,
-          receipt_number: receiptNumber,
-        })
-        .eq("id", d.id);
-
-      if (updateError) {
-        console.error("Failed to update donation status:", updateError);
-        // Continue, as the payment is still verified
-      }
-
-      // Increment campaign amount if applicable ONLY if it was previously pending
-      if (d.status === "pending" && d.campaign_id) {
-        await supabase.rpc("increment_campaign_amount", {
-          p_campaign_id: d.campaign_id,
-          p_amount: Number(d.amount),
-        });
+        // Increment campaign raised amount
+        if (d.campaign_id) {
+          await supabase.rpc("increment_campaign_amount", {
+            p_campaign_id: d.campaign_id,
+            p_amount: Number(donationAmount),
+          });
+        }
       }
     }
 
+    // 4. Generate receipt PDF + upload to R2 + send email (non-blocking — failure won't affect thank-you page)
+    if (!alreadyProcessed) {
+      // Fire-and-forget with its own error handling
+      (async () => {
+        try {
+          const { data: rpcData } = await supabase.rpc("generate_receipt_number");
+          const receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
+
+          const pdfBuffer = await generateReceiptPDF({
+            receiptNumber,
+            date: new Date().toISOString(),
+            donorName: d.donor.name,
+            donorEmail: d.donor.email,
+            donorPhone: d.donor.phone,
+            amount: donationAmount,
+            paymentId: razorpay_payment_id,
+            campaignName: d.campaign?.title,
+          });
+
+          const r2Key = `receipts/${receiptNumber}.pdf`;
+          receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, "application/pdf");
+
+          // Save receipt URL & number back to DB
+          const table = isSubscription ? "subscriptions" : "donations";
+          await supabase
+            .from(table)
+            .update({ receipt_url: receiptUrl, receipt_number: receiptNumber })
+            .eq("id", d.id);
+
+          // Send email
+          const resend = getResend();
+          await resend.emails.send({
+            from: `Yuva Ekta <${EMAIL_FROM}>`,
+            replyTo: EMAIL_REPLY_TO,
+            to: [d.donor.email],
+            subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
+            react: (
+              <DonationReceiptEmail
+                donorName={d.donor.name}
+                amount={Number(donationAmount)}
+                date={new Date().toISOString()}
+                receiptNumber={receiptNumber}
+                receiptUrl={receiptUrl}
+                campaignName={d.campaign?.title}
+              />
+            ),
+          });
+
+          console.log(`Receipt generated and emailed: ${receiptNumber} → ${d.donor.email}`);
+        } catch (receiptErr) {
+          // Log but don't crash — the payment is already confirmed
+          console.error("Receipt/email generation failed (non-critical):", receiptErr);
+        }
+      })();
+    }
+
+    // 5. Return success immediately
     return NextResponse.json({
       success: true,
       donation: {
         id: d.id,
-        amount: d.amount,
+        amount: donationAmount,
         donorName: d.donor?.name || "Supporter",
         donorEmail: d.donor?.email || "",
-        receiptUrl,
+        receiptUrl: receiptUrl ?? null,
       },
     });
   } catch (error: any) {

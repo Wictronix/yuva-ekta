@@ -66,7 +66,11 @@ export function verifyPaymentSignature({
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
   if (!keySecret) return false;
 
-  const body = orderId + '|' + paymentId;
+  // Subscriptions use the format: paymentId + '|' + subscriptionId
+  // Orders use the format: orderId + '|' + paymentId
+  const isSubscription = orderId.startsWith('sub_');
+  const body = isSubscription ? paymentId + '|' + orderId : orderId + '|' + paymentId;
+
   const expectedSignature = crypto
     .createHmac('sha256', keySecret)
     .update(body)
