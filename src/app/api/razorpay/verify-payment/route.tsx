@@ -113,50 +113,65 @@ export async function POST(req: Request) {
         const { data: rpcData } = await supabase.rpc("generate_receipt_number");
         const receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
 
-        const pdfBuffer = await generateReceiptPDF({
-          receiptNumber,
-          date: new Date().toISOString(),
-          donorName: d.donor?.name || "Donor",
-          donorEmail: d.donor?.email || "",
-          donorPhone: d.donor?.phone || "",
-          amount: donationAmount,
-          paymentId: razorpay_payment_id,
-          campaignName: d.campaign?.title,
-        });
+        let receiptUrl = d.receiptUrl || null;
+        let pdfSuccess = false;
 
-        const r2Key = `receipts/${receiptNumber}.pdf`;
-        receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, "application/pdf");
+        try {
+          console.log("Attempting to generate PDF for", receiptNumber);
+          const pdfBuffer = await generateReceiptPDF({
+            receiptNumber,
+            date: new Date().toISOString(),
+            donorName: d.donor?.name || "Donor",
+            donorEmail: d.donor?.email || "",
+            donorPhone: d.donor?.phone || "",
+            amount: donationAmount,
+            paymentId: razorpay_payment_id,
+            campaignName: d.campaign?.title,
+          });
 
-        // Save receipt URL & number back to DB
-        const table = isSubscription ? "subscriptions" : "donations";
-        await supabase
-          .from(table)
-          .update({ receipt_url: receiptUrl, receipt_number: receiptNumber })
-          .eq("id", d.id);
+          console.log("PDF generated, attempting to upload to R2...");
+          const r2Key = `receipts/${receiptNumber}.pdf`;
+          receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, "application/pdf");
+          pdfSuccess = true;
+          console.log("PDF uploaded to R2 successfully at", receiptUrl);
 
-        // Send email
-        const resend = getResend();
-        await resend.emails.send({
-          from: `Yuva Ekta <${EMAIL_FROM}>`,
-          replyTo: EMAIL_REPLY_TO,
-          to: [d.donor.email],
-          subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
-          react: (
-            <DonationReceiptEmail
-              donorName={d.donor?.name || "Donor"}
-              amount={Number(donationAmount)}
-              date={new Date().toISOString()}
-              receiptNumber={receiptNumber}
-              receiptUrl={receiptUrl}
-              campaignName={d.campaign?.title}
-            />
-          ),
-        });
+          // Save receipt URL & number back to DB
+          const table = isSubscription ? "subscriptions" : "donations";
+          await supabase
+            .from(table)
+            .update({ receipt_url: receiptUrl, receipt_number: receiptNumber })
+            .eq("id", d.id);
+            
+        } catch (pdfErr) {
+          console.error("PDF Generation or R2 Upload FAILED:", pdfErr);
+          // We continue to send the email anyway!
+        }
 
-        console.log(`Receipt generated and emailed: ${receiptNumber} → ${d.donor.email}`);
-      } catch (receiptErr) {
-        // Log but don't crash — the payment is already confirmed
-        console.error("Receipt/email generation failed (non-critical):", receiptErr);
+        try {
+          console.log("Attempting to send email via Resend to", d.donor.email);
+          const resend = getResend();
+          await resend.emails.send({
+            from: `Yuva Ekta <${EMAIL_FROM}>`,
+            replyTo: EMAIL_REPLY_TO,
+            to: [d.donor.email],
+            subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
+            react: (
+              <DonationReceiptEmail
+                donorName={d.donor?.name || "Donor"}
+                amount={Number(donationAmount)}
+                date={new Date().toISOString()}
+                receiptNumber={receiptNumber}
+                receiptUrl={receiptUrl || ""}
+                campaignName={d.campaign?.title}
+              />
+            ),
+          });
+          console.log(`Receipt emailed successfully: ${receiptNumber} → ${d.donor.email}`);
+        } catch (emailErr) {
+          console.error("Resend Email FAILED:", emailErr);
+        }
+      } catch (outerErr) {
+        console.error("Failed in background processing step:", outerErr);
       }
     }
 
