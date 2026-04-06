@@ -21,7 +21,7 @@ export default function AboutStory() {
                             </h2>
                         </div>
 
-                        <div className="prose prose-lg max-w-none text-gray-600 font-inter font-light leading-relaxed space-y-8">
+                        <div className="prose prose-lg max-w-none text-brand-brown/75 font-inter font-light leading-relaxed space-y-8">
                             <p className="text-xl text-brand-brown/80 font-normal border-l-4 border-brand-pink pl-8 py-2">
                                 Yuva Ekta India Foundation was born out of a simple conviction: that the children and families at the margins of society deserve the same opportunities as everyone else.
                             </p>

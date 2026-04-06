@@ -55,19 +55,19 @@ export default function VolunteerSection() {
                         >
                             <form className="space-y-6">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40 ml-4">Full Name *</label>
+                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Full Name *</label>
                                     <input required type="text" placeholder="Your full name" className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all" />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40 ml-4">Email Address *</label>
+                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Email Address *</label>
                                     <input required type="email" placeholder="you@example.com" className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all" />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40 ml-4">Skills / Background</label>
+                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Skills / Background</label>
                                     <textarea rows={3} placeholder="Tell us what you're good at..." className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all resize-none" />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40 ml-4">Monthly Availability</label>
+                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Monthly Availability</label>
                                     <input type="text" placeholder="e.g. 5-10 hours per month" className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all" />
                                 </div>
                                 <button className="w-full bg-brand-green text-white font-bold py-5 rounded-2xl shadow-lg shadow-brand-green/20 transition-all hover:bg-brand-green/90 hover:scale-[1.02] active:scale-95">

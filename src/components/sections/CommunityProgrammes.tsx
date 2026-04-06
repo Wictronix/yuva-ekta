@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Image from "next/image";
 import { Megaphone, BookOpen, MessageCircle, GraduationCap, Star, Laptop, Droplets, X, ArrowRight, Heart } from "lucide-react";
-import Link from "next/link";
+import { useDonation } from "../providers/DonationProvider";
 
 const iconMap = {
     Megaphone,
@@ -85,6 +85,7 @@ const programmes = [
 export default function CommunityProgrammes() {
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const selectedProg = programmes.find(p => p.id === selectedId);
+    const { openDonationModal } = useDonation();
 
     return (
         <section className="py-24 bg-brand-offwhite/50">
@@ -92,7 +93,7 @@ export default function CommunityProgrammes() {
                 <div className="text-center mb-16 space-y-4">
                     <span className="text-brand-pink font-bold text-[10px] uppercase tracking-[0.4em] block text-center">Beyond the Projects</span>
                     <h2 className="text-4xl md:text-5xl font-black text-brand-brown font-playfair">Community Initiatives</h2>
-                    <p className="text-brand-brown/50 max-w-2xl mx-auto font-inter font-light">
+                    <p className="text-brand-brown/70 max-w-2xl mx-auto font-inter font-light">
                         Ongoing programmes that mobilise communities, build awareness, and connect villages to education and employment.
                     </p>
                 </div>
@@ -192,13 +193,16 @@ export default function CommunityProgrammes() {
                                     </div>
 
                                     <div className="pt-8 border-t border-brand-brown/10 flex flex-col gap-4">
-                                        <Link
-                                            href="/donate"
+                                        <button
+                                            onClick={() => {
+                                                setSelectedId(null);
+                                                openDonationModal();
+                                            }}
                                             className="w-full bg-brand-pink text-white font-bold py-5 rounded-2xl shadow-lg shadow-brand-pink/20 flex items-center justify-center gap-3 hover:bg-brand-pink/90 hover:scale-[1.02] active:scale-95 transition-all text-center"
                                         >
                                             <Heart size={18} />
                                             <span>Donate to this Initiative</span>
-                                        </Link>
+                                        </button>
                                     </div>
                                 </div>
                             </div>

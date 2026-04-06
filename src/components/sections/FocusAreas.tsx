@@ -7,7 +7,7 @@ import { LucideIcon } from "lucide-react";
 
 export default function FocusAreas() {
     return (
-        <section className="py-24 bg-white">
+        <section id="focus-areas" className="py-24 bg-white scroll-mt-20">
             <div className="container">
                 <div className="flex flex-col items-center text-center mb-16">
                     <motion.span
@@ -32,7 +32,7 @@ export default function FocusAreas() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="text-muted max-w-2xl"
+                        className="text-brand-brown/70 max-w-2xl"
                     >
                         Everything we do is designed to create lasting change at the grassroot level
                         by addressing the most critical needs of our community.
@@ -58,7 +58,7 @@ export default function FocusAreas() {
                                     {Icon && <Icon size={32} strokeWidth={1.5} />}
                                 </div>
                                 <h3 className="text-xl font-bold mb-4 text-gray-900">{area.title}</h3>
-                                <p className="text-sm text-muted leading-relaxed">
+                                <p className="text-sm text-brand-brown/70 leading-relaxed">
                                     {area.desc}
                                 </p>
 

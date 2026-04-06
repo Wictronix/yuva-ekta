@@ -11,7 +11,7 @@ export default function FounderQuote() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    className="text-brand-pink/20 font-playfair text-[120px] leading-none select-none mb-0"
+                    className="text-brand-pink/30 font-playfair text-[80px] leading-none select-none mb-0"
                 >
                     &ldquo;
                 </motion.div>
@@ -44,7 +44,7 @@ export default function FounderQuote() {
                     </div>
                     <div className="flex flex-col">
                         <span className="font-bold text-lg text-gray-900 font-playfair">Balram Kumar</span>
-                        <span className="text-xs uppercase tracking-widest text-muted font-bold">
+                        <span className="text-xs uppercase tracking-widest text-brand-brown/60 font-bold">
                             Founder, Yuva Ekta India Foundation
                         </span>
                         <span className="text-[10px] text-brand-pink font-medium uppercase tracking-[0.2em] mt-1">

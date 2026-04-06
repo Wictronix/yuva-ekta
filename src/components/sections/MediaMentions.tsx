@@ -18,9 +18,9 @@ export default function MediaMentions() {
 
             <div className="container relative z-10">
                 <div className="text-center mb-16 space-y-4">
-                    <span className="text-white/40 font-bold text-[10px] uppercase tracking-[0.4em] block text-center">In the News</span>
+                    <span className="text-white/60 font-bold text-[10px] uppercase tracking-[0.4em] block text-center">In the News</span>
                     <h2 className="text-4xl md:text-5xl font-black text-white font-playfair">Recognised Across Haryana</h2>
-                    <p className="text-white/50 max-w-2xl mx-auto font-inter font-light">
+                    <p className="text-white/70 max-w-2xl mx-auto font-inter font-light">
                         Our work has been covered by regional and national publications in Hindi and English.
                     </p>
                 </div>
@@ -37,7 +37,7 @@ export default function MediaMentions() {
                         >
                             <Newspaper className="text-brand-pink mb-6 group-hover:scale-110 transition-transform" size={32} />
                             <div className="space-y-4">
-                                <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-white/30">
+                                <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-white/55">
                                     <span>{item.source}</span>
                                     <span>{item.date}</span>
                                 </div>
@@ -50,7 +50,7 @@ export default function MediaMentions() {
                 </div>
 
                 <div className="mt-20 text-center">
-                    <p className="text-white/20 text-xs font-bold uppercase tracking-[0.2em] italic">
+                    <p className="text-white/50 text-xs font-bold uppercase tracking-[0.2em] italic">
                         + featuring multiple clippings across Hindi & English press
                     </p>
                 </div>

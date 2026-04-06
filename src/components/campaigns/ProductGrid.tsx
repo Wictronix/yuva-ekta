@@ -4,42 +4,40 @@ import Image from "next/image";
 import { type ProductItem } from "@/lib/supabase/types";
 import { formatCurrency } from "@/lib/utils";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
+import { useDonation } from "../providers/DonationProvider";
 
 interface ProductGridProps {
+  campaignId: string;
   products: ProductItem[];
-  cart: Record<number, number>;
-  onCartChange: (cart: Record<number, number>) => void;
 }
 
-export default function ProductGrid({ products, cart, onCartChange }: ProductGridProps) {
+export default function ProductGrid({ campaignId, products }: ProductGridProps) {
+  const { cart, updateCartQuantity, getTotalItems } = useDonation();
   if (!products || products.length === 0) return null;
 
-  const updateQuantity = (index: number, delta: number) => {
-    const current = cart[index] || 0;
-    const next = Math.max(0, current + delta);
-    const newCart = { ...cart };
-    if (next === 0) {
-      delete newCart[index];
-    } else {
-      newCart[index] = next;
-    }
-    onCartChange(newCart);
+  const getQuantity = (index: number) => {
+    return cart[`${campaignId}_${index}`]?.quantity || 0;
   };
 
-  const totalItems = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+  const handleUpdate = (index: number, delta: number) => {
+    const product = products[index];
+    updateCartQuantity(campaignId, index, { name: product.name, price: product.price }, delta);
+  };
+
+  const totalItems = getTotalItems();
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {products.map((product, index) => {
-          const qty = cart[index] || 0;
+          const qty = getQuantity(index);
           const isSelected = qty > 0;
 
           return (
             <div
               key={index}
               onClick={() => {
-                if (qty === 0) updateQuantity(index, 1);
+                if (qty === 0) handleUpdate(index, 1);
               }}
               className={`relative rounded-2xl border-2 transition-all duration-300 bg-white overflow-hidden group ${
                 isSelected
@@ -86,7 +84,7 @@ export default function ProductGrid({ products, cart, onCartChange }: ProductGri
                   {isSelected ? (
                     <div className="flex items-center border-2 border-brand-pink/20 rounded-xl overflow-hidden bg-brand-offwhite/50">
                       <button
-                        onClick={() => updateQuantity(index, -1)}
+                        onClick={() => handleUpdate(index, -1)}
                         className="w-10 h-10 flex items-center justify-center text-brand-pink hover:bg-brand-pink/10 transition-colors active:scale-90"
                         aria-label="Decrease quantity"
                       >
@@ -96,7 +94,7 @@ export default function ProductGrid({ products, cart, onCartChange }: ProductGri
                         {qty}
                       </span>
                       <button
-                        onClick={() => updateQuantity(index, 1)}
+                        onClick={() => handleUpdate(index, 1)}
                         className="w-10 h-10 flex items-center justify-center text-brand-pink hover:bg-brand-pink/10 transition-colors active:scale-90"
                         aria-label="Increase quantity"
                       >
@@ -107,7 +105,7 @@ export default function ProductGrid({ products, cart, onCartChange }: ProductGri
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        updateQuantity(index, 1);
+                        handleUpdate(index, 1);
                       }}
                       className="flex items-center gap-2 px-4 py-2.5 bg-brand-offwhite text-brand-brown rounded-xl font-bold text-sm hover:bg-brand-pink hover:text-white transition-all border border-brand-brown/10 hover:border-brand-pink active:scale-95"
                     >

@@ -4,12 +4,14 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
+import { useDonation } from "../providers/DonationProvider";
 
 export default function HeroSection({
     imageUrl = "/campaign/yuva_ekta_02.jpeg"
 }: {
     imageUrl?: string
 }) {
+    const { openDonationModal } = useDonation();
     return (
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-brand-brown">
             {/* Background with cinematic treatment */}
@@ -53,12 +55,12 @@ export default function HeroSection({
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center w-full max-w-lg">
-                        <Link
-                            href="/donate"
+                        <button
+                            onClick={() => openDonationModal()}
                             className="w-full sm:w-auto px-8 sm:px-14 py-4 sm:py-5 bg-brand-pink text-white rounded-full font-bold text-base sm:text-lg transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(191,52,117,0.5)] active:scale-95 text-center"
                         >
                             Donate Now
-                        </Link>
+                        </button>
                         <Link
                             href="/projects"
                             className="w-full sm:w-auto px-8 sm:px-14 py-4 sm:py-5 bg-white/5 backdrop-blur-xl border border-white/30 text-white rounded-full font-bold text-base sm:text-lg transition-all hover:bg-white/10 hover:scale-105 active:scale-95 text-center"
@@ -74,8 +76,8 @@ export default function HeroSection({
                     transition={{ delay: 2, duration: 1 }}
                     className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 sm:gap-3"
                 >
-                    <span className="text-[8px] sm:text-[10px] uppercase tracking-[0.4em] text-white/40 font-bold">Scroll to Explore</span>
-                    <ChevronDown className="animate-bounce text-white/40 w-4 h-4 sm:w-6 sm:h-6" />
+                    <span className="text-[8px] sm:text-[10px] uppercase tracking-[0.4em] text-white/60 font-bold">Scroll to Explore</span>
+                    <ChevronDown className="animate-bounce text-white/60 w-4 h-4 sm:w-6 sm:h-6" />
                 </motion.div>
             </div>
         </section>

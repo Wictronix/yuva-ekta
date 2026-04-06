@@ -5,8 +5,10 @@ import { WAYS_TO_HELP } from "@/lib/projects";
 import * as Icons from "lucide-react";
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { useDonation } from "../providers/DonationProvider";
 
 export default function HowToHelp() {
+    const { openDonationModal } = useDonation();
     return (
         <section className="py-24 bg-brand-pink relative overflow-hidden">
             {/* Decorative background elements */}
@@ -21,7 +23,7 @@ export default function HowToHelp() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-white/60 font-bold text-[10px] uppercase tracking-[0.3em] mb-4"
+                        className="text-white/80 font-bold text-[10px] uppercase tracking-[0.3em] mb-4"
                     >
                         Get Involved
                     </motion.span>
@@ -38,6 +40,7 @@ export default function HowToHelp() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {WAYS_TO_HELP.map((way, i) => {
                         const Icon = (Icons as any)[way.icon] as LucideIcon;
+                        const isDonate = way.cta.label === 'Donate Now';
                         return (
                             <motion.div
                                 key={way.title}
@@ -54,12 +57,21 @@ export default function HowToHelp() {
                                 <p className="text-white/80 text-sm leading-relaxed mb-10 group-hover:text-gray-900 transition-colors font-inter font-light">
                                     {way.description}
                                 </p>
-                                <Link
-                                    href={way.cta.href}
-                                    className="mt-auto px-8 py-3 bg-white text-brand-pink rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:scale-105 active:scale-95 transition-all group-hover:bg-brand-pink group-hover:text-white"
-                                >
-                                    {way.cta.label}
-                                </Link>
+                                {isDonate ? (
+                                    <button
+                                        onClick={() => openDonationModal()}
+                                        className="mt-auto px-8 py-3 bg-white text-brand-pink rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:scale-105 active:scale-95 transition-all group-hover:bg-brand-pink group-hover:text-white"
+                                    >
+                                        {way.cta.label}
+                                    </button>
+                                ) : (
+                                    <Link
+                                        href={way.cta.href}
+                                        className="mt-auto px-8 py-3 bg-white text-brand-pink rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:scale-105 active:scale-95 transition-all group-hover:bg-brand-pink group-hover:text-white"
+                                    >
+                                        {way.cta.label}
+                                    </Link>
+                                )}
                             </motion.div>
                         );
                     })}
@@ -68,3 +80,4 @@ export default function HowToHelp() {
         </section>
     );
 }
+

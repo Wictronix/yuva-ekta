@@ -1,9 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { useDonation } from "@/components/providers/DonationProvider";
 
 export default function CTABanner() {
+    const { openDonationModal } = useDonation();
+
     return (
         <section className="relative py-24 bg-brand-green overflow-hidden">
             {/* Abstract decorative elements */}
@@ -24,7 +26,7 @@ export default function CTABanner() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-lg md:text-xl text-white/80 mb-12 font-inter font-light"
+                        className="text-lg md:text-xl text-white/90 mb-12 font-inter font-light"
                     >
                         Every rupee you give goes directly to children, women, and families
                         in Gurugram's villages. Donations are tax-deductible under Section 80G.
@@ -37,12 +39,12 @@ export default function CTABanner() {
                         transition={{ delay: 0.2 }}
                         className="flex justify-center w-full"
                     >
-                        <Link
-                            href="/donate"
-                            className="px-12 py-5 border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white/10 transition-all inline-block whitespace-nowrap shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_rgba(255,255,255,0.2)]"
+                        <button
+                            onClick={() => openDonationModal()}
+                            className="px-8 md:px-12 py-4 md:py-5 bg-white text-brand-green-dark rounded-full font-bold text-base md:text-lg hover:bg-brand-offwhite hover:scale-105 transition-all inline-block whitespace-nowrap shadow-xl"
                         >
-                            Make a Donation Today
-                        </Link>
+                            Donate Now
+                        </button>
                     </motion.div>
                 </div>
             </div>

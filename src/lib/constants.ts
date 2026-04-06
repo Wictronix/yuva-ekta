@@ -24,10 +24,10 @@ export const SITE = {
 // Site navigation
 export const NAV_LINKS = [
   { label: 'Home', href: '/' },
-  { label: 'About', href: '/#about' },
+  { label: 'About', href: '/about' },
   { label: 'Campaigns', href: '/campaigns' },
-  { label: 'Focus Areas', href: '/#focus' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 // Focus Areas
@@ -53,7 +53,7 @@ export const FOCUS_AREAS = [
   {
     title: 'Women Empowerment',
     desc: 'Skill development programs to foster financial independence for women.',
-    icon: 'Users',
+    icon: 'HandHeart',
     color: '#a855f7',
   },
 ];

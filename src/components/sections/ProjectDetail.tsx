@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
 import { BadgeCheck, ArrowRight } from "lucide-react";
+import { useDonation } from "../providers/DonationProvider";
 
 interface ProjectDetailProps {
     id: string;
@@ -33,6 +33,7 @@ export default function ProjectDetail({
     monthlyRequirement,
     reverse = false
 }: ProjectDetailProps) {
+    const { openDonationModal } = useDonation();
     return (
         <section id={id} className="py-24 bg-white scroll-mt-20">
             <div className="container">
@@ -85,14 +86,14 @@ export default function ProjectDetail({
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 {stats.map((stat) => (
                                     <div key={stat.label} className="space-y-1">
-                                        <p className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40">{stat.label}</p>
+                                        <p className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60">{stat.label}</p>
                                         <p className="text-lg font-bold text-brand-brown">{stat.value}</p>
                                     </div>
                                 ))}
                             </div>
 
                             <div className="space-y-4 border-t border-brand-brown/10 pt-8">
-                                <p className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40">Funding breakdown</p>
+                                <p className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60">Funding breakdown</p>
                                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     {fundingHeads.map((head) => (
                                         <li key={head} className="flex items-center gap-2 text-sm text-brand-brown/70">
@@ -103,13 +104,13 @@ export default function ProjectDetail({
                                 </ul>
                             </div>
 
-                            <Link
-                                href={`/donate?project=${id}`}
+                            <button
+                                onClick={() => openDonationModal()}
                                 className="w-full bg-brand-pink text-white font-bold py-5 rounded-2xl shadow-lg shadow-brand-pink/20 flex items-center justify-center gap-3 hover:bg-brand-pink/90 hover:scale-[1.02] active:scale-95 transition-all"
                             >
                                 <span>Adopt This Project — {monthlyRequirement}/month</span>
                                 <ArrowRight size={18} />
-                            </Link>
+                            </button>
                         </div>
                     </motion.div>
                 </div>

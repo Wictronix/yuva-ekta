@@ -72,7 +72,7 @@ export default function AboutTeaser() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
-                            className="space-y-6 text-muted leading-relaxed"
+                            className="space-y-6 text-brand-brown/80 leading-relaxed"
                         >
                             <p>
                                 Yuva Ekta India Foundation is a youth-led, community-focused organisation
@@ -124,7 +124,7 @@ export default function AboutTeaser() {
                                 </div>
                                 <div className="flex flex-col">
                                     <span className="text-gray-900 font-bold text-sm">50+ Volunteers</span>
-                                    <span className="text-[10px] text-muted uppercase tracking-tighter">Joined the movement</span>
+                                    <span className="text-[10px] text-brand-brown/60 uppercase tracking-tighter">Joined the movement</span>
                                 </div>
                             </div>
                         </motion.div>

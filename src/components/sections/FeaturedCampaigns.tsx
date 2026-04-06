@@ -39,7 +39,7 @@ export default async function FeaturedCampaigns() {
         <div className="mt-16 text-center">
           <Link
             href="/campaigns"
-            className="inline-flex items-center justify-center px-8 py-4 bg-white border border-brand-brown/10 text-brand-brown rounded-full font-bold text-sm hover:border-brand-pink hover:text-brand-pink transition-all shadow-sm group"
+            className="inline-flex items-center justify-center px-8 py-4 bg-brand-pink/5 border border-brand-pink/20 text-brand-brown rounded-full font-bold text-sm hover:bg-brand-pink hover:text-white transition-all shadow-sm group"
           >
             View All Campaigns
             <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>

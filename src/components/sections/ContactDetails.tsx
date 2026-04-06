@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Globe, MessageSquare } from "lucide-react";
+import { Phone, Mail, MapPin, Globe, MessageCircle } from "lucide-react";
 import { SITE } from "@/lib/constants";
 
 export default function ContactDetails() {
@@ -28,7 +28,7 @@ export default function ContactDetails() {
                                 <Phone size={20} className="text-brand-pink group-hover:text-white transition-colors" />
                             </div>
                             <div className="space-y-1">
-                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/40">Give us a call</p>
+                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/60">Give us a call</p>
                                 <p className="text-lg font-medium">{SITE.phone1}</p>
                                 <p className="text-lg font-medium">{SITE.phone2}</p>
                             </div>
@@ -36,10 +36,10 @@ export default function ContactDetails() {
 
                         <div className="flex items-start gap-6 group">
                             <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0 group-hover:bg-brand-pink transition-colors">
-                                <MessageSquare size={20} className="text-brand-pink group-hover:text-white transition-colors" />
+                                <MessageCircle size={20} className="text-brand-pink group-hover:text-white transition-colors" />
                             </div>
                             <div className="space-y-1">
-                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/40">WhatsApp</p>
+                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/60">WhatsApp</p>
                                 <p className="text-lg font-medium">{SITE.whatsapp}</p>
                             </div>
                         </div>
@@ -49,7 +49,7 @@ export default function ContactDetails() {
                                 <Mail size={20} className="text-brand-pink group-hover:text-white transition-colors" />
                             </div>
                             <div className="space-y-1">
-                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/40">Email Address</p>
+                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/60">Email Address</p>
                                 <p className="text-lg font-medium">{SITE.email}</p>
                             </div>
                         </div>
@@ -59,7 +59,7 @@ export default function ContactDetails() {
                                 <MapPin size={20} className="text-brand-pink group-hover:text-white transition-colors" />
                             </div>
                             <div className="space-y-1">
-                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/40">Our Location</p>
+                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/60">Our Location</p>
                                 <p className="text-base leading-relaxed text-white/80">
                                     {SITE.address}
                                 </p>

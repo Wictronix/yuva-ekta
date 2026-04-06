@@ -61,7 +61,7 @@ export default function Footer() {
                     <div className="flex flex-col items-center md:items-start gap-8">
                         <div>
                             <h4 className="font-playfair font-bold text-xl mb-6 text-white capitalize">Our Mission</h4>
-                            <p className="text-sm text-white/50 leading-relaxed font-inter font-light">
+                            <p className="text-sm text-white/70 leading-relaxed font-inter font-light">
                                 A registered NGO in Gurugram delivering free education, digital literacy, and women's livelihood to families that formal systems leave behind.
                             </p>
                         </div>
@@ -70,7 +70,7 @@ export default function Footer() {
                                 <Heart size={20} fill="currentColor" />
                             </div>
                             <div className="flex flex-col text-left">
-                                <span className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Donate via UPI</span>
+                                <span className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Donate via UPI</span>
                                 <span className="text-xs font-mono text-white/80">{SITE.upi}</span>
                             </div>
                         </div>
@@ -82,7 +82,7 @@ export default function Footer() {
                         <ul className="flex flex-col gap-4">
                             {NAV_LINKS.map(link => (
                                 <li key={link.label}>
-                                    <Link href={link.href} className="text-sm text-white/50 hover:text-brand-pink hover:translate-x-2 transition-all flex items-center justify-center md:justify-start gap-2 group">
+                                    <Link href={link.href} className="text-sm text-white/70 hover:text-brand-pink hover:translate-x-2 transition-all flex items-center justify-center md:justify-start gap-2 group">
                                         <span className="w-1.5 h-1.5 rounded-full bg-brand-pink/40 group-hover:bg-brand-pink transition-colors" />
                                         {link.label}
                                     </Link>
@@ -94,7 +94,7 @@ export default function Footer() {
                     {/* Column 3: Contact */}
                     <div className="flex flex-col items-center md:items-start">
                         <h4 className="font-playfair font-bold text-xl mb-6 text-white capitalize">Contact</h4>
-                        <ul className="flex flex-col gap-6 text-sm text-white/50 items-center md:items-start">
+                        <ul className="flex flex-col gap-6 text-sm text-white/70 items-center md:items-start">
                             <li className="flex gap-4 justify-center md:justify-start">
                                 <MapPin size={20} className="text-secondary shrink-0" />
                                 <span className="leading-relaxed">{SITE.address}</span>
@@ -120,7 +120,7 @@ export default function Footer() {
                         <h4 className="font-playfair font-bold text-xl mb-6 text-white capitalize">Transparency</h4>
                         <div className="flex flex-col gap-5 items-center md:items-start">
                             <div className="space-y-2">
-                                <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold">Govt. Registration</p>
+                                <p className="text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold">Govt. Registration</p>
                                 <p className="text-sm font-medium text-white/70">{SITE.regNo} <span className="text-white/20 mx-2">|</span> {SITE.pan}</p>
                             </div>
 
@@ -130,7 +130,7 @@ export default function Footer() {
                                     { label: "CSR-1 Registered", icon: ShieldCheck },
                                     { label: "NITI Aayog", icon: ExternalLink }
                                 ].map((badge) => (
-                                    <span key={badge.label} className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[10px] font-bold tracking-wider text-white/60">
+                                    <span key={badge.label} className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[10px] font-bold tracking-wider text-white/75">
                                         <badge.icon size={12} className="text-brand-green" />
                                         {badge.label}
                                     </span>
@@ -141,14 +141,14 @@ export default function Footer() {
                 </div>
 
                 {/* Status Bar before divider */}
-                <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12 text-[10px] text-white/30 uppercase tracking-[0.2em] font-medium text-center md:text-left">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12 text-[10px] text-white/50 uppercase tracking-[0.2em] font-medium text-center md:text-left">
                     <p className="text-brand-pink/50 italic lowercase tracking-normal text-sm">Empowering communities since {SITE.founded.split(' ').pop()}</p>
                     <p>Tax exemption available under Section 80G of IT Act, 1961.</p>
                 </div>
 
                 {/* Final Sub-Footer Divider */}
                 <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
-                    <p className="text-[10px] text-white/10 uppercase tracking-[0.3em] font-medium order-2 md:order-1">
+                    <p className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-medium order-2 md:order-1">
                         © 2024 {SITE.name}. All Rights Reserved.
                     </p>
 

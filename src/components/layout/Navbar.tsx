@@ -4,23 +4,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { NAV_LINKS, SITE } from "@/lib/constants";
-import { Menu, X, Home, Info, Megaphone, Target, Mail } from "lucide-react";
+import { Menu, X, Home, Info, Megaphone, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
-import DonationModal from "../donation/DonationModal";
+import { useDonation } from "../providers/DonationProvider";
 import { usePathname } from "next/navigation";
 
 const NAV_ICONS: Record<string, any> = {
   Home,
   About: Info,
   Campaigns: Megaphone,
-  "Focus Areas": Target,
-  Contact: Mail,
+  Projects: Target,
 };
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
+    const { openDonationModal } = useDonation();
     
     const pathname = usePathname();
     const isHomePage = pathname === "/";
@@ -98,7 +97,7 @@ export default function Navbar() {
                         </Link>
                     ))}
                     <button
-                        onClick={() => setIsDonateModalOpen(true)}
+                        onClick={() => openDonationModal()}
                         className={cn(
                             "px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-md",
                             isDarkText
@@ -187,7 +186,7 @@ export default function Navbar() {
                     <button
                         onClick={() => {
                             setIsMobileMenuOpen(false);
-                            setIsDonateModalOpen(true);
+                            openDonationModal();
                         }}
                         className="w-full py-4 bg-brand-pink text-white rounded-2xl text-base font-bold shadow-xl shadow-brand-pink/20 hover:bg-brand-pink-dark transition-all active:scale-[0.98]"
                     >
@@ -199,11 +198,6 @@ export default function Navbar() {
                 </div>
             </div>
         </nav>
-        
-        <DonationModal
-            isOpen={isDonateModalOpen}
-            onClose={() => setIsDonateModalOpen(false)}
-        />
         </>
     );
 }

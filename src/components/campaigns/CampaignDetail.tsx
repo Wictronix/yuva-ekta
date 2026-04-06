@@ -8,29 +8,30 @@ import ProgressWidget from "./ProgressWidget";
 import FundingBreakdown from "./FundingBreakdown";
 import ProductGrid from "./ProductGrid";
 import CampaignUpdates from "./CampaignUpdates";
-import DonationModal from "../donation/DonationModal";
+import { useDonation } from "@/components/providers/DonationProvider";
 import { ShoppingBag, Heart } from "lucide-react";
 
 export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [defaultAmount, setDefaultAmount] = useState<number | undefined>();
-  const [cart, setCart] = useState<Record<number, number>>({});
+  const { 
+    openDonationModal, 
+    isOpen: isModalOpen, 
+    getCampaignCartTotal, 
+    getTotalItems 
+  } = useDonation();
   const [activeSection, setActiveSection] = useState<string>("");
 
-  // Compute cart total
-  const cartTotal = campaign.products
-    ? Object.entries(cart).reduce((sum, [idx, qty]) => {
-        const product = campaign.products[Number(idx)];
-        return product ? sum + product.price * qty : sum;
-      }, 0)
-    : 0;
-
-  const totalItems = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+  // Compute cart total for THIS campaign
+  const cartTotal = getCampaignCartTotal(campaign.id);
+  const totalItems = getTotalItems();
 
   const handleDonateOpen = (amount?: number) => {
+    // Priority: 1. Explicit amount passed 2. This campaign's cart total 3. Global total (handled inside openDonationModal via provider logic)
     const donationAmount = amount && amount > 0 ? amount : cartTotal > 0 ? cartTotal : undefined;
-    setDefaultAmount(donationAmount);
-    setIsModalOpen(true);
+    openDonationModal({
+      campaignId: campaign.id,
+      campaignName: campaign.title,
+      defaultAmount: donationAmount
+    });
   };
 
   // Build section list based on campaign data
@@ -183,11 +184,10 @@ export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
                     <h3 className="text-3xl font-black font-playfair text-brand-brown mb-2">Choose What You Want to Fund</h3>
                     <p className="text-brand-brown/60 text-lg">Each item below represents a specific, tangible contribution.</p>
                   </div>
-                  <ProductGrid
-                    products={campaign.products}
-                    cart={cart}
-                    onCartChange={setCart}
-                  />
+                <ProductGrid
+                  campaignId={campaign.id}
+                  products={campaign.products}
+                />
 
                   {/* Cart summary */}
                   {cartTotal > 0 && (
@@ -297,16 +297,7 @@ export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
         </div>
       )}
 
-      {/* Donation Modal Handler */}
-      {isModalOpen && (
-        <DonationModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          campaignId={campaign.id}
-          campaignName={campaign.title}
-          defaultAmount={defaultAmount}
-        />
-      )}
+      {/* Donation Modal Handler Removed - Now handled globally */}
     </>
   );
 }

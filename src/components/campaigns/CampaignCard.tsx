@@ -61,13 +61,13 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
           </div>
           <div className="flex justify-between items-end">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-brand-brown/40 mb-1">Raised</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-brand-brown/60 mb-1">Raised</p>
               <p className="font-bold text-brand-brown">{formatCurrency(campaign.amount_raised)}</p>
             </div>
             {campaign.campaign_goal && (
               <div className="text-right">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-brand-brown/40 mb-1">Goal</p>
-                <p className="font-bold text-brand-brown/60">{formatCurrency(campaign.campaign_goal)}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-brand-brown/60 mb-1">Goal</p>
+                <p className="font-bold text-brand-brown/75">{formatCurrency(campaign.campaign_goal)}</p>
               </div>
             )}
           </div>
@@ -81,7 +81,6 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
           </div>
         )}
 
-        {/* Single CTA Button */}
         <div className="mt-auto">
           <Link 
             href={`/campaigns/${campaign.slug}`}

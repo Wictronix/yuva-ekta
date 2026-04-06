@@ -56,7 +56,7 @@ export default function FounderDetail() {
                             ))}
                         </div>
 
-                        <div className="prose prose-lg text-gray-600 font-inter font-light leading-relaxed space-y-6">
+                        <div className="prose prose-lg text-brand-brown/75 font-inter font-light leading-relaxed space-y-6">
                             <p>
                                 Balram Kumar has dedicated his life to community service in the villages around Sohna Block, Gurugram. A social worker by calling — he was mentored and trained by <strong>Dr. Kiran Bedi</strong>, whose lifelong commitment to grassroot change shaped how he approaches every challenge.
                             </p>

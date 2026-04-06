@@ -22,7 +22,7 @@ export default function DonationUtilisation() {
                     <div className="text-center space-y-4">
                         <span className="text-brand-pink font-bold text-[10px] uppercase tracking-[0.4em] block">Full Transparency</span>
                         <h2 className="text-4xl md:text-5xl font-black font-playfair">How Your Donation is Used</h2>
-                        <p className="text-white/60 font-inter font-light">
+                        <p className="text-white/80 font-inter font-light">
                             Every rupee is accounted for. We prioritize direct beneficiary impact above all else.
                         </p>
                     </div>
@@ -35,7 +35,7 @@ export default function DonationUtilisation() {
                     >
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="border-b border-white/10 bg-white/5 font-inter text-[10px] uppercase tracking-[0.2em] font-bold text-white/40">
+                                <tr className="border-b border-white/10 bg-white/5 font-inter text-[10px] uppercase tracking-[0.2em] font-bold text-white/60">
                                     <th className="px-10 py-6">Expense Head</th>
                                     <th className="px-10 py-6">Allocation</th>
                                     <th className="px-10 py-6 hidden md:table-cell">Primary Focus</th>
@@ -46,7 +46,7 @@ export default function DonationUtilisation() {
                                     <tr key={i} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                                         <td className="px-10 py-6 text-sm md:text-base">{row.head}</td>
                                         <td className="px-10 py-6 font-bold text-brand-pink">{row.percentage}</td>
-                                        <td className="px-10 py-6 text-sm text-white/40 hidden md:table-cell">{row.focus}</td>
+                                        <td className="px-10 py-6 text-sm text-white/60 hidden md:table-cell">{row.focus}</td>
                                     </tr>
                                 ))}
                             </tbody>

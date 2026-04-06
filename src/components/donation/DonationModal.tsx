@@ -171,7 +171,7 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
               <div className="space-y-4">
                 {/* Amount Selection */}
                 <div>
-                  <Label className="text-[10px] font-bold uppercase tracking-wider text-brand-brown/40 mb-2 block">
+                  <Label className="text-[10px] font-bold uppercase tracking-wider text-brand-brown/60 mb-2 block">
                     Select Amount
                   </Label>
                   <div className="grid grid-cols-2 gap-2 mb-3">
@@ -203,7 +203,7 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
                     ))}
                   </div>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-brand-brown/40 text-sm">₹</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-brand-brown/60 text-sm">₹</span>
                     <Input
                       type="number"
                       value={amount}
@@ -216,7 +216,7 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
 
                 {/* Donor Details */}
                 <div>
-                  <Label className="text-[10px] font-bold uppercase tracking-wider text-brand-brown/40 mb-2 block">
+                  <Label className="text-[10px] font-bold uppercase tracking-wider text-brand-brown/60 mb-2 block">
                     Your Details (For 80G Receipt)
                   </Label>
                   <div className="space-y-2.5">
@@ -263,7 +263,7 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
           {/* Footer */}
           <div className="px-5 pb-5 pt-3 bg-brand-offwhite/40 border-t border-brand-brown/5">
             <div className="flex justify-between items-center mb-3">
-              <span className="text-xs font-bold text-brand-brown/50 uppercase tracking-wider">Total</span>
+              <span className="text-xs font-bold text-brand-brown/65 uppercase tracking-wider">Total</span>
               <span className="text-2xl font-black font-playfair text-brand-pink">{formatCurrency(totalAmount)}</span>
             </div>
 
@@ -285,7 +285,7 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
             >
               {isProcessing ? "Processing..." : `Donate ${formatCurrency(totalAmount)}`}
             </button>
-            <p className="text-center text-[10px] text-brand-brown/40 mt-3 font-bold tracking-wide">
+            <p className="text-center text-[10px] text-brand-brown/60 mt-3 font-bold tracking-wide">
               🔒 SECURE PAYMENTS BY RAZORPAY
             </p>
           </div>

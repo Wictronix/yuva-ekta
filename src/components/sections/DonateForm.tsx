@@ -28,7 +28,7 @@ export default function DonateForm() {
 
                     <div className="space-y-8">
                         <div className="space-y-4">
-                            <p className="text-xs font-bold uppercase tracking-widest text-brand-brown/40">Select Amount (₹)</p>
+                            <p className="text-xs font-bold uppercase tracking-widest text-brand-brown/60">Select Amount (₹)</p>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 {presets.map((p) => (
                                     <button
@@ -53,7 +53,7 @@ export default function DonateForm() {
                         </div>
 
                         <div className="space-y-4">
-                            <p className="text-xs font-bold uppercase tracking-widest text-brand-brown/40">Allocate to Project (Optional)</p>
+                            <p className="text-xs font-bold uppercase tracking-widest text-brand-brown/60">Allocate to Project (Optional)</p>
                             <select className="w-full bg-brand-offwhite border-none rounded-2xl px-6 py-5 font-inter text-brand-brown focus:ring-2 focus:ring-brand-pink/20 transition-all outline-none appearance-none">
                                 <option value="General">General Fund (Where needed most)</option>
                                 <option value="Sakshar Sohna">Sakshar Sohna (Education)</option>
@@ -99,20 +99,20 @@ export default function DonateForm() {
 
                         <div className="space-y-6 text-sm font-inter">
                             <div className="space-y-1">
-                                <p className="text-white/40 uppercase tracking-widest text-[10px] font-bold">Account Name</p>
+                                <p className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Account Name</p>
                                 <p className="font-medium">Yuva Ekta India Foundation</p>
                             </div>
                             <div className="space-y-1">
-                                <p className="text-white/40 uppercase tracking-widest text-[10px] font-bold">Bank Name</p>
+                                <p className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Bank Name</p>
                                 <p className="font-medium">Union Bank of India</p>
                             </div>
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="space-y-1">
-                                    <p className="text-white/40 uppercase tracking-widest text-[10px] font-bold">Account Number</p>
+                                    <p className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Account Number</p>
                                     <p className="font-medium tracking-wider">220711100001158</p>
                                 </div>
                                 <div className="space-y-1">
-                                    <p className="text-white/40 uppercase tracking-widest text-[10px] font-bold">IFSC Code</p>
+                                    <p className="text-white/60 uppercase tracking-widest text-[10px] font-bold">IFSC Code</p>
                                     <p className="font-medium tracking-wider">UBIN0565091</p>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@ export default function DonateForm() {
                                 <Image src="/globe.svg" alt="UPI QR Code" width={100} height={100} className="w-full h-full object-contain" />
                             </div>
                             <div className="space-y-2">
-                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/40">Scan & Pay (UPI)</p>
+                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/60">Scan & Pay (UPI)</p>
                                 <p className="text-lg font-bold font-playfair">Q64836034@ybl</p>
                             </div>
                         </div>

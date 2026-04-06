@@ -1,41 +1,44 @@
 import { constructMetadata } from "@/lib/seo";
 import PageHero from "@/components/sections/PageHero";
-import DonateForm from "@/components/sections/DonateForm";
-import Credentials from "@/components/sections/Credentials";
+import ContactDetails from "@/components/sections/ContactDetails";
+import ContactForm from "@/components/sections/ContactForm";
+import VolunteerSection from "@/components/sections/VolunteerSection";
+import MapEmbed from "@/components/sections/MapEmbed";
+import CTABanner from "@/components/sections/CTABanner";
 
 export const metadata = constructMetadata({
-    title: 'Donate Now',
-    description: 'Support grassroot communities in Gurugram. Your donations are tax-exempt under Section 80G. Choose a project or contribute to our general fund.',
+    title: 'Contact Us',
+    description: 'Get in touch with Yuva Ekta India Foundation for donations, volunteering, CSR partnerships, or media enquiries. Call, email, or fill our contact form.',
 });
 
 export default function DonatePage() {
     return (
         <main className="min-h-screen bg-brand-offwhite/30">
+
             <PageHero
-                title="Make a Difference"
-                subtitle="Your contribution directly reaches children in need of education and nutrition in the villages of Sohna Block."
-                imageUrl="/campaign/yuva_ekta_02.jpeg"
+                title="Get in Touch"
+                subtitle="Whether you want to donate, volunteer, partner on CSR, or simply know more — we'd love to hear from you."
+                imageUrl="/campaign/yuva_ekta_03.jpeg"
                 breadcrumb={[
                     { label: "Home", href: "/" },
-                    { label: "Donate" }
+                    { label: "Contact" }
                 ]}
             />
 
             <section className="py-24">
                 <div className="container">
-                    <DonateForm />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start max-w-6xl mx-auto">
+                        <ContactDetails />
+                        <ContactForm />
+                    </div>
                 </div>
             </section>
 
-            <section className="pb-24">
-                <div className="container">
-                    <div className="mb-12">
-                        <span className="text-brand-pink font-bold text-[10px] uppercase tracking-[0.4em] block">Trust & Transparency</span>
-                        <h3 className="text-3xl font-black text-brand-brown font-playfair">Registered & Certified</h3>
-                    </div>
-                    <Credentials />
-                </div>
-            </section>
+            <VolunteerSection />
+
+            <MapEmbed />
+
+            <CTABanner />
         </main>
     );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, Monitor, Scissors, Heart } from "lucide-react";
+import { BookOpen, Monitor, Briefcase, HeartPulse } from "lucide-react";
 
 const detailedFocusSession = [
     {
@@ -17,13 +17,13 @@ const detailedFocusSession = [
         color: 'brand-green',
     },
     {
-        icon: Scissors,
+        icon: Briefcase,
         title: "Women's Livelihood",
         content: "Mahila Ajeevika is not a charity. It is a business training programme. Women learn stitching and tailoring, receive machines and raw materials, and are then helped to set up stalls, procure orders, and build micro-enterprises. The target is not just skill — it is income, independence, and standing in the household.",
         color: 'brand-terra',
     },
     {
-        icon: Heart,
+        icon: HeartPulse,
         title: 'Health & Nutrition',
         content: "Every day, 100 malnourished children and children with critical illnesses receive free food packets through Swastha Sohna. We partner with Dil se Mehek (heart disease and cancer) and One Each One Feed (severe malnourishment) to identify and serve the most vulnerable children.",
         color: 'brand-brown',

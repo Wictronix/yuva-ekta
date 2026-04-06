@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Gift, Book, ShoppingBag, GraduationCap, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { Utensils, Book, Scissors, GraduationCap, ArrowRight } from "lucide-react";
+import { useDonation } from "../providers/DonationProvider";
 
 const wishes = [
     {
@@ -13,14 +13,14 @@ const wishes = [
         color: "brand-pink"
     },
     {
-        icon: Gift,
+        icon: Utensils,
         title: "Daily Nutrition",
         cost: "₹5,000",
         description: "Daily evening food packets for 10 children for one month.",
         color: "brand-green"
     },
     {
-        icon: ShoppingBag,
+        icon: Scissors,
         title: "Sewing Machine",
         cost: "₹7,500",
         description: "A professional sewing machine for a woman starting her micro-business.",
@@ -36,6 +36,7 @@ const wishes = [
 ];
 
 export default function WishList() {
+    const { openDonationModal } = useDonation();
     return (
         <section className="py-24 bg-brand-offwhite/30">
             <div className="container">
@@ -60,16 +61,16 @@ export default function WishList() {
                             </div>
                             <h3 className="text-2xl font-black font-playfair mb-2">{wish.title}</h3>
                             <p className="text-brand-pink font-bold text-lg mb-4 group-hover:text-white transition-colors">{wish.cost}</p>
-                            <p className="text-brand-brown/60 text-sm leading-relaxed mb-8 group-hover:text-white/60 transition-colors">
+                            <p className="text-brand-brown/75 text-sm leading-relaxed mb-8 group-hover:text-white/60 transition-colors">
                                 {wish.description}
                             </p>
-                            <Link
-                                href="/donate"
+                            <button
+                                onClick={() => openDonationModal()}
                                 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-brand-pink group-hover:text-white transition-colors"
                             >
                                 <span>Fulfill this wish</span>
                                 <ArrowRight size={14} />
-                            </Link>
+                            </button>
                         </motion.div>
                     ))}
                 </div>

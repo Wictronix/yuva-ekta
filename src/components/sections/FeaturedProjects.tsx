@@ -33,7 +33,7 @@ export default function FeaturedProjects() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="text-muted max-w-2xl font-inter"
+                        className="text-brand-brown/70 max-w-2xl font-inter"
                     >
                         Each project targets a specific gap — together they address education,
                         livelihoods, and survival for Gurugram's rural communities.
@@ -69,12 +69,12 @@ export default function FeaturedProjects() {
 
                             <div className="p-8 md:p-10 flex flex-col flex-1">
                                 <div className="mb-4">
-                                    <span className="text-[10px] text-muted uppercase tracking-widest font-bold block mb-1">
+                                    <span className="text-[10px] text-brand-brown/60 uppercase tracking-widest font-bold block mb-1">
                                         Supported by {project.supporter}
                                     </span>
                                     <h3 className="text-2xl font-bold text-gray-900 font-playfair">{project.name}</h3>
                                 </div>
-                                <p className="text-muted text-sm leading-relaxed mb-8 flex-1 font-inter">
+                                <p className="text-brand-brown/70 text-sm leading-relaxed mb-8 flex-1 font-inter">
                                     {project.summary}
                                 </p>
                                 <Link

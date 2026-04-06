@@ -51,7 +51,7 @@ export default function ContactForm() {
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40 ml-4">Full Name *</label>
+                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Full Name *</label>
                         <input
                             required
                             type="text"
@@ -60,7 +60,7 @@ export default function ContactForm() {
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40 ml-4">Email Address *</label>
+                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Email Address *</label>
                         <input
                             required
                             type="email"
@@ -72,7 +72,7 @@ export default function ContactForm() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40 ml-4">Phone Number</label>
+                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Phone Number</label>
                         <input
                             type="tel"
                             placeholder="+91 98765 43210"
@@ -80,7 +80,7 @@ export default function ContactForm() {
                         />
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40 ml-4">Subject *</label>
+                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Subject *</label>
                         <select
                             required
                             className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 font-inter text-brand-brown focus:ring-2 focus:ring-brand-pink/20 outline-none transition-all appearance-none"
@@ -96,7 +96,7 @@ export default function ContactForm() {
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/40 ml-4">Your Message *</label>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Your Message *</label>
                     <textarea
                         required
                         rows={5}
