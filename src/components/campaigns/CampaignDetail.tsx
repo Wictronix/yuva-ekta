@@ -12,11 +12,11 @@ import { useDonation } from "@/components/providers/DonationProvider";
 import { ShoppingBag, Heart } from "lucide-react";
 
 export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
-  const { 
-    openDonationModal, 
-    isOpen: isModalOpen, 
-    getCampaignCartTotal, 
-    getTotalItems 
+  const {
+    openDonationModal,
+    isOpen: isModalOpen,
+    getCampaignCartTotal,
+    getTotalItems
   } = useDonation();
   const [activeSection, setActiveSection] = useState<string>("");
 
@@ -140,11 +140,10 @@ export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
                     <button
                       key={section.id}
                       onClick={() => scrollToSection(section.id)}
-                      className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold transition-all flex-shrink-0 ${
-                        activeSection === section.id
+                      className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-bold transition-all flex-shrink-0 ${activeSection === section.id
                           ? "bg-brand-pink text-white shadow-md shadow-brand-pink/20"
                           : "bg-brand-offwhite text-brand-brown/70 hover:bg-brand-pink/10 hover:text-brand-pink"
-                      }`}
+                        }`}
                     >
                       {section.label}
                     </button>
@@ -164,11 +163,10 @@ export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
                       <button
                         key={section.id}
                         onClick={() => scrollToSection(section.id)}
-                        className={`whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                          activeSection === section.id
+                        className={`whitespace-nowrap px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${activeSection === section.id
                             ? "bg-brand-pink text-white shadow-md shadow-brand-pink/20"
                             : "text-brand-brown/70 hover:bg-brand-pink/10 hover:text-brand-pink"
-                        }`}
+                          }`}
                       >
                         {section.label}
                       </button>
@@ -184,10 +182,10 @@ export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
                     <h3 className="text-3xl font-black font-playfair text-brand-brown mb-2">Choose What You Want to Fund</h3>
                     <p className="text-brand-brown/60 text-lg">Each item below represents a specific, tangible contribution.</p>
                   </div>
-                <ProductGrid
-                  campaignId={campaign.id}
-                  products={campaign.products}
-                />
+                  <ProductGrid
+                    campaignId={campaign.id}
+                    products={campaign.products}
+                  />
 
                   {/* Cart summary */}
                   {cartTotal > 0 && (
@@ -211,7 +209,7 @@ export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
                   )}
 
                   <div className="text-center pt-4">
-                    <p className="text-sm text-brand-brown/60 mb-3">Or donate any amount — every rupee helps.</p>
+                    <p className="text-sm text-brand-brown/60 mb-3">Or donate any amount, every rupee helps.</p>
                     <button
                       onClick={() => handleDonateOpen()}
                       className="text-brand-pink font-bold text-sm hover:underline decoration-brand-pink/30 underline-offset-4"

@@ -30,7 +30,7 @@ export default function ContactForm() {
                 </div>
                 <div className="space-y-2">
                     <h3 className="text-2xl font-black font-playfair text-brand-brown">Message Sent!</h3>
-                    <p className="text-brand-brown/60 font-inter">Thank you — we'll get back to you within 2 working days.</p>
+                    <p className="text-brand-brown/60 font-inter">Thank you, We'll get back to you within 2 working days.</p>
                 </div>
             </motion.div>
         );

@@ -24,7 +24,7 @@ export default function FounderQuote() {
                     className="text-2xl md:text-4xl font-black text-gray-900 leading-tight md:leading-snug mb-12 font-playfair italic px-4"
                 >
                     Every child deserves to learn. Every woman deserves to earn.
-                    Every family deserves dignity. That is why we do this work — every single day.
+                    Every family deserves dignity. That is why we do this work, every single day.
                 </motion.blockquote>
 
                 <motion.div

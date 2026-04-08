@@ -7,7 +7,7 @@ import CTABanner from "@/components/sections/CTABanner";
 
 export const metadata = constructMetadata({
   title: "Our Campaigns",
-  description: "Support verified grassroot campaigns in Gurugram — education, health, women's livelihood, and nutrition. Donate online. 80G tax receipt by email.",
+  description: "Support verified grassroot campaigns in Gurugram - education, health, women's livelihood, and nutrition. Donate online. 80G tax receipt by email.",
 });
 
 export const revalidate = 60;
@@ -32,7 +32,7 @@ export default async function CampaignsList(props: {
 
   if (sortParam === "urgent") {
     // Sort by lowest percentage funded (assuming goal > 0)
-    query = query.order("amount_raised", { ascending: true }); 
+    query = query.order("amount_raised", { ascending: true });
   } else if (sortParam === "most_funded") {
     query = query.order("amount_raised", { ascending: false });
   } else {
@@ -69,7 +69,7 @@ export default async function CampaignsList(props: {
 
       <section className="py-20 md:py-32">
         <div className="container">
-          
+
           {/* Filters Bar */}
           <div className="bg-white p-4 md:p-6 rounded-3xl shadow-sm border border-brand-brown/5 mb-16 flex flex-col md:flex-row gap-6 justify-between items-center">
             <div className="flex flex-wrap gap-2 md:gap-4 justify-center">
@@ -82,17 +82,16 @@ export default async function CampaignsList(props: {
                 <Link
                   key={cat.val}
                   href={`/campaigns${cat.val === 'all' ? '' : `?category=${cat.val}`}`}
-                  className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
-                    (categoryParam === cat.val) || (!categoryParam && cat.val === 'all')
-                      ? "bg-brand-pink text-white shadow-md shadow-brand-pink/20" 
+                  className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${(categoryParam === cat.val) || (!categoryParam && cat.val === 'all')
+                      ? "bg-brand-pink text-white shadow-md shadow-brand-pink/20"
                       : "bg-brand-offwhite text-brand-brown hover:bg-brand-pink/10"
-                  }`}
+                    }`}
                 >
                   {cat.label}
                 </Link>
               ))}
             </div>
-            
+
             <div className="flex items-center gap-3">
               <span className="text-xs uppercase tracking-widest font-bold text-brand-brown/40">Sort by</span>
               <select className="bg-brand-offwhite border-none rounded-xl px-4 py-2.5 font-bold text-sm text-brand-brown focus:ring-2 focus:ring-brand-pink/20 outline-none">
@@ -109,7 +108,7 @@ export default async function CampaignsList(props: {
               <div className="w-20 h-20 bg-brand-pink/10 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">🌱</div>
               <h3 className="text-2xl font-black font-playfair text-brand-brown mb-4">No Campaigns Found</h3>
               <p className="text-brand-brown/70 leading-relaxed mb-8">
-                We couldn't find any campaigns matching this filter. Browse all campaigns or check back soon — new campaigns are added regularly.
+                We couldn't find any campaigns matching this filter. Browse all campaigns or check back soon - new campaigns are added regularly.
               </p>
               <Link href="/campaigns" className="text-brand-pink font-bold hover:underline decoration-2 underline-offset-4">
                 View All Campaigns

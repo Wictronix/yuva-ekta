@@ -28,10 +28,10 @@ export default function VolunteerSection() {
 
                             <div className="prose prose-lg text-brand-brown/70 font-inter font-light leading-relaxed space-y-6">
                                 <p>
-                                    We welcome volunteers with skills in education, healthcare, technology, graphic design, communications, fundraising, and community outreach. You don't need to be a professional — you need to care.
+                                    We welcome volunteers with skills in education, healthcare, technology, graphic design, communications, fundraising, and community outreach. You don't need to be a professional, you need to care.
                                 </p>
                                 <p>
-                                    Whether you can give a few hours on a weekend, run a workshop, or support us remotely — we'll find something meaningful for you to do.
+                                    Whether you can give a few hours on a weekend, run a workshop, or support us remotely. We'll find something meaningful for you to do.
                                 </p>
                             </div>
 

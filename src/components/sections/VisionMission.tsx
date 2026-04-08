@@ -42,7 +42,7 @@ export default function VisionMission() {
                         </div>
                         <h3 className="text-3xl font-black text-brand-brown font-playfair">Leadership</h3>
                         <p className="text-lg text-brand-brown/70 font-inter font-light leading-relaxed">
-                            To be a leader in Community Development Initiatives through Projects and Campaigns aligned with achieving the Sustainable Development Goals — building communities that no longer need us.
+                            To be a leader in Community Development Initiatives through Projects and Campaigns aligned with achieving the Sustainable Development Goals, building communities that no longer need us.
                         </p>
                     </motion.div>
                 </div>

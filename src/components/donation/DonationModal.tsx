@@ -143,9 +143,9 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
     <>
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-md w-full p-0 rounded-2xl bg-white border-0 shadow-2xl">
+        <DialogContent className="max-w-md w-full p-0 rounded-2xl bg-white border-0 shadow-2xl max-h-[95vh] flex flex-col overflow-hidden">
           {/* Header */}
-          <div className="px-5 pt-5 pb-4 border-b border-brand-brown/5">
+          <div className="px-5 pt-5 pb-4 border-b border-brand-brown/5 shrink-0">
             <DialogHeader className="mb-0 text-left">
               <DialogTitle className="text-xl font-black font-playfair text-brand-brown">
                 Make a Donation
@@ -157,7 +157,7 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
           </div>
 
           {/* Body */}
-          <div className="px-5 py-4">
+          <div className="px-5 py-4 overflow-y-auto flex-1 custom-scrollbar">
             <Tabs defaultValue="one_time" onValueChange={(v) => setType(v as "one_time" | "monthly")} className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-4 bg-brand-offwhite p-1 rounded-xl h-auto">
                 <TabsTrigger value="one_time" className="rounded-lg py-2 data-[state=active]:bg-white data-[state=active]:text-brand-pink data-[state=active]:shadow-sm font-bold text-sm">
@@ -179,11 +179,10 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
                     {defaultAmount && defaultAmount > 0 && !PRESET_AMOUNTS[type].includes(defaultAmount) && (
                       <button
                         onClick={() => setAmount(defaultAmount)}
-                        className={`py-2.5 rounded-xl font-bold text-sm border transition-all col-span-2 flex items-center justify-center gap-2 ${
-                          amount === defaultAmount
-                            ? "border-brand-pink bg-brand-pink/5 text-brand-pink"
-                            : "border-brand-brown/10 text-brand-brown hover:border-brand-pink/30 hover:bg-brand-pink/5"
-                        }`}
+                        className={`py-2.5 rounded-xl font-bold text-sm border transition-all col-span-2 flex items-center justify-center gap-2 ${amount === defaultAmount
+                          ? "border-brand-pink bg-brand-pink/5 text-brand-pink"
+                          : "border-brand-brown/10 text-brand-brown hover:border-brand-pink/30 hover:bg-brand-pink/5"
+                          }`}
                       >
                         🛒 Cart Total: {formatCurrency(defaultAmount)}
                       </button>
@@ -192,11 +191,10 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
                       <button
                         key={preset}
                         onClick={() => setAmount(preset)}
-                        className={`py-2.5 rounded-xl font-bold text-sm border transition-all ${
-                          amount === preset
-                            ? "border-brand-pink bg-brand-pink/5 text-brand-pink"
-                            : "border-brand-brown/10 text-brand-brown hover:border-brand-pink/30 hover:bg-brand-pink/5"
-                        }`}
+                        className={`py-2.5 rounded-xl font-bold text-sm border transition-all ${amount === preset
+                          ? "border-brand-pink bg-brand-pink/5 text-brand-pink"
+                          : "border-brand-brown/10 text-brand-brown hover:border-brand-pink/30 hover:bg-brand-pink/5"
+                          }`}
                       >
                         {formatCurrency(preset)}
                       </button>
@@ -221,21 +219,21 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
                   </Label>
                   <div className="space-y-2.5">
                     <Input
-                      placeholder="Full Name *"
+                      placeholder="Full Name"
                       value={donorDetails.name}
                       onChange={(e) => setDonorDetails({ ...donorDetails, name: e.target.value })}
                       className="py-4 rounded-xl border-brand-brown/10 focus-visible:ring-brand-pink bg-brand-offwhite/30 text-sm"
                     />
                     <Input
                       type="email"
-                      placeholder="Email Address *"
+                      placeholder="Email Address"
                       value={donorDetails.email}
                       onChange={(e) => setDonorDetails({ ...donorDetails, email: e.target.value })}
                       className="py-4 rounded-xl border-brand-brown/10 focus-visible:ring-brand-pink bg-brand-offwhite/30 text-sm"
                     />
                     <Input
                       type="tel"
-                      placeholder="Phone Number *"
+                      placeholder="Phone Number"
                       value={donorDetails.phone}
                       onChange={(e) => setDonorDetails({ ...donorDetails, phone: e.target.value })}
                       className="py-4 rounded-xl border-brand-brown/10 focus-visible:ring-brand-pink bg-brand-offwhite/30 text-sm"
@@ -261,7 +259,7 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
           </div>
 
           {/* Footer */}
-          <div className="px-5 pb-5 pt-3 bg-brand-offwhite/40 border-t border-brand-brown/5">
+          <div className="px-5 pb-5 pt-4 bg-brand-offwhite/40 border-t border-brand-brown/5 shrink-0">
             <div className="flex justify-between items-center mb-3">
               <span className="text-xs font-bold text-brand-brown/65 uppercase tracking-wider">Total</span>
               <span className="text-2xl font-black font-playfair text-brand-pink">{formatCurrency(totalAmount)}</span>
@@ -277,11 +275,10 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
             <button
               onClick={handleDonate}
               disabled={isProcessing}
-              className={`w-full py-4 rounded-xl font-black text-base transition-all shadow-lg ${
-                isProcessing
-                  ? "bg-brand-brown/20 text-brand-brown/60 cursor-not-allowed shadow-none"
-                  : "bg-brand-pink text-white hover:bg-brand-pink-dark active:scale-[0.98] shadow-brand-pink/30 hover:-translate-y-0.5"
-              }`}
+              className={`w-full py-4 rounded-xl font-black text-base transition-all shadow-lg ${isProcessing
+                ? "bg-brand-brown/20 text-brand-brown/60 cursor-not-allowed shadow-none"
+                : "bg-brand-pink text-white hover:bg-brand-pink-dark active:scale-[0.98] shadow-brand-pink/30 hover:-translate-y-0.5"
+                }`}
             >
               {isProcessing ? "Processing..." : `Donate ${formatCurrency(totalAmount)}`}
             </button>

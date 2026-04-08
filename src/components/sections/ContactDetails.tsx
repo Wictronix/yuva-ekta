@@ -29,8 +29,8 @@ export default function ContactDetails() {
                             </div>
                             <div className="space-y-1">
                                 <p className="text-[10px] uppercase tracking-widest font-bold text-white/60">Give us a call</p>
-                                <p className="text-lg font-medium">{SITE.phone1}</p>
-                                <p className="text-lg font-medium">{SITE.phone2}</p>
+                                <a href={`tel:${SITE.phone1.replace(/\s+/g, '')}`} className="text-lg font-medium block hover:text-brand-pink transition-colors">{SITE.phone1}</a>
+                                <a href={`tel:${SITE.phone2.replace(/\s+/g, '')}`} className="text-lg font-medium block hover:text-brand-pink transition-colors">{SITE.phone2}</a>
                             </div>
                         </div>
 
@@ -40,7 +40,7 @@ export default function ContactDetails() {
                             </div>
                             <div className="space-y-1">
                                 <p className="text-[10px] uppercase tracking-widest font-bold text-white/60">WhatsApp</p>
-                                <p className="text-lg font-medium">{SITE.whatsapp}</p>
+                                <a href={`https://wa.me/${SITE.whatsapp.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-lg font-medium block hover:text-brand-pink transition-colors">{SITE.whatsapp}</a>
                             </div>
                         </div>
 
@@ -50,7 +50,7 @@ export default function ContactDetails() {
                             </div>
                             <div className="space-y-1">
                                 <p className="text-[10px] uppercase tracking-widest font-bold text-white/60">Email Address</p>
-                                <p className="text-lg font-medium">{SITE.email}</p>
+                                <a href={`mailto:${SITE.email}`} className="text-lg font-medium block hover:text-brand-pink transition-colors">{SITE.email}</a>
                             </div>
                         </div>
 

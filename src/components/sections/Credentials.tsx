@@ -8,9 +8,9 @@ const credentialsData = [
     { label: 'PAN', detail: 'AAATY6815D', icon: IdCard },
     { label: 'Date of Incorporation', detail: '21 November 2018', icon: Calendar },
     { label: '80G Certificate', detail: 'Donations made to YEIF are eligible for 50% tax deduction under the Income Tax Act', icon: BadgeCheck },
-    { label: '12A Certificate', detail: "YEIF's income is exempt from Income Tax — ensuring every rupee serves the mission", icon: BadgeCheck },
+    { label: '12A Certificate', detail: "YEIF's income is exempt from Income Tax, ensuring every rupee serves the mission", icon: BadgeCheck },
     { label: 'CSR-1 Registration', detail: 'YEIF is eligible to receive Corporate Social Responsibility funds from Indian companies', icon: Building2 },
-    { label: 'NITI Aayog Darpan', detail: "Registered on NITI Aayog's national NGO portal — verifiable by any donor or partner", icon: Globe },
+    { label: 'NITI Aayog Darpan', detail: "Registered on NITI Aayog's national NGO portal verifiable by any donor or partner", icon: Globe },
 ];
 
 export default function Credentials() {

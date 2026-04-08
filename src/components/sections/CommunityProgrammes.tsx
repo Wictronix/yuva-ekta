@@ -41,7 +41,7 @@ const programmes = [
         icon: 'MessageCircle',
         color: 'brand-terra',
         image: '/initiatives/nukkad-sabha-yuva-ekta.png',
-        summary: 'Street-level community forum where young people\'s issues — education, employment, girls\' futures — are discussed and solved together.',
+        summary: 'Street-level community forum where young people\'s issues - education, employment, girls\' futures are discussed and solved together.',
         details: 'Change happens when communities talk. Nukkad Sabhas are informal street-corner meetings where we bring together youth, parents, and village elders. We discuss critical topics like preventing dropouts, the importance of girls\' higher education, and mental health. These sabhas often turn into action committees where the village itself takes ownership of its children\'s future.',
     },
     {
@@ -69,7 +69,7 @@ const programmes = [
         color: 'brand-green',
         image: '/initiatives/yuva-kaushal-centre.png',
         summary: 'Vocational training in computers and languages for adolescents and youth of all genders, with entrepreneurship pathways for women.',
-        details: 'Our skill centres are hubs of employability. We provide high-quality, free training in Tally, Graphic Design, and basic computer applications. For women, the focus shifts to micro-entrepreneurship — teaching them how to manage accounts, find markets for their crafts, and use digital tools to scale their home-based businesses.',
+        details: 'Our skill centres are hubs of employability. We provide high-quality, free training in Tally, Graphic Design, and basic computer applications. For women, the focus shifts to micro-entrepreneurship, teaching them how to manage accounts, find markets for their crafts, and use digital tools to scale their home-based businesses.',
     },
     {
         id: 'swachta-aur-sanrakshan',

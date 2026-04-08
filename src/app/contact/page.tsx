@@ -17,7 +17,7 @@ export default function ContactPage() {
 
             <PageHero
                 title="Get in Touch"
-                subtitle="Whether you want to donate, volunteer, partner on CSR, or simply know more — we'd love to hear from you."
+                subtitle="Whether you want to donate, volunteer, partner on CSR, or simply know more. We'd love to hear from you."
                 imageUrl="/campaign/yuva_ekta_03.jpeg"
                 breadcrumb={[
                     { label: "Home", href: "/" },

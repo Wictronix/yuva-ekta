@@ -58,7 +58,7 @@ export default function FounderDetail() {
 
                         <div className="prose prose-lg text-brand-brown/75 font-inter font-light leading-relaxed space-y-6">
                             <p>
-                                Balram Kumar has dedicated his life to community service in the villages around Sohna Block, Gurugram. A social worker by calling — he was mentored and trained by <strong>Dr. Kiran Bedi</strong>, whose lifelong commitment to grassroot change shaped how he approaches every challenge.
+                                Balram Kumar has dedicated his life to community service in the villages around Sohna Block, Gurugram. A social worker by calling, he was mentored and trained by <strong>Dr. Kiran Bedi</strong>, whose lifelong commitment to grassroot change shaped how he approaches every challenge.
                             </p>
                             <p>
                                 Under Balram Kumar's leadership, YEIF has grown from a single remedial class to four active projects, seven community programmes, and a network of partnerships with corporations, charitable trusts, and civic bodies.
@@ -68,10 +68,10 @@ export default function FounderDetail() {
                         <div className="p-8 bg-brand-pink/5 rounded-3xl border border-brand-pink/10 relative overflow-hidden">
                             <span className="absolute -top-6 -left-2 text-9xl text-brand-pink/10 font-playfair pointer-events-none">"</span>
                             <blockquote className="relative z-10 text-xl text-brand-brown font-playfair italic leading-relaxed">
-                                I don't see myself as running an NGO. I see myself as belonging to this community — and doing what any responsible member of a community should do.
+                                I don't see myself as running an NGO. I see myself as belonging to this community and doing what any responsible member of a community should do.
                             </blockquote>
                             <cite className="block mt-4 text-xs font-bold text-brand-pink uppercase tracking-widest not-italic">
-                                — Balram Kumar
+                                Balram Kumar
                             </cite>
                         </div>
                     </motion.div>

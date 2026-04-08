@@ -100,17 +100,17 @@ export default function Footer() {
                                 <span className="leading-relaxed">{SITE.address}</span>
                             </li>
                             <li className="flex flex-col gap-3">
-                                <div className="flex items-center gap-4 justify-center md:justify-start">
+                                <a href={`tel:${SITE.phone1.replace(/\s+/g, '')}`} className="flex items-center gap-4 justify-center md:justify-start hover:text-brand-pink transition-colors">
                                     <Phone size={20} className="text-secondary shrink-0" />
                                     <span className="font-medium text-white/80">{SITE.phone1}</span>
-                                </div>
-                                <div className="flex items-center gap-4 justify-center md:justify-start md:pl-9">
+                                </a>
+                                <a href={`tel:${SITE.phone2.replace(/\s+/g, '')}`} className="flex items-center gap-4 justify-center md:justify-start md:pl-9 hover:text-brand-pink transition-colors">
                                     <span className="font-medium text-white/80">{SITE.phone2}</span>
-                                </div>
+                                </a>
                             </li>
                             <li className="flex items-center gap-4 justify-center md:justify-start">
                                 <Mail size={20} className="text-secondary shrink-0" />
-                                <span className="hover:text-white transition-colors">{SITE.email}</span>
+                                <a href={`mailto:${SITE.email}`} className="hover:text-brand-pink text-white/70 hover:text-white transition-colors">{SITE.email}</a>
                             </li>
                         </ul>
                     </div>

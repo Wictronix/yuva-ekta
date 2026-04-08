@@ -108,7 +108,7 @@ export default function ProjectDetail({
                                 onClick={() => openDonationModal()}
                                 className="w-full bg-brand-pink text-white font-bold py-5 rounded-2xl shadow-lg shadow-brand-pink/20 flex items-center justify-center gap-3 hover:bg-brand-pink/90 hover:scale-[1.02] active:scale-95 transition-all"
                             >
-                                <span>Adopt This Project — {monthlyRequirement}/month</span>
+                                <span>Adopt This Project {monthlyRequirement}/month</span>
                                 <ArrowRight size={18} />
                             </button>
                         </div>

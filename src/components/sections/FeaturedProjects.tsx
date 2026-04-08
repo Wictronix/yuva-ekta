@@ -35,7 +35,7 @@ export default function FeaturedProjects() {
                         transition={{ delay: 0.2 }}
                         className="text-brand-brown/70 max-w-2xl font-inter"
                     >
-                        Each project targets a specific gap — together they address education,
+                        Each project targets a specific gap together they address education,
                         livelihoods, and survival for Gurugram's rural communities.
                     </motion.p>
                 </div>

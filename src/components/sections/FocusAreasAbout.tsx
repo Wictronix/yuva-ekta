@@ -7,7 +7,7 @@ const detailedFocusSession = [
     {
         icon: BookOpen,
         title: 'Remedial Education',
-        content: "We run hourly classes across multiple centres in Sohna Block, using a structured curriculum that builds reading, writing, arithmetic, and comprehension skills. Our educators are trained community members — not outsiders. We also run village libraries inside government schools and train student librarians who maintain them independently.",
+        content: "We run hourly classes across multiple centres in Sohna Block, using a structured curriculum that builds reading, writing, arithmetic, and comprehension skills. Our educators are trained community members not outsiders. We also run village libraries inside government schools and train student librarians who maintain them independently.",
         color: 'brand-pink',
     },
     {
@@ -19,7 +19,7 @@ const detailedFocusSession = [
     {
         icon: Briefcase,
         title: "Women's Livelihood",
-        content: "Mahila Ajeevika is not a charity. It is a business training programme. Women learn stitching and tailoring, receive machines and raw materials, and are then helped to set up stalls, procure orders, and build micro-enterprises. The target is not just skill — it is income, independence, and standing in the household.",
+        content: "Mahila Ajeevika is not a charity. It is a business training programme. Women learn stitching and tailoring, receive machines and raw materials, and are then helped to set up stalls, procure orders, and build micro-enterprises. The target is not just skill. It is income, independence, and standing in the household.",
         color: 'brand-terra',
     },
     {

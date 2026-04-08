@@ -96,7 +96,7 @@ function ThankYouContent() {
             Payment Verification Issue
           </h1>
           <p className="text-brand-brown/70">
-            We couldn&apos;t verify your payment right now. Don&apos;t worry — if your payment was
+            We couldn&apos;t verify your payment right now. Don&apos;t worry, if your payment was
             successful, it will be reflected shortly. Please check your email for confirmation.
           </p>
           <Link
@@ -198,11 +198,11 @@ function ThankYouContent() {
               <p className="text-sm text-brand-brown/50 mt-2">
                 A receipt will be sent to {donationInfo.donorEmail}
               </p>
-              
+
               {donationInfo.receiptUrl && (
-                <a 
-                  href={donationInfo.receiptUrl} 
-                  target="_blank" 
+                <a
+                  href={donationInfo.receiptUrl}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-brown border border-brand-brown text-white rounded-xl font-bold text-sm hover:!bg-brand-pink hover:!border-brand-pink transition-all w-full md:w-auto"
                 >

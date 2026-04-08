@@ -9,7 +9,7 @@ import MediaMentions from "@/components/sections/MediaMentions";
 
 export const metadata = constructMetadata({
     title: 'About Us',
-    description: 'Learn about Yuva Ekta India Foundation — founded by Balram Kumar, mentored by Dr. Kiran Bedi, registered since 2018, and serving over 1,000 lives in Gurugram.',
+    description: 'Learn about Yuva Ekta India Foundation founded by Balram Kumar, mentored by Dr. Kiran Bedi, registered since 2018, and serving over 1,000 lives in Gurugram.',
 });
 
 export default function AboutPage() {
