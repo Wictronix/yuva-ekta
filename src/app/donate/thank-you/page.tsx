@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { CheckCircle2, Heart, ArrowRight, Share2, Copy, Check } from "lucide-react";
+import { CheckCircle2, Heart, ArrowRight, Share2, Copy, Check, Download } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { SITE } from "@/lib/constants";
 
@@ -206,7 +206,7 @@ function ThankYouContent() {
                   rel="noopener noreferrer"
                   className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-brown border border-brand-brown text-white rounded-xl font-bold text-sm hover:!bg-brand-pink hover:!border-brand-pink transition-all w-full md:w-auto"
                 >
-                  <Copy size={16} /> Download PDF Receipt
+                  <Download size={16} /> Download PDF Receipt
                 </a>
               )}
             </motion.div>
