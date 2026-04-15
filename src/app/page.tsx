@@ -10,8 +10,8 @@ import Partners from "@/components/sections/Partners";
 import CTABanner from "@/components/sections/CTABanner";
 
 export const metadata = constructMetadata({
-  title: "Yuva Ekta | Empowering Grassroot Communities in Gurugram",
-  description: "A registered NGO in Gurugram delivering free education, digital literacy, women's livelihood, and daily nutrition to over 1,000 children and families. Donate today - 80G certified.",
+  title: "Top NGO in Gurugram | Yuva Ekta India Foundation",
+  description: "Yuva Ekta India Foundation is a registered grassroots NGO in Gurugram (80G & 12A certified) offering free education, healthcare, and women's livelihood programs to 1000+ families. Support our mission today.",
 });
 
 export default function Home() {

@@ -3,7 +3,7 @@
 import { SITE, NAV_LINKS, FOCUS_AREAS } from "@/lib/constants";
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Heart, ShieldCheck, ExternalLink } from "lucide-react";
+import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Heart, ShieldCheck, ExternalLink, Landmark } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { usePathname } from "next/navigation";
@@ -65,14 +65,24 @@ export default function Footer() {
                                 A registered NGO in Gurugram delivering free education, digital literacy, and women's livelihood to families that formal systems leave behind.
                             </p>
                         </div>
-                        <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 w-full sm:w-auto">
-                            <div className="w-10 h-10 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-pink shrink-0">
-                                <Heart size={20} fill="currentColor" />
+                        <div className="space-y-4 w-full sm:w-auto">
+                            <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                                <div className="w-10 h-10 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-pink shrink-0">
+                                    <Heart size={20} fill="currentColor" />
+                                </div>
+                                <div className="flex flex-col text-left">
+                                    <span className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Donate via UPI</span>
+                                    <span className="text-xs font-mono text-white/80">{SITE.upi}</span>
+                                </div>
                             </div>
-                            <div className="flex flex-col text-left">
-                                <span className="text-[10px] uppercase tracking-widest text-white/60 font-bold">Donate via UPI</span>
-                                <span className="text-xs font-mono text-white/80">{SITE.upi}</span>
-                            </div>
+                            
+                            <Link 
+                                href="/donate"
+                                className="flex items-center justify-center gap-2 w-full py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all hover:scale-[1.02]"
+                            >
+                                <Landmark size={14} className="text-brand-pink" />
+                                Donate via Bank / Transfer
+                            </Link>
                         </div>
                     </div>
 

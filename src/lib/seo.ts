@@ -20,11 +20,21 @@ export function constructMetadata({
             template: `%s | ${SITE.name}`,
         },
         description,
+        keywords: [
+            "Yuva Ekta India Foundation",
+            "NGO in Gurugram",
+            "Child Education NGO",
+            "Women Empowerment",
+            "80G Certified NGO",
+            "12A Certified NGO",
+            "Donate to NGO NCR"
+        ],
         openGraph: {
             title,
             description,
             url: SITE.url,
             siteName: SITE.name,
+            locale: "en_IN",
             images: [
                 {
                     url: image,

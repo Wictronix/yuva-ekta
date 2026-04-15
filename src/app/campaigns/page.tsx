@@ -1,13 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
-import PageHero from "@/components/sections/PageHero";
+import CampaignsHero from "@/components/sections/CampaignsHero";
 import CampaignCard from "@/components/campaigns/CampaignCard";
 import { constructMetadata } from "@/lib/seo";
 import Link from "next/link";
 import CTABanner from "@/components/sections/CTABanner";
 
 export const metadata = constructMetadata({
-  title: "Our Campaigns",
-  description: "Support verified grassroot campaigns in Gurugram - education, health, women's livelihood, and nutrition. Donate online. 80G tax receipt by email.",
+  title: "NGO Campaigns in Gurugram | Support Education & Health",
+  description: "Join Yuva Ekta foundation campaigns in Gurugram. Support education, healthcare, and women empowerment. All donations are 80G tax-exempt.",
 });
 
 export const revalidate = 60;
@@ -44,34 +44,22 @@ export default async function CampaignsList(props: {
 
   return (
     <main className="min-h-screen bg-brand-offwhite/30">
-      <PageHero
-        title="Our Campaigns"
-        subtitle="Every campaign is a verified need, funded directly by donors like you."
-        imageUrl="/feature/project-2.jpg"
+      <CampaignsHero
+        title="Verified Campaigns"
+        subtitle="Directly support grassroot initiatives that transform lives in Gurugram. 100% Transparency. 100% Impact."
+        imageUrl="/campaign/yuva_ekta_02.jpeg"
         breadcrumb={[
           { label: "Home", href: "/" },
           { label: "Campaigns" }
         ]}
       />
 
-      {/* Trust Strip */}
-      <div className="bg-brand-brown py-4 border-b border-white/10">
-        <div className="container flex flex-wrap justify-center gap-6 text-white/80 text-xs md:text-sm font-bold uppercase tracking-widest">
-          <span className="flex items-center gap-2"><span className="text-brand-green">✅</span> 80G Certified</span>
-          <span className="hidden md:inline">·</span>
-          <span>NITI Aayog Registered</span>
-          <span className="hidden md:inline">·</span>
-          <span>Reg. No. 03485</span>
-          <span className="hidden md:inline">·</span>
-          <span>Est. 2018</span>
-        </div>
-      </div>
 
       <section className="py-20 md:py-32">
         <div className="container">
 
           {/* Filters Bar */}
-          <div className="bg-white p-4 md:p-6 rounded-3xl shadow-sm border border-brand-brown/5 mb-16 flex flex-col md:flex-row gap-6 justify-between items-center">
+          <div id="campaigns-grid" className="bg-white p-4 md:p-6 rounded-3xl shadow-sm border border-brand-brown/5 mb-16 flex flex-col md:flex-row gap-6 justify-between items-center">
             <div className="flex flex-wrap gap-2 md:gap-4 justify-center">
               {[
                 { label: "All Campaigns", val: "all" },

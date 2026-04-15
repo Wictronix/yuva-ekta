@@ -10,11 +10,16 @@ interface PageHeroProps {
     subtitle?: string;
     imageUrl: string;
     breadcrumb: { label: string; href?: string }[];
+    cta?: {
+        label: string;
+        onClick?: () => void;
+        href?: string;
+    };
 }
 
-export default function PageHero({ title, subtitle, imageUrl, breadcrumb }: PageHeroProps) {
+export default function PageHero({ title, subtitle, imageUrl, breadcrumb, cta }: PageHeroProps) {
     return (
-        <section className="relative h-[60vh] min-h-[400px] flex items-center justify-center overflow-hidden bg-brand-brown">
+        <section className="relative h-[65vh] min-h-[500px] flex items-center justify-center overflow-hidden bg-brand-brown">
             {/* Background Image with Cinematic Treatment */}
             <div className="absolute inset-0 z-0">
                 <Image
@@ -22,21 +27,21 @@ export default function PageHero({ title, subtitle, imageUrl, breadcrumb }: Page
                     alt={title}
                     fill
                     priority
-                    className="object-cover brightness-[0.4] contrast-[1.1]"
+                    className="object-cover brightness-[0.4] contrast-[1.1] scale-105"
                 />
             </div>
 
             {/* Cinematic Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-brand-brown via-transparent to-brand-brown/40 z-10" />
 
-            <div className="container relative z-20 text-center px-6">
+            <div className="container relative z-20 text-center px-6 transition-all duration-700">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                 >
                     {/* Breadcrumbs */}
-                    <nav className="flex items-center justify-center gap-2 mb-6 text-[10px] uppercase tracking-[0.3em] font-bold text-white/50">
+                    <nav className="flex items-center justify-center gap-2 mb-8 text-[10px] uppercase tracking-[0.3em] font-bold text-white/50">
                         {breadcrumb.map((item, index) => (
                             <div key={item.label} className="flex items-center gap-2">
                                 {item.href ? (
@@ -51,14 +56,34 @@ export default function PageHero({ title, subtitle, imageUrl, breadcrumb }: Page
                         ))}
                     </nav>
 
-                    <h1 className="text-5xl md:text-7xl font-black text-white mb-6 font-playfair tracking-tight">
+                    <h1 className="text-5xl md:text-8xl font-black text-white mb-8 font-playfair tracking-tight leading-[1.1]">
                         {title}
                     </h1>
 
                     {subtitle && (
-                        <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto font-inter font-light leading-relaxed">
+                        <p className="text-lg md:text-2xl text-white/80 max-w-3xl mx-auto font-inter font-light leading-relaxed mb-10">
                             {subtitle}
                         </p>
+                    )}
+
+                    {cta && (
+                        <div className="mt-4 flex justify-center">
+                            {cta.href ? (
+                                <Link
+                                    href={cta.href}
+                                    className="px-12 py-5 bg-brand-pink text-white rounded-full font-bold text-lg hover:bg-brand-pink-dark transition-all transform hover:scale-105 shadow-2xl shadow-brand-pink/30"
+                                >
+                                    {cta.label}
+                                </Link>
+                            ) : (
+                                <button
+                                    onClick={cta.onClick}
+                                    className="px-12 py-5 bg-brand-pink text-white rounded-full font-bold text-lg hover:bg-brand-pink-dark transition-all transform hover:scale-105 shadow-2xl shadow-brand-pink/30"
+                                >
+                                    {cta.label}
+                                </button>
+                            )}
+                        </div>
                     )}
                 </motion.div>
             </div>

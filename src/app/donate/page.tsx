@@ -1,42 +1,23 @@
 import { constructMetadata } from "@/lib/seo";
-import PageHero from "@/components/sections/PageHero";
-import ContactDetails from "@/components/sections/ContactDetails";
-import ContactForm from "@/components/sections/ContactForm";
-import VolunteerSection from "@/components/sections/VolunteerSection";
-import MapEmbed from "@/components/sections/MapEmbed";
+import DonateHero from "@/components/sections/DonateHero";
+import BankDetails from "@/components/sections/BankDetails";
+import DonationUtilisation from "@/components/sections/DonationUtilisation";
 import CTABanner from "@/components/sections/CTABanner";
 
 export const metadata = constructMetadata({
-    title: 'Contact Us',
-    description: 'Get in touch with Yuva Ekta India Foundation for donations, volunteering, CSR partnerships, or media enquiries. Call, email, or fill our contact form.',
+    title: "Donate to Yuva Ekta foundation - 80G Tax Exemption",
+    description: "Support Yuva Ekta India Foundation's work in Gurugram. Your donations provide education, healthcare, and nutrition to those in need. 100% tax-exempt under Section 80G.",
 });
 
 export default function DonatePage() {
     return (
         <main className="min-h-screen bg-brand-offwhite/30">
 
-            <PageHero
-                title="Get in Touch"
-                subtitle="Whether you want to donate, volunteer, partner on CSR, or simply know more. We'd love to hear from you."
-                imageUrl="/campaign/yuva_ekta_03.jpeg"
-                breadcrumb={[
-                    { label: "Home", href: "/" },
-                    { label: "Contact" }
-                ]}
-            />
+            <DonateHero />
 
-            <section className="py-24">
-                <div className="container">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start max-w-6xl mx-auto">
-                        <ContactDetails />
-                        <ContactForm />
-                    </div>
-                </div>
-            </section>
+            <BankDetails />
 
-            <VolunteerSection />
-
-            <MapEmbed />
+            <DonationUtilisation />
 
             <CTABanner />
         </main>

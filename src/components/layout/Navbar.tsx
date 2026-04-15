@@ -63,6 +63,7 @@ export default function Navbar() {
                             src="/yuva-ekta-logo.jpg"
                             alt="Yuva Ekta"
                             fill
+                            sizes="48px"
                             className="object-contain"
                         />
                     </div>
@@ -111,39 +112,49 @@ export default function Navbar() {
 
                 {/* Mobile Toggle */}
                 <button
-                    className="md:hidden p-2 transition-colors relative z-50"
+                    className="md:hidden p-2 transition-colors relative z-[110]"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                 >
                     {isMobileMenuOpen ? (
-                        <X size={24} className="text-gray-900" />
+                        <X size={24} className="text-gray-900 font-bold" />
                     ) : (
                         <Menu size={24} className={cn(isDarkText ? "text-gray-900" : "text-white")} />
                     )}
                 </button>
             </div>
+        </nav>
 
-            {/* Mobile Menu */}
-            <div
-                className={cn(
-                    "fixed inset-0 bg-white z-40 flex flex-col transition-all duration-500 ease-out md:hidden",
-                    isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
-                )}
-            >
-                {/* Mobile Menu Header */}
-                <div className="flex items-center gap-3 px-6 pt-6 pb-4 border-b border-brand-brown/5">
-                    <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gray-100">
-                        <Image
-                            src="/yuva-ekta-logo.jpg"
-                            alt="Yuva Ekta"
-                            fill
-                            className="object-contain"
-                        />
+        {/* Mobile Menu - Moved out of <nav> for full-screen fixed positioning */}
+        <div
+            className={cn(
+                "fixed inset-0 bg-white z-[100] flex flex-col transition-all duration-500 ease-out md:hidden",
+                isMobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 invisible"
+            )}
+        >
+                <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-brand-brown/5">
+                    <div className="flex items-center gap-3">
+                        <div className="relative w-10 h-10 rounded-full overflow-hidden border border-gray-100">
+                            <Image
+                                src="/yuva-ekta-logo.jpg"
+                                alt="Yuva Ekta"
+                                fill
+                                sizes="40px"
+                                className="object-contain"
+                            />
+                        </div>
+                        <div>
+                            <p className="font-black font-playfair text-base text-gray-900 leading-none">YUVA EKTA</p>
+                            <p className="text-[9px] uppercase tracking-widest font-bold text-brand-pink mt-0.5">India Foundation</p>
+                        </div>
                     </div>
-                    <div>
-                        <p className="font-black font-playfair text-base text-gray-900 leading-none">YUVA EKTA</p>
-                        <p className="text-[9px] uppercase tracking-widest font-bold text-brand-pink mt-0.5">India Foundation</p>
-                    </div>
+                    <button
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="p-2 -mr-2 text-gray-400 hover:text-gray-900 transition-colors"
+                        aria-label="Close menu"
+                    >
+                        <X size={24} />
+                    </button>
                 </div>
 
                 {/* Mobile Nav Links */}
@@ -196,8 +207,7 @@ export default function Navbar() {
                         80G Tax Receipts • Secure Payments
                     </p>
                 </div>
-            </div>
-        </nav>
+        </div>
         </>
     );
 }

@@ -22,6 +22,8 @@ export default function AboutTeaser() {
                                 src="/campaign/yuva_ekta_01.jpeg"
                                 alt="Balram Kumar with community"
                                 fill
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                                quality={60}
                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-brown/60 to-transparent" />
@@ -64,7 +66,7 @@ export default function AboutTeaser() {
                             transition={{ delay: 0.1 }}
                             className="text-4xl md:text-5xl font-black text-gray-900 mb-8 leading-tight font-playfair"
                         >
-                            A Community That Believes in Every Child
+                            Yuva Ekta India Foundation: Top NGO in Gurugram
                         </motion.h2>
 
                         <motion.div
@@ -75,11 +77,20 @@ export default function AboutTeaser() {
                             className="space-y-6 text-brand-brown/80 leading-relaxed"
                         >
                             <p>
-                                Yuva Ekta India Foundation is a youth-led, community-focused organisation
+                                <strong>Yuva Ekta India Foundation</strong> is a youth-led, community-focused NGO based in Gurugram,
                                 registered under the Haryana Registration and Regulation of Societies Act, 2012.
-                                We work in the villages and urban pockets of Gurugram reaching the children,
-                                women, and families that formal systems leave behind.
+                                We deliver direct impact in <strong>remedial education</strong>, <strong>healthcare</strong>,
+                                and <strong>women empowerment</strong> across Sohna block and rural NCR.
                             </p>
+                            <div className="bg-brand-pink/5 p-6 rounded-2xl border border-brand-pink/10 space-y-3">
+                                <h3 className="text-sm font-bold uppercase tracking-wider text-brand-pink">Key Impact Highlights</h3>
+                                <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                                    <li className="flex items-center gap-2">✅ 1000+ Children Educated</li>
+                                    <li className="flex items-center gap-2">✅ 100+ Malnourished Children Fed</li>
+                                    <li className="flex items-center gap-2">✅ 50+ Women Livelihoods Created</li>
+                                    <li className="flex items-center gap-2">✅ 12A & 80G Certified NGO</li>
+                                </ul>
+                            </div>
                             <p>
                                 Founded on 21 November 2018 by Mr. Balram Kumar - a social worker mentored and trained by
                                 <strong> Dr. Kiran Bedi</strong>, India's first female IPS officer. Our foundation has grown from
@@ -117,6 +128,8 @@ export default function AboutTeaser() {
                                                 src={src}
                                                 alt={`volunteer ${i + 1}`}
                                                 fill
+                                                sizes="40px"
+                                                quality={60}
                                                 className="object-cover"
                                             />
                                         </div>

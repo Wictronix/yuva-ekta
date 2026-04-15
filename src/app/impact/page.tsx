@@ -7,8 +7,8 @@ import ImpactGallery from "@/components/sections/ImpactGallery";
 import CTABanner from "@/components/sections/CTABanner";
 
 export const metadata = constructMetadata({
-    title: 'Our Impact',
-    description: 'See the real-world impact of your support. 1,000+ children educated, 100+ women empowered, and daily nutrition for those in need.',
+    title: "Our Impact | Yuva Ekta foundation Gurugram",
+    description: "Discover the measurable change Yuva Ekta foundation has brought to 1000+ children and families in Gurugram through education and nutrition. Verified 80G NGO.",
 });
 
 export default function ImpactPage() {

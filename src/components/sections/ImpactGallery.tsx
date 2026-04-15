@@ -36,6 +36,8 @@ export default function ImpactGallery() {
                                 alt={img.alt}
                                 width={800}
                                 height={600}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                quality={75}
                                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-brand-brown/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">

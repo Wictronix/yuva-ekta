@@ -21,6 +21,8 @@ export default function HeroSection({
                     alt="Hero Background"
                     fill
                     priority
+                    sizes="100vw"
+                    quality={60}
                     className="object-cover brightness-[0.45] contrast-[1.1] scale-105"
                 />
             </div>
@@ -45,8 +47,8 @@ export default function HeroSection({
                     </motion.span>
 
                     <h1 className="text-4xl sm:text-7xl lg:text-8xl font-black mb-8 sm:mb-10 leading-[1.1] sm:leading-[1.05] tracking-tight text-white font-playfair drop-shadow-2xl">
-                        Empowering <span className="italic text-brand-pink underline decoration-white/20 underline-offset-8">Communities</span>,<br />
-                        One Life at a Time
+                        Yuva Ekta: <span className="italic text-brand-pink underline decoration-white/20 underline-offset-8">NGO in Gurugram</span><br />
+                        Empowering Communities
                     </h1>
 
                     <p className="text-base sm:text-xl text-white/95 max-w-2xl mx-auto mb-10 sm:mb-16 leading-relaxed font-inter font-light">
