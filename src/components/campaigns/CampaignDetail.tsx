@@ -14,7 +14,7 @@ import { ShoppingBag, Heart, ShieldCheck, Landmark, LockKeyhole, ChevronRight } 
 
 export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
   const {
-    openDonationModal,
+    openDonationModal, 
     isOpen: isModalOpen,
     getCampaignCartTotal,
     getTotalItems
