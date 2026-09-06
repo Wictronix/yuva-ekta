@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { formatCurrency } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowUpRight, TrendingUp, HandHeart, RefreshCw } from "lucide-react";
+import Link from "next/link";
 
 export const revalidate = 0; // Always dynamic
 
@@ -21,8 +22,8 @@ export default async function AdminDashboard() {
     supabase.from("subscriptions").select("plan_amount, status").eq("status", "active")
   ]);
 
-  const totalRaised = (donations as any[] || []).reduce((acc, curr) => acc + curr.amount, 0);
-  const monthlyRecurring = (subscriptions as any[] || []).reduce((acc, curr) => acc + curr.plan_amount, 0);
+  const totalRaised = (donations || []).reduce((acc, curr) => acc + curr.amount, 0);
+  const monthlyRecurring = (subscriptions || []).reduce((acc, curr) => acc + curr.plan_amount, 0);
 
   return (
     <div className="max-w-6xl space-y-8">
@@ -83,12 +84,12 @@ export default async function AdminDashboard() {
          <p className="text-brand-brown/60 mb-6">Manage all data from the sidebar sections.</p>
          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
              {/* Example quick actions */}
-             <a href="/admin/campaigns" className="p-4 border border-brand-brown/10 rounded-xl hover:border-brand-pink transition-colors font-bold text-sm text-center text-brand-brown">
+             <Link href="/admin/campaigns" className="p-4 border border-brand-brown/10 rounded-xl hover:border-brand-pink transition-colors font-bold text-sm text-center text-brand-brown">
                  Manage Campaigns
-             </a>
-             <a href="/admin/donations" className="p-4 border border-brand-brown/10 rounded-xl hover:border-brand-pink transition-colors font-bold text-sm text-center text-brand-brown">
+             </Link>
+             <Link href="/admin/donations" className="p-4 border border-brand-brown/10 rounded-xl hover:border-brand-pink transition-colors font-bold text-sm text-center text-brand-brown">
                  View Donations
-             </a>
+             </Link>
          </div>
       </div>
     </div>

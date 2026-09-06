@@ -45,19 +45,32 @@ export async function POST(req: Request) {
     }
 
     // 2. Look up the donation/subscription record
-    const supabase = createAdminClient() as any;
+    const supabase = createAdminClient();
     const isSubscription = !!razorpay_subscription_id;
 
-    let donationData: any = null;
-    let findError: any = null;
+    interface VerificationRecord {
+      id: string;
+      status: string;
+      donor_id: string | null;
+      amount?: number;
+      plan_amount?: number;
+      campaign_id: string | null;
+      receipt_url: string | null;
+      receipt_number: string | null;
+      donor: { name: string; email: string; phone?: string } | null;
+      campaign: { id: string; title: string } | null;
+    }
+
+    let donationData: VerificationRecord | null = null;
+    let findError: unknown = null;
 
     if (isSubscription) {
       const { data, error } = await supabase
         .from("subscriptions")
-        .select("id, status, donor_id, plan_amount, campaign_id, receipt_url, receipt_number, donor:donors(*), campaign:campaigns(id, title)")
+        .select("id, status, donor_id, plan_amount, campaign_id, donor:donors(*), campaign:campaigns(id, title)")
         .eq("razorpay_subscription_id", razorpay_subscription_id)
         .single();
-      donationData = data;
+      donationData = data as unknown as VerificationRecord | null;
       findError = error;
     } else {
       const { data, error } = await supabase
@@ -65,7 +78,7 @@ export async function POST(req: Request) {
         .select("id, status, donor_id, amount, campaign_id, receipt_url, receipt_number, donor:donors(*), campaign:campaigns(id, title)")
         .eq("razorpay_order_id", razorpay_order_id)
         .single();
-      donationData = data;
+      donationData = data as unknown as VerificationRecord | null;
       findError = error;
     }
 
@@ -77,17 +90,18 @@ export async function POST(req: Request) {
       );
     }
 
-    const d = donationData as any;
-    const donationAmount = isSubscription ? d.plan_amount : d.amount;
+    const d = donationData;
+    const donationAmount = Number((isSubscription ? d.plan_amount : d.amount) || 0);
     let receiptUrl = d.receipt_url;
-    const alreadyProcessed = (d.status === "captured" || d.status === "active") && receiptUrl;
+    const isAlreadyCaptured = d.status === "captured" || d.status === "active";
+    const hasReceipt = Boolean(receiptUrl);
 
-    // 3. IMMEDIATELY update the DB status (before anything else can fail)
-    if (!alreadyProcessed) {
+    // 3. Update DB status and increment campaign amount ONLY IF not already captured
+    if (!isAlreadyCaptured) {
       if (isSubscription) {
         await supabase
           .from("subscriptions")
-          .update({ status: "active", razorpay_payment_id })
+          .update({ status: "active" })
           .eq("id", d.id);
       } else {
         await supabase
@@ -105,16 +119,13 @@ export async function POST(req: Request) {
       }
     }
 
-    // 4. Generate receipt PDF + upload to R2 + send email
+    // 4. Generate receipt PDF + upload to R2 + send email IF not already done
     // We must await this block so Vercel doesn't kill the serverless function,
     // but the try/catch ensures it won't break the client response if it fails.
-    if (!alreadyProcessed) {
+    if (!hasReceipt) {
       try {
         const { data: rpcData } = await supabase.rpc("generate_receipt_number");
         const receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
-
-        receiptUrl = d.receipt_url || null;
-        let pdfSuccess = false;
 
         try {
           console.log("Attempting to generate PDF for", receiptNumber);
@@ -132,43 +143,45 @@ export async function POST(req: Request) {
           console.log("PDF generated, attempting to upload to R2...");
           const r2Key = `receipts/${receiptNumber}.pdf`;
           receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, "application/pdf");
-          pdfSuccess = true;
           console.log("PDF uploaded to R2 successfully at", receiptUrl);
 
-          // Save receipt URL & number back to DB
-          const table = isSubscription ? "subscriptions" : "donations";
-          await supabase
-            .from(table)
-            .update({ receipt_url: receiptUrl, receipt_number: receiptNumber })
-            .eq("id", d.id);
-            
+          // Save receipt URL & number back to DB for donations
+          if (!isSubscription) {
+            await supabase
+              .from("donations")
+              .update({ receipt_url: receiptUrl, receipt_number: receiptNumber })
+              .eq("id", d.id);
+          }
         } catch (pdfErr) {
           console.error("PDF Generation or R2 Upload FAILED:", pdfErr);
           // We continue to send the email anyway!
         }
 
-        try {
-          console.log("Attempting to send email via Resend to", d.donor.email);
-          const resend = getResend();
-          await resend.emails.send({
-            from: `Yuva Ekta <${EMAIL_FROM}>`,
-            replyTo: EMAIL_REPLY_TO,
-            to: [d.donor.email],
-            subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
-            react: (
-              <DonationReceiptEmail
-                donorName={d.donor?.name || "Donor"}
-                amount={Number(donationAmount)}
-                date={new Date().toISOString()}
-                receiptNumber={receiptNumber}
-                receiptUrl={receiptUrl || ""}
-                campaignName={d.campaign?.title}
-              />
-            ),
-          });
-          console.log(`Receipt emailed successfully: ${receiptNumber} → ${d.donor.email}`);
-        } catch (emailErr) {
-          console.error("Resend Email FAILED:", emailErr);
+        const recipientEmail = d.donor?.email;
+        if (recipientEmail) {
+          try {
+            console.log("Attempting to send email via Resend to", recipientEmail);
+            const resend = getResend();
+            await resend.emails.send({
+              from: `Yuva Ekta <${EMAIL_FROM}>`,
+              replyTo: EMAIL_REPLY_TO,
+              to: [recipientEmail],
+              subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
+              react: (
+                <DonationReceiptEmail
+                  donorName={d.donor?.name || "Donor"}
+                  amount={Number(donationAmount)}
+                  date={new Date().toISOString()}
+                  receiptNumber={receiptNumber}
+                  receiptUrl={receiptUrl || ""}
+                  campaignName={d.campaign?.title}
+                />
+              ),
+            });
+            console.log(`Receipt emailed successfully: ${receiptNumber} → ${recipientEmail}`);
+          } catch (emailErr) {
+            console.error("Resend Email FAILED:", emailErr);
+          }
         }
       } catch (outerErr) {
         console.error("Failed in background processing step:", outerErr);
@@ -186,10 +199,11 @@ export async function POST(req: Request) {
         receiptUrl: receiptUrl ?? null,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Verify Payment Error:", error);
+    const message = error instanceof Error ? error.message : "Payment verification failed";
     return NextResponse.json(
-      { error: error.message || "Payment verification failed" },
+      { error: message },
       { status: 500 }
     );
   }

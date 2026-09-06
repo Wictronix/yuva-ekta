@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, ShieldCheck, Heart, MapPin, Users } from "lucide-react";
+import { ChevronRight, ShieldCheck, MapPin, Users } from "lucide-react";
 
 interface CampaignsHeroProps {
     title: string;

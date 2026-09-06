@@ -1,10 +1,9 @@
 "use client";
 
-import { SITE, NAV_LINKS, FOCUS_AREAS } from "@/lib/constants";
+import { SITE, NAV_LINKS } from "@/lib/constants";
 import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin, Heart, ShieldCheck, ExternalLink, Landmark } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 import { usePathname } from "next/navigation";
 
@@ -62,7 +61,7 @@ export default function Footer() {
                         <div>
                             <h4 className="font-playfair font-bold text-xl mb-6 text-white capitalize">Our Mission</h4>
                             <p className="text-sm text-white/70 leading-relaxed font-inter font-light">
-                                A registered NGO in Gurugram delivering free education, digital literacy, and women's livelihood to families that formal systems leave behind.
+                                A registered NGO in Gurugram delivering free education, digital literacy, and women&apos;s livelihood to families that formal systems leave behind.
                             </p>
                         </div>
                         <div className="space-y-4 w-full sm:w-auto">
@@ -140,27 +139,29 @@ export default function Footer() {
                                     { label: "CSR-1 Registered", icon: ShieldCheck },
                                     { label: "NITI Aayog", icon: ExternalLink }
                                 ].map((badge) => (
-                                    <span key={badge.label} className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[10px] font-bold tracking-wider text-white/75">
+                                    <Link key={badge.label} href="/csr" className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-brand-pink/40 rounded-lg text-[10px] font-bold tracking-wider text-white/75 transition-colors">
                                         <badge.icon size={12} className="text-brand-green" />
                                         {badge.label}
-                                    </span>
+                                    </Link>
                                 ))}
                             </div>
+                            <Link href="/csr" className="text-xs text-brand-pink hover:underline font-semibold flex items-center gap-1.5 mt-1">
+                                <span>View CSR & Compliance Reports</span>
+                                <span>→</span>
+                            </Link>
                         </div>
                     </div>
                 </div>
 
-                {/* Status Bar before divider */}
-                <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12 text-[10px] text-white/50 uppercase tracking-[0.2em] font-medium text-center md:text-left">
-                    <p className="text-brand-pink/50 italic lowercase tracking-normal text-sm">Empowering communities since {SITE.founded.split(' ').pop()}</p>
-                    <p>Tax exemption available under Section 80G of IT Act, 1961.</p>
-                </div>
-
                 {/* Final Sub-Footer Divider */}
-                <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
-                    <p className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-medium order-2 md:order-1">
-                        © 2024 {SITE.name}. All Rights Reserved.
+                <div className="pt-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                    <p className="text-brand-pink/60 italic lowercase tracking-normal text-sm">
+                        Empowering communities since {SITE.founded.split(' ').pop()}
                     </p>
+                    <p className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-medium">
+                        © {new Date().getFullYear()} {SITE.name}. All Rights Reserved.
+                    </p>
+                </div>
 
                     {/* Powered By Section */}
                     {/* <div className="flex items-center gap-5 group order-1 md:order-2">
@@ -178,7 +179,6 @@ export default function Footer() {
                             />
                         </Link>
                     </div> */}
-                </div>
             </div>
         </footer>
     );

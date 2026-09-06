@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ShieldCheck, Heart, ArrowRight, Users, GraduationCap, CheckCircle2 } from "lucide-react";
 import { useDonation } from "../providers/DonationProvider";
 
 export default function HeroSection({
@@ -12,75 +12,119 @@ export default function HeroSection({
     imageUrl?: string
 }) {
     const { openDonationModal } = useDonation();
+
     return (
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-brand-brown">
+        <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden bg-brand-brown pt-20 sm:pt-24 lg:pt-28 pb-6 sm:pb-10 lg:pb-14">
             {/* Background with cinematic treatment */}
             <div className="absolute inset-0 z-0">
                 <Image
                     src={imageUrl}
-                    alt="Hero Background"
+                    alt="Yuva Ekta Rural Gurugram Outreach"
                     fill
                     priority
                     sizes="100vw"
-                    quality={60}
-                    className="object-cover brightness-[0.45] contrast-[1.1] scale-105"
+                    quality={75}
+                    className="object-cover brightness-[0.36] contrast-[1.15] scale-105"
                 />
             </div>
 
-            {/* Cinematic Overlay Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-b from-brand-brown/40 via-transparent to-brand-brown/90 z-10" />
+            {/* Cinematic Gradient Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-b from-brand-brown/60 via-brand-brown/25 to-brand-brown/95 z-10" />
+            <div className="absolute -top-32 left-1/4 w-[500px] h-[350px] bg-brand-pink/20 rounded-full blur-[140px] pointer-events-none z-10" />
 
-            <div className="container relative z-20 text-center max-w-5xl py-20 sm:py-32 px-6">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="flex flex-col items-center"
-                >
-                    <motion.span
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.5, duration: 0.8 }}
-                        className="px-6 py-2 rounded-full bg-brand-pink/20 backdrop-blur-md border border-brand-pink/30 text-[10px] sm:text-xs uppercase tracking-[0.3em] font-bold mb-8 sm:mb-10 text-white inline-block shadow-2xl"
+            <div className="container relative z-20 max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-12 items-center">
+                    
+                    {/* Left Column: Text Outside the Card */}
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
+                        className="lg:col-span-7 flex flex-col items-start text-left"
                     >
-                        Recognised by Haryana Government · Reg. No. 03485
-                    </motion.span>
+                        {/* Institutional Trust Pill */}
+                        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[11px] sm:text-xs font-semibold mb-2.5 sm:mb-4 text-white shadow-md">
+                            <ShieldCheck size={14} className="text-brand-pink flex-shrink-0" />
+                            <span>Haryana Govt. Reg. 03485 · 80G Certified · NITI Aayog Verified</span>
+                        </div>
 
-                    <h1 className="text-4xl sm:text-7xl lg:text-8xl font-black mb-8 sm:mb-10 leading-[1.1] sm:leading-[1.05] tracking-tight text-white font-playfair drop-shadow-2xl">
-                        Yuva Ekta: <span className="italic text-brand-pink underline decoration-white/20 underline-offset-8">NGO in Gurugram</span><br />
-                        Empowering Communities
-                    </h1>
+                        {/* Headline */}
+                        <h1 className="text-2xl sm:text-4xl xl:text-5xl 2xl:text-6xl font-black mb-2 sm:mb-3 leading-[1.15] sm:leading-[1.1] tracking-tight text-white font-playfair drop-shadow-2xl">
+                            Empowering Rural Gurugram <br />
+                            <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-brand-pink via-pink-400 to-[#E05C94]">
+                                One Child, One Family
+                            </span>{" "}
+                            at a Time.
+                        </h1>
 
-                    <p className="text-base sm:text-xl text-white/95 max-w-2xl mx-auto mb-10 sm:mb-16 leading-relaxed font-inter font-light">
-                        A grassroot NGO in Gurugram delivering free education, digital skills,
-                        and daily nutrition to the children and families formal systems leave behind.
-                    </p>
+                        {/* Subtitle */}
+                        <p className="text-xs sm:text-base text-white/90 max-w-xl leading-relaxed font-inter font-light">
+                            A grassroots foundation delivering free quality education, digital literacy,
+                            healthcare, and daily nutrition to underprivileged children and families formal systems leave behind.
+                        </p>
+                    </motion.div>
 
-                    <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center w-full max-w-lg">
-                        <button
-                            onClick={() => openDonationModal()}
-                            className="w-full sm:w-auto px-8 sm:px-14 py-4 sm:py-5 bg-brand-pink text-white rounded-full font-bold text-base sm:text-lg transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(191,52,117,0.5)] active:scale-95 text-center"
-                        >
-                            Donate Now
-                        </button>
-                        <Link
-                            href="/projects"
-                            className="w-full sm:w-auto px-8 sm:px-14 py-4 sm:py-5 bg-white/5 backdrop-blur-xl border border-white/30 text-white rounded-full font-bold text-base sm:text-lg transition-all hover:bg-white/10 hover:scale-105 active:scale-95 text-center"
-                        >
-                            See Our Work
-                        </Link>
-                    </div>
-                </motion.div>
+                    {/* Right Column: Unified Card with Metrics on Top & Buttons Below */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
+                        className="lg:col-span-5 w-full max-w-md mx-auto lg:max-w-none"
+                    >
+                        <div className="backdrop-blur-xl bg-black/45 border border-white/20 p-4 sm:p-6 lg:p-7 rounded-2xl sm:rounded-[2rem] shadow-[0_20px_60px_rgba(0,0,0,0.5)] relative overflow-hidden flex flex-col gap-3.5 sm:gap-5">
+                            {/* Subtle top sheen */}
+                            <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
 
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 2, duration: 1 }}
-                    className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 sm:gap-3"
-                >
-                    <span className="text-[8px] sm:text-[10px] uppercase tracking-[0.4em] text-white/60 font-bold">Scroll to Explore</span>
-                    <ChevronDown className="animate-bounce text-white/60 w-4 h-4 sm:w-6 sm:h-6" />
-                </motion.div>
+                            <div className="flex items-center justify-between">
+                                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-brand-pink">
+                                    Verified Impact
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] uppercase font-bold text-white/80 bg-white/10 px-2 py-0.5 rounded-full border border-white/15">
+                                    80G & 12A Certified
+                                </span>
+                            </div>
+
+                            {/* 1. METRICS AT THE TOP */}
+                            <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
+                                <div className="flex flex-col items-center justify-center p-2 sm:p-2.5 rounded-xl bg-white/5 border border-white/10 text-center">
+                                    <Users className="w-4 h-4 text-brand-pink mb-1" />
+                                    <p className="text-sm sm:text-base lg:text-lg font-black text-white leading-tight">50K+</p>
+                                    <p className="text-[9px] sm:text-[10px] text-white/75 font-medium leading-tight mt-0.5">Lives Impacted</p>
+                                </div>
+
+                                <div className="flex flex-col items-center justify-center p-2 sm:p-2.5 rounded-xl bg-white/5 border border-white/10 text-center">
+                                    <GraduationCap className="w-4 h-4 text-brand-pink mb-1" />
+                                    <p className="text-sm sm:text-base lg:text-lg font-black text-white leading-tight">1,000+</p>
+                                    <p className="text-[9px] sm:text-[10px] text-white/75 font-medium leading-tight mt-0.5">Mainstreamed</p>
+                                </div>
+
+                                <div className="flex flex-col items-center justify-center p-2 sm:p-2.5 rounded-xl bg-white/5 border border-white/10 text-center">
+                                    <CheckCircle2 className="w-4 h-4 text-brand-pink mb-1" />
+                                    <p className="text-sm sm:text-base lg:text-lg font-black text-white leading-tight">100%</p>
+                                    <p className="text-[9px] sm:text-[10px] text-white/75 font-medium leading-tight mt-0.5">Tax Relief</p>
+                                </div>
+                            </div>
+
+                            {/* 2. BUTTONS BELOW */}
+                            <div className="flex flex-row sm:flex-row lg:flex-col xl:flex-row gap-2 sm:gap-2.5 pt-0.5">
+                                <button
+                                    onClick={() => openDonationModal()}
+                                    className="flex-1 py-3 sm:py-3.5 bg-brand-pink text-white rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm lg:text-base transition-all duration-300 hover:scale-[1.02] hover:bg-brand-pink-dark shadow-[0_0_25px_rgba(191,52,117,0.45)] active:scale-98 flex items-center justify-center gap-1.5 sm:gap-2 group"
+                                >
+                                    <Heart size={16} className="fill-white group-hover:scale-110 transition-transform" />
+                                    <span>Donate Now</span>
+                                </button>
+                                <Link
+                                    href="/projects"
+                                    className="flex-1 py-3 sm:py-3.5 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-xl sm:rounded-2xl font-bold text-xs sm:text-sm lg:text-base transition-all duration-300 hover:bg-white/20 hover:scale-[1.02] active:scale-98 flex items-center justify-center gap-1.5 group text-center"
+                                >
+                                    <span>Explore Work</span>
+                                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                                </Link>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
             </div>
         </section>
     );

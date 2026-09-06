@@ -52,7 +52,7 @@ export const WAYS_TO_HELP = [
         icon: 'ShoppingBag',
         title: 'Buy Products',
         description: 'Purchase handmade goods crafted by our beneficiaries. Every purchase creates livelihood.',
-        cta: { label: 'Learn More', href: '/contact' },
+        cta: { label: 'Explore Products', href: '/impact' },
     },
     {
         icon: 'Users',
@@ -62,9 +62,46 @@ export const WAYS_TO_HELP = [
     },
 ];
 
-export const PARTNERS = [
-    { name: 'Morning Star Foundation' },
-    { name: 'Srujna Charitable Trust' },
-    { name: 'Taj Gateway Resort' },
-    { name: 'Expert Solutions for Non Profit' },
+export interface Partner {
+    name: string;
+    role: string;
+    category: string;
+    impact: string;
+    initials: string;
+    color: string;
+}
+
+export const PARTNERS: Partner[] = [
+    { 
+        name: 'Morning Star Foundation',
+        role: 'Education Alliance',
+        category: 'Remedial Learning',
+        impact: 'Remediation centres & village libraries',
+        initials: 'MS',
+        color: '#BF3475',
+    },
+    { 
+        name: 'Srujna Charitable Trust',
+        role: 'Livelihood Partner',
+        category: 'Women Empowerment',
+        impact: 'Sewing machines & micro-enterprises',
+        initials: 'SC',
+        color: '#9E3C1B',
+    },
+    { 
+        name: 'Taj Gateway Resort',
+        role: 'Hospitality Partner',
+        category: 'Child Nutrition',
+        impact: '365 days daily fresh meal distribution',
+        initials: 'TG',
+        color: '#6FA656',
+    },
+    { 
+        name: 'Expert Solutions for Non Profit',
+        role: 'Advisory Partner',
+        category: 'Institutional Governance',
+        impact: 'Statutory compliance & audit assurance',
+        initials: 'ES',
+        color: '#593414',
+    },
 ];

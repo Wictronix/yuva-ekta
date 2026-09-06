@@ -2,6 +2,7 @@
 
 import { type Campaign } from "@/lib/supabase/types";
 import { formatCurrency } from "@/lib/utils";
+import { Users, LockKeyhole } from "lucide-react";
 
 interface ProgressWidgetProps {
   campaign: Campaign;
@@ -40,8 +41,8 @@ export default function ProgressWidget({ campaign, onDonateClick }: ProgressWidg
 
       {campaign.target_people && (
         <div className="mb-8 p-4 bg-brand-green-tint/50 rounded-xl flex items-center gap-3 border border-brand-green/20">
-          <div className="w-8 h-8 rounded-full bg-brand-green flex flex-shrink-0 items-center justify-center text-white text-lg">
-            👥
+          <div className="w-8 h-8 rounded-full bg-brand-green flex flex-shrink-0 items-center justify-center text-white">
+            <Users size={16} />
           </div>
           <div>
             <p className="text-xs font-bold uppercase text-brand-green-dark tracking-wider mb-0.5">Target Impact</p>
@@ -58,8 +59,9 @@ export default function ProgressWidget({ campaign, onDonateClick }: ProgressWidg
           Donate to This Campaign
         </button>
 
-        <p className="text-xs text-center text-brand-brown/50 leading-relaxed px-2">
-          🔒 Secure payment via Razorpay. 80G tax receipt sent to your email immediately after payment.
+        <p className="text-xs text-center text-brand-brown/60 leading-relaxed px-2 flex items-center justify-center gap-1.5">
+          <LockKeyhole size={13} className="text-emerald-600 shrink-0" />
+          <span>Secure payment via Razorpay · 80G instant tax receipt</span>
         </p>
       </div>
     </div>

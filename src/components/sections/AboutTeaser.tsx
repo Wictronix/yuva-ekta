@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Award } from "lucide-react";
+import { ArrowRight, Award, CheckCircle2 } from "lucide-react";
 
 export default function AboutTeaser() {
     return (
@@ -26,7 +26,7 @@ export default function AboutTeaser() {
                                 quality={60}
                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-brown/60 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent z-10" />
                         </motion.div>
 
                         {/* Decorative Frame */}
@@ -38,13 +38,13 @@ export default function AboutTeaser() {
                             className="absolute -top-6 -left-6 w-full h-full border-2 border-primary/20 rounded-[2.5rem] z-0"
                         />
 
-                        <div className="absolute bottom-10 left-10 z-20">
-                            <div className="flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-white text-xs font-bold uppercase tracking-widest mb-3">
-                                <Award size={14} className="text-secondary" />
-                                Reg. No. 03485
+                        <div className="absolute bottom-6 left-6 right-6 z-20 p-5 sm:p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 shadow-2xl">
+                            <div className="flex items-center gap-2 px-3 py-1 bg-brand-pink/30 rounded-full border border-brand-pink/40 text-white text-[11px] font-bold uppercase tracking-widest mb-2.5 w-fit shadow-sm">
+                                <Award size={13} className="text-brand-pink-tint" />
+                                <span>Reg. No. 03485</span>
                             </div>
-                            <p className="text-white font-playfair text-xl italic font-medium leading-tight">
-                                "Real change happens closest<br />to the ground."
+                            <p className="text-white font-playfair text-lg sm:text-xl italic font-semibold leading-snug drop-shadow-md">
+                                &ldquo;Real change happens closest<br className="hidden sm:inline" /> to the ground.&rdquo;
                             </p>
                         </div>
                     </div>
@@ -84,16 +84,28 @@ export default function AboutTeaser() {
                             </p>
                             <div className="bg-brand-pink/5 p-6 rounded-2xl border border-brand-pink/10 space-y-3">
                                 <h3 className="text-sm font-bold uppercase tracking-wider text-brand-pink">Key Impact Highlights</h3>
-                                <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                                    <li className="flex items-center gap-2">✅ 1000+ Children Educated</li>
-                                    <li className="flex items-center gap-2">✅ 100+ Malnourished Children Fed</li>
-                                    <li className="flex items-center gap-2">✅ 50+ Women Livelihoods Created</li>
-                                    <li className="flex items-center gap-2">✅ 12A & 80G Certified NGO</li>
+                                <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2.5 text-sm">
+                                    <li className="flex items-center gap-2 text-brand-brown">
+                                        <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0" />
+                                        <span>1,000+ Children Educated</span>
+                                    </li>
+                                    <li className="flex items-center gap-2 text-brand-brown">
+                                        <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0" />
+                                        <span>100+ Malnourished Children Fed</span>
+                                    </li>
+                                    <li className="flex items-center gap-2 text-brand-brown">
+                                        <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0" />
+                                        <span>50+ Women Livelihoods Created</span>
+                                    </li>
+                                    <li className="flex items-center gap-2 text-brand-brown">
+                                        <CheckCircle2 size={16} className="text-emerald-600 flex-shrink-0" />
+                                        <span>12A & 80G Certified NGO</span>
+                                    </li>
                                 </ul>
                             </div>
                             <p>
                                 Founded on 21 November 2018 by Mr. Balram Kumar - a social worker mentored and trained by
-                                <strong> Dr. Kiran Bedi</strong>, India's first female IPS officer. Our foundation has grown from
+                                <strong> Dr. Kiran Bedi</strong>, India&apos;s first female IPS officer. Our foundation has grown from
                                 a handful of children in a single room to a multi-project NGO serving over 1,000 lives.
                             </p>
                         </motion.div>

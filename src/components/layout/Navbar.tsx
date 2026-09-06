@@ -3,17 +3,18 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { NAV_LINKS, SITE } from "@/lib/constants";
-import { Menu, X, Home, Info, Megaphone, Target } from "lucide-react";
+import { NAV_LINKS } from "@/lib/constants";
+import { Menu, X, Home, Info, Megaphone, Target, Building2, Heart, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDonation } from "../providers/DonationProvider";
 import { usePathname } from "next/navigation";
 
-const NAV_ICONS: Record<string, any> = {
+const NAV_ICONS: Record<string, LucideIcon> = {
   Home,
   About: Info,
   Campaigns: Megaphone,
   Projects: Target,
+  CSR: Building2,
 };
 
 export default function Navbar() {
@@ -26,7 +27,7 @@ export default function Navbar() {
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
+            setIsScrolled(window.scrollY > 40);
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
@@ -52,8 +53,10 @@ export default function Navbar() {
         <>
         <nav
             className={cn(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-                isScrolled || !isHomePage ? "bg-white/95 backdrop-blur-md shadow-md py-3 border-b border-brand-brown/5" : "bg-transparent py-5"
+                "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+                isScrolled || !isHomePage
+                    ? "bg-white/95 backdrop-blur-md shadow-sm py-3 border-b border-brand-brown/5"
+                    : "bg-gradient-to-b from-black/60 via-black/20 to-transparent py-5"
             )}
         >
             <div className="container flex items-center justify-between">
@@ -89,24 +92,27 @@ export default function Navbar() {
                         <Link
                             key={link.label}
                             href={link.href}
-                            className={cn(
-                                "font-bold text-sm transition-all hover:text-brand-pink",
-                                isDarkText ? "text-brand-brown/80" : "text-white/90"
-                            )}
+                            className="font-bold text-sm transition-all hover:text-brand-pink"
                         >
-                            {link.label}
+                            <span className={cn(
+                                "transition-colors",
+                                isDarkText ? "text-brand-brown/90 hover:text-brand-pink" : "text-white hover:text-brand-pink drop-shadow-sm"
+                            )}>
+                                {link.label}
+                            </span>
                         </Link>
                     ))}
                     <button
                         onClick={() => openDonationModal()}
                         className={cn(
-                            "px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-md",
+                            "px-6 py-2.5 rounded-full text-sm font-bold transition-all shadow-md flex items-center gap-2",
                             isDarkText
                                 ? "bg-brand-pink text-white hover:bg-brand-pink-dark shadow-brand-pink/20 hover:shadow-brand-pink/40"
-                                : "bg-white text-brand-brown hover:bg-brand-offwhite"
+                                : "bg-white text-brand-pink hover:bg-brand-pink hover:text-white shadow-lg"
                         )}
                     >
-                        Donate Now
+                        <Heart size={15} className="fill-current" />
+                        <span>Donate Now</span>
                     </button>
                 </div>
 
@@ -199,9 +205,10 @@ export default function Navbar() {
                             setIsMobileMenuOpen(false);
                             openDonationModal();
                         }}
-                        className="w-full py-4 bg-brand-pink text-white rounded-2xl text-base font-bold shadow-xl shadow-brand-pink/20 hover:bg-brand-pink-dark transition-all active:scale-[0.98]"
+                        className="w-full py-4 bg-brand-pink text-white rounded-2xl text-base font-bold shadow-xl shadow-brand-pink/20 hover:bg-brand-pink-dark transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                     >
-                        ❤️ Donate Now
+                        <Heart size={18} className="fill-white" />
+                        <span>Donate Now</span>
                     </button>
                     <p className="text-center text-xs text-brand-brown/40 font-bold">
                         80G Tax Receipts • Secure Payments

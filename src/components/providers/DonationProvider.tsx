@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, useMemo } from "react";
+import React, { createContext, useContext, useState, ReactNode, useMemo, useCallback } from "react";
 import DonationModal from "@/components/donation/DonationModal";
 
 interface DonationModalOptions {
@@ -36,7 +36,23 @@ export function DonationProvider({ children }: { children: ReactNode }) {
   const [modalOptions, setModalOptions] = useState<DonationModalOptions>({});
   const [cart, setCart] = useState<Record<string, CartItem>>({});
 
-  const openDonationModal = (options?: DonationModalOptions) => {
+  const getCampaignCartTotal = useCallback((campaignId: string) => {
+    return Object.values(cart)
+      .filter(item => item.campaignId === campaignId)
+      .reduce((sum, item) => sum + (item.productPrice * item.quantity), 0);
+  }, [cart]);
+
+  const getGlobalCartTotal = useCallback(() => {
+    return Object.values(cart)
+      .reduce((sum, item) => sum + (item.productPrice * item.quantity), 0);
+  }, [cart]);
+
+  const getTotalItems = useCallback(() => {
+    return Object.values(cart)
+      .reduce((sum, item) => sum + item.quantity, 0);
+  }, [cart]);
+
+  const openDonationModal = useCallback((options?: DonationModalOptions) => {
     // If no direct amount is provided, use the global cart total as a fallback
     const globalTotal = getGlobalCartTotal();
     const finalOptions = {
@@ -45,13 +61,13 @@ export function DonationProvider({ children }: { children: ReactNode }) {
     };
     setModalOptions(finalOptions);
     setIsOpen(true);
-  };
+  }, [getGlobalCartTotal]);
 
-  const closeDonationModal = () => {
+  const closeDonationModal = useCallback(() => {
     setIsOpen(false);
-  };
+  }, []);
 
-  const updateCartQuantity = (
+  const updateCartQuantity = useCallback((
     campaignId: string, 
     productIndex: number, 
     productDetails: { name: string, price: number },
@@ -78,23 +94,7 @@ export function DonationProvider({ children }: { children: ReactNode }) {
       
       return newCart;
     });
-  };
-
-  const getCampaignCartTotal = (campaignId: string) => {
-    return Object.values(cart)
-      .filter(item => item.campaignId === campaignId)
-      .reduce((sum, item) => sum + (item.productPrice * item.quantity), 0);
-  };
-
-  const getGlobalCartTotal = () => {
-    return Object.values(cart)
-      .reduce((sum, item) => sum + (item.productPrice * item.quantity), 0);
-  };
-
-  const getTotalItems = () => {
-    return Object.values(cart)
-      .reduce((sum, item) => sum + item.quantity, 0);
-  };
+  }, []);
 
   const contextValue = useMemo(() => ({
     openDonationModal,
@@ -105,7 +105,16 @@ export function DonationProvider({ children }: { children: ReactNode }) {
     getCampaignCartTotal,
     getGlobalCartTotal,
     getTotalItems
-  }), [isOpen, modalOptions, cart]);
+  }), [
+    openDonationModal,
+    closeDonationModal,
+    isOpen,
+    cart,
+    updateCartQuantity,
+    getCampaignCartTotal,
+    getGlobalCartTotal,
+    getTotalItems
+  ]);
 
   return (
     <DonationContext.Provider value={contextValue}>

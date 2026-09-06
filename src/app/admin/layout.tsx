@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Megaphone, Users, HandHeart, CreditCard, LogOut } from "lucide-react";
+import { LayoutDashboard, Megaphone, Users, HandHeart, CreditCard, Inbox, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,7 @@ const ADMIN_NAV = [
   { term: "Donations", href: "/admin/donations", icon: HandHeart },
   { term: "Subscriptions", href: "/admin/subscriptions", icon: CreditCard },
   { term: "Donors", href: "/admin/donors", icon: Users },
+  { term: "Submissions", href: "/admin/submissions", icon: Inbox },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

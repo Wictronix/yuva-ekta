@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import type { CampaignCategory } from "@/lib/supabase/types";
 import CampaignsHero from "@/components/sections/CampaignsHero";
 import CampaignCard from "@/components/campaigns/CampaignCard";
 import { constructMetadata } from "@/lib/seo";
@@ -8,6 +9,7 @@ import CTABanner from "@/components/sections/CTABanner";
 export const metadata = constructMetadata({
   title: "NGO Campaigns in Gurugram | Support Education & Health",
   description: "Join Yuva Ekta foundation campaigns in Gurugram. Support education, healthcare, and women empowerment. All donations are 80G tax-exempt.",
+  pathname: "/campaigns",
 });
 
 export const revalidate = 60;
@@ -19,7 +21,7 @@ export default async function CampaignsList(props: {
   const categoryParam = searchParams?.category;
   const sortParam = searchParams?.sort;
 
-  const supabase = (await createClient()) as any;
+  const supabase = await createClient();
 
   let query = supabase
     .from("campaigns")
@@ -27,7 +29,7 @@ export default async function CampaignsList(props: {
     .neq("status", "archived");
 
   if (categoryParam && categoryParam !== "all") {
-    query = query.eq("category", categoryParam);
+    query = query.eq("category", categoryParam as CampaignCategory);
   }
 
   if (sortParam === "urgent") {
@@ -40,7 +42,7 @@ export default async function CampaignsList(props: {
     query = query.order("created_at", { ascending: false });
   }
 
-  const { data: campaigns, error } = await query;
+  const { data: campaigns } = await query;
 
   return (
     <main className="min-h-screen bg-brand-offwhite/30">
@@ -96,7 +98,7 @@ export default async function CampaignsList(props: {
               <div className="w-20 h-20 bg-brand-pink/10 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">🌱</div>
               <h3 className="text-2xl font-black font-playfair text-brand-brown mb-4">No Campaigns Found</h3>
               <p className="text-brand-brown/70 leading-relaxed mb-8">
-                We couldn't find any campaigns matching this filter. Browse all campaigns or check back soon - new campaigns are added regularly.
+                We couldn&apos;t find any campaigns matching this filter. Browse all campaigns or check back soon - new campaigns are added regularly.
               </p>
               <Link href="/campaigns" className="text-brand-pink font-bold hover:underline decoration-2 underline-offset-4">
                 View All Campaigns
@@ -104,7 +106,7 @@ export default async function CampaignsList(props: {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {campaigns.map((campaign: any) => (
+              {campaigns.map((campaign) => (
                 <CampaignCard key={campaign.id} campaign={campaign} />
               ))}
             </div>

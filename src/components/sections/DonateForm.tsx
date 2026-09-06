@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Image from "next/image";
-import { CreditCard, Landmark, QrCode, ShieldCheck, Heart } from "lucide-react";
+import { ShieldCheck, Heart } from "lucide-react";
 
 const presets = ["500", "1000", "2500", "5000"];
 

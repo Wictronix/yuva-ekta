@@ -31,16 +31,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing filename or content type" }, { status: 400 });
     }
 
-    // 2. Generate unique key in 'campaigns' folder within 'yuva-ekta-assets' bucket
+    // 2. Generate unique key in 'images' folder within 'yuva-ekta-assets' bucket
     const uniqueId = Date.now().toString(36) + Math.random().toString(36).substring(2);
     const safeFilename = filename.replace(/[^a-zA-Z0-9.\-_]/g, "");
-    const key = `campaigns/${uniqueId}-${safeFilename}`;
+    const key = `images/${uniqueId}-${safeFilename}`;
 
     // 3. Generate presigned URL
     const { uploadUrl, publicUrl } = await getPresignedUploadUrl(BUCKET_ASSETS, key, contentType);
 
     return NextResponse.json({ uploadUrl, publicUrl });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Upload URL generation error:", error);
     return NextResponse.json(
       { error: "Failed to generate upload URL" },

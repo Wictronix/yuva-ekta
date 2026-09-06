@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { type Campaign } from "@/lib/supabase/types";
 import { formatCurrency } from "@/lib/utils";
 import ProgressWidget from "./ProgressWidget";
@@ -9,7 +10,7 @@ import FundingBreakdown from "./FundingBreakdown";
 import ProductGrid from "./ProductGrid";
 import CampaignUpdates from "./CampaignUpdates";
 import { useDonation } from "@/components/providers/DonationProvider";
-import { ShoppingBag, Heart } from "lucide-react";
+import { ShoppingBag, Heart, ShieldCheck, Landmark, LockKeyhole, ChevronRight } from "lucide-react";
 
 export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
   const {
@@ -35,17 +36,20 @@ export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
   };
 
   // Build section list based on campaign data
-  const sections: { id: string; label: string }[] = [];
-  if (campaign.products && campaign.products.length > 0) {
-    sections.push({ id: "products", label: "Products" });
-  }
-  if (campaign.funding_breakdown && campaign.funding_breakdown.length > 0) {
-    sections.push({ id: "funding", label: "How It's Used" });
-  }
-  sections.push({ id: "description", label: "Description" });
-  if (campaign.updates && campaign.updates.length > 0) {
-    sections.push({ id: "updates", label: "Updates" });
-  }
+  const sections: { id: string; label: string }[] = useMemo(() => {
+    const list: { id: string; label: string }[] = [];
+    if (campaign.products && campaign.products.length > 0) {
+      list.push({ id: "products", label: "Products" });
+    }
+    if (campaign.funding_breakdown && campaign.funding_breakdown.length > 0) {
+      list.push({ id: "funding", label: "How It's Used" });
+    }
+    list.push({ id: "description", label: "Description" });
+    if (campaign.updates && campaign.updates.length > 0) {
+      list.push({ id: "updates", label: "Updates" });
+    }
+    return list;
+  }, [campaign.products, campaign.funding_breakdown, campaign.updates]);
 
   // Scroll spy for active section
   useEffect(() => {
@@ -67,7 +71,7 @@ export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [sections]);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -87,35 +91,55 @@ export default function CampaignDetail({ campaign }: { campaign: Campaign }) {
             src={campaign.cover_image_url}
             alt={campaign.title}
             fill
-            className="object-cover opacity-40 mix-blend-overlay"
+            sizes="100vw"
+            quality={75}
+            className="object-cover brightness-[0.38] contrast-[1.1] scale-105"
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-brown via-brand-brown/80 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-brown via-brand-brown/75 to-brand-brown/40 z-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(191,52,117,0.25)_0%,transparent_60%)] z-10 pointer-events-none" />
 
-        <div className="container relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
+        <div className="container relative z-20">
+          <div className="max-w-4xl mx-auto text-center space-y-5">
+            {/* Breadcrumbs */}
+            <nav className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-white/70 mb-5 flex-wrap">
+              <Link href="/" className="hover:text-white transition-colors">Home</Link>
+              <ChevronRight size={12} className="text-white/40" />
+              <Link href="/campaigns" className="hover:text-white transition-colors">Campaigns</Link>
+              <ChevronRight size={12} className="text-white/40" />
+              <span className="text-brand-pink line-clamp-1 max-w-[240px]">{campaign.title}</span>
+            </nav>
+
+            {/* Category Tag */}
             {campaign.category && (
-              <span className="inline-block bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.2em] shadow-xl">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-pink/20 backdrop-blur-md border border-brand-pink/30 text-white text-xs font-bold uppercase tracking-[0.2em] shadow-lg mb-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-pink animate-pulse" />
                 {campaign.category}
               </span>
             )}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black font-playfair text-white leading-tight">
+
+            {/* Title & Short Description */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black font-playfair text-white leading-tight max-w-4xl mx-auto drop-shadow-md">
               {campaign.title}
             </h1>
-            <p className="text-lg md:text-xl text-brand-offwhite/90 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg text-brand-offwhite/90 leading-relaxed max-w-2xl mx-auto font-light">
               {campaign.short_desc}
             </p>
 
-            <div className="flex flex-wrap justify-center gap-4 md:gap-8 pt-8">
-              <div className="flex items-center gap-2 text-white/80 text-sm">
-                <span className="text-brand-green">✅</span> 80G Tax Receipt via Email
+            {/* Modern Lucide Micro-Badges (replacing raw emojis) */}
+            <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 pt-6">
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white text-xs font-medium shadow-sm">
+                <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
+                <span>80G Tax Exemption (Instant Receipt)</span>
               </div>
-              <div className="flex items-center gap-2 text-white/80 text-sm">
-                <span>🏛️</span> Reg. No. 03485
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white text-xs font-medium shadow-sm">
+                <Landmark size={16} className="text-brand-pink shrink-0" />
+                <span>Haryana Govt. Reg. No. 03485</span>
               </div>
-              <div className="flex items-center gap-2 text-white/80 text-sm">
-                <span>🔒</span> Secure Payment via Razorpay
+              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-white text-xs font-medium shadow-sm">
+                <LockKeyhole size={16} className="text-emerald-400 shrink-0" />
+                <span>100% Secure via Razorpay</span>
               </div>
             </div>
           </div>

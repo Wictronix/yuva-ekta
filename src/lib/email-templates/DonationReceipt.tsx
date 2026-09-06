@@ -1,4 +1,4 @@
-import { Html, Head, Body, Container, Text, Section, Heading, Img, Hr } from '@react-email/components';
+import { Html, Head, Body, Container, Text, Section, Heading, Hr } from '@react-email/components';
 import * as React from 'react';
 import { formatCurrency, formatDate } from '../utils';
 

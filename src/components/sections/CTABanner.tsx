@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
 import { useDonation } from "@/components/providers/DonationProvider";
 
 export default function CTABanner() {
@@ -29,7 +30,7 @@ export default function CTABanner() {
                         className="text-lg md:text-xl text-white/90 mb-12 font-inter font-light"
                     >
                         Every rupee you give goes directly to children, women, and families
-                        in Gurugram's villages. Donations are tax-deductible under Section 80G.
+                        in Gurugram&apos;s villages. Donations are tax-deductible under Section 80G.
                     </motion.p>
 
                     <motion.div
@@ -41,9 +42,10 @@ export default function CTABanner() {
                     >
                         <button
                             onClick={() => openDonationModal()}
-                            className="px-8 md:px-12 py-4 md:py-5 bg-white text-brand-green-dark rounded-full font-bold text-base md:text-lg hover:bg-brand-offwhite hover:scale-105 transition-all inline-block whitespace-nowrap shadow-xl"
+                            className="px-8 md:px-12 py-4 md:py-5 bg-white text-brand-green-dark rounded-full font-bold text-base md:text-lg hover:bg-brand-offwhite hover:scale-105 transition-all inline-flex items-center gap-2.5 whitespace-nowrap shadow-xl group"
                         >
-                            Donate Now
+                            <Heart size={20} className="text-brand-pink fill-brand-pink group-hover:scale-110 transition-transform flex-shrink-0" />
+                            <span>Donate Now · 80G Tax Exemption</span>
                         </button>
                     </motion.div>
                 </div>

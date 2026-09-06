@@ -15,7 +15,7 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
     : 0;
 
   return (
-    <div className="desi-card flex flex-col h-full overflow-hidden group p-0 pb-6 bg-white">
+    <div className="flex flex-col h-full overflow-hidden group p-0 pb-6 bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-brand-brown/5 hover:-translate-y-1 transition-all duration-300">
       {/* Cover Image */}
       <Link href={`/campaigns/${campaign.slug}`} className="relative h-56 w-full overflow-hidden block">
         {campaign.cover_image_url ? (
@@ -34,7 +34,7 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
         )}
         
         {campaign.category && (
-          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur text-brand-brown px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm">
+          <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-brand-brown px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm border border-black/5">
             {campaign.category}
           </div>
         )}
@@ -48,7 +48,7 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
               {campaign.title}
             </h3>
           </Link>
-          <p className="text-brand-brown/70 text-sm leading-relaxed line-clamp-2">
+          <p className="text-brand-brown/70 text-sm leading-relaxed line-clamp-2 font-inter">
             {campaign.short_desc}
           </p>
         </div>
@@ -64,12 +64,12 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
           <div className="flex justify-between items-end">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-widest text-brand-brown/60 mb-1">Raised</p>
-              <p className="font-bold text-brand-brown">{formatCurrency(campaign.amount_raised)}</p>
+              <p className="font-bold text-brand-brown text-base">{formatCurrency(campaign.amount_raised)}</p>
             </div>
             {campaign.campaign_goal && (
               <div className="text-right">
                 <p className="text-[10px] font-bold uppercase tracking-widest text-brand-brown/60 mb-1">Goal</p>
-                <p className="font-bold text-brand-brown/75">{formatCurrency(campaign.campaign_goal)}</p>
+                <p className="font-bold text-brand-brown/80 text-base">{formatCurrency(campaign.campaign_goal)}</p>
               </div>
             )}
           </div>
@@ -77,18 +77,18 @@ export default function CampaignCard({ campaign }: CampaignCardProps) {
 
         {/* Target People Note */}
         {campaign.target_people && (
-          <div className="mb-6 pb-6 border-b border-brand-brown/5 text-sm text-brand-brown/70 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-brand-green"></span>
+          <div className="mb-6 pb-6 border-b border-brand-brown/5 text-xs text-brand-brown/70 flex items-center gap-2 font-medium">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
             Reaching {campaign.target_people} people
           </div>
         )}
 
-        <div className="mt-auto">
+        <div className="mt-auto pt-2">
           <Link 
             href={`/campaigns/${campaign.slug}`}
-            className="block w-full py-3.5 bg-brand-pink text-white rounded-xl font-bold text-sm hover:bg-brand-pink-dark transition-colors shadow-md shadow-brand-pink/20 text-center"
+            className="block w-full py-4 bg-brand-pink !text-white rounded-2xl font-black text-sm tracking-wide hover:bg-brand-pink-dark transition-all duration-200 shadow-md shadow-brand-pink/25 hover:shadow-lg hover:shadow-brand-pink/35 text-center active:scale-[0.98]"
           >
-            Donate Now
+            <span className="text-white font-black">Donate Now</span>
           </Link>
         </div>
       </div>

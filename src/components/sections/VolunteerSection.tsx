@@ -1,9 +1,47 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { Users, Heart, Sparkles } from "lucide-react";
 
 export default function VolunteerSection() {
+    const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        skills: "",
+        availability: "",
+    });
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setStatus("submitting");
+        setErrorMessage(null);
+
+        try {
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    type: "volunteer",
+                    ...formData,
+                }),
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.error || "Failed to submit volunteer registration");
+            }
+
+            setStatus("success");
+            setFormData({ name: "", email: "", skills: "", availability: "" });
+        } catch (err: unknown) {
+            setStatus("error");
+            setErrorMessage(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+        }
+    };
+
     return (
         <section className="py-24 bg-brand-green/5 relative overflow-hidden" id="volunteer">
             <div className="container">
@@ -28,10 +66,10 @@ export default function VolunteerSection() {
 
                             <div className="prose prose-lg text-brand-brown/70 font-inter font-light leading-relaxed space-y-6">
                                 <p>
-                                    We welcome volunteers with skills in education, healthcare, technology, graphic design, communications, fundraising, and community outreach. You don't need to be a professional, you need to care.
+                                    We welcome volunteers with skills in education, healthcare, technology, graphic design, communications, fundraising, and community outreach. You don&apos;t need to be a professional, you need to care.
                                 </p>
                                 <p>
-                                    Whether you can give a few hours on a weekend, run a workshop, or support us remotely. We'll find something meaningful for you to do.
+                                    Whether you can give a few hours on a weekend, run a workshop, or support us remotely. We&apos;ll find something meaningful for you to do.
                                 </p>
                             </div>
 
@@ -53,27 +91,73 @@ export default function VolunteerSection() {
                             viewport={{ once: true }}
                             className="bg-white p-10 rounded-[2.5rem] shadow-xl shadow-brand-green/5 border border-brand-green/10"
                         >
-                            <form className="space-y-6">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Full Name *</label>
-                                    <input required type="text" placeholder="Your full name" className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all" />
+                            {status === "success" ? (
+                                <div className="text-center py-8 space-y-4">
+                                    <div className="w-16 h-16 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center mx-auto">
+                                        <Heart size={32} />
+                                    </div>
+                                    <h3 className="text-2xl font-black font-playfair text-brand-brown">Application Received!</h3>
+                                    <p className="text-sm text-brand-brown/70 font-inter max-w-sm mx-auto">
+                                        Thank you for stepping forward. Our community coordination team will reach out to you shortly.
+                                    </p>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Email Address *</label>
-                                    <input required type="email" placeholder="you@example.com" className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Skills / Background</label>
-                                    <textarea rows={3} placeholder="Tell us what you're good at..." className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all resize-none" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Monthly Availability</label>
-                                    <input type="text" placeholder="e.g. 5-10 hours per month" className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all" />
-                                </div>
-                                <button className="w-full bg-brand-green text-white font-bold py-5 rounded-2xl shadow-lg shadow-brand-green/20 transition-all hover:bg-brand-green/90 hover:scale-[1.02] active:scale-95">
-                                    Register as a Volunteer
-                                </button>
-                            </form>
+                            ) : (
+                                <form onSubmit={handleSubmit} className="space-y-6">
+                                    {status === "error" && errorMessage && (
+                                        <div className="p-3 rounded-xl bg-red-50 text-red-700 text-xs font-medium border border-red-200">
+                                            ⚠️ {errorMessage}
+                                        </div>
+                                    )}
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Full Name *</label>
+                                        <input
+                                            required
+                                            type="text"
+                                            placeholder="Your full name"
+                                            value={formData.name}
+                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                            className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all text-sm"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Email Address *</label>
+                                        <input
+                                            required
+                                            type="email"
+                                            placeholder="you@example.com"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                            className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all text-sm"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Skills / Background</label>
+                                        <textarea
+                                            rows={3}
+                                            placeholder="Tell us what you're good at..."
+                                            value={formData.skills}
+                                            onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
+                                            className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all resize-none text-sm"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Monthly Availability</label>
+                                        <input
+                                            type="text"
+                                            placeholder="e.g. 5-10 hours per month"
+                                            value={formData.availability}
+                                            onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
+                                            className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-green/20 transition-all text-sm"
+                                        />
+                                    </div>
+                                    <button
+                                        disabled={status === "submitting"}
+                                        className="w-full bg-brand-green text-white font-bold py-5 rounded-2xl shadow-lg shadow-brand-green/20 transition-all hover:bg-brand-green/90 hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:scale-100 cursor-pointer text-sm"
+                                    >
+                                        {status === "submitting" ? "Submitting Application..." : "Register as a Volunteer"}
+                                    </button>
+                                </form>
+                            )}
                         </motion.div>
                     </div>
                 </div>

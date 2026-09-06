@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createCampaignAction, updateCampaignAction } from "@/app/actions/campaigns";
-import { CampaignInsert, CampaignUpdate } from "@/lib/supabase/types";
+import type { Campaign, CampaignInsert, FundingBreakdownItem, ProductItem, UpdateItem } from "@/lib/supabase/types";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,9 +13,26 @@ import { toast } from "sonner";
 import { Save, ArrowLeft, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ImageUploader from "@/components/admin/ImageUploader";
+
+interface CampaignFormData {
+  title: string;
+  slug: string;
+  category: "education" | "health" | "livelihood" | "environment";
+  status: "active" | "completed" | "archived";
+  short_desc: string;
+  long_desc: string;
+  cover_image_url: string;
+  is_featured: boolean;
+  campaign_goal: number;
+  target_people: number;
+  funding_breakdown: FundingBreakdownItem[];
+  products: ProductItem[];
+  updates: UpdateItem[];
+}
 
 interface CampaignFormProps {
-  initialData?: any;
+  initialData?: Campaign;
 }
 
 export default function CampaignForm({ initialData }: CampaignFormProps) {
@@ -23,7 +40,7 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
   const isEditing = !!initialData;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [formData, setFormData] = useState<Partial<CampaignInsert>>({
+  const [formData, setFormData] = useState<CampaignFormData>({
     title: initialData?.title || "",
     slug: initialData?.slug || "",
     category: initialData?.category || "education",
@@ -39,7 +56,7 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
     updates: initialData?.updates || [],
   });
 
-  const handleChange = (field: keyof CampaignInsert, value: any) => {
+  const handleChange = <K extends keyof CampaignFormData>(field: K, value: CampaignFormData[K]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
@@ -55,12 +72,12 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
   const addFundingRow = () => {
     setFormData(prev => ({
       ...prev,
-      funding_breakdown: [...(prev.funding_breakdown as any[] || []), { label: "", amount: 0, percentage: 0 }]
+      funding_breakdown: [...prev.funding_breakdown, { label: "", amount: 0, percentage: 0 }]
     }));
   };
 
-  const updateFundingRow = (index: number, field: string, value: any) => {
-    const newArr = [...(formData.funding_breakdown as any[])];
+  const updateFundingRow = (index: number, field: keyof FundingBreakdownItem, value: string | number) => {
+    const newArr = [...formData.funding_breakdown];
     newArr[index] = { ...newArr[index], [field]: value };
     setFormData(prev => ({ ...prev, funding_breakdown: newArr }));
   };
@@ -68,19 +85,19 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
   const removeFundingRow = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      funding_breakdown: (prev.funding_breakdown as any[]).filter((_, i) => i !== index)
+      funding_breakdown: prev.funding_breakdown.filter((_, i) => i !== index)
     }));
   };
 
   const addProduct = () => {
     setFormData(prev => ({
       ...prev,
-      products: [...(prev.products as any[] || []), { name: "", impact: "", price: 0, image_url: "" }]
+      products: [...prev.products, { name: "", impact: "", price: 0, image_url: "" }]
     }));
   };
 
-  const updateProduct = (index: number, field: string, value: any) => {
-    const newArr = [...(formData.products as any[])];
+  const updateProduct = (index: number, field: keyof ProductItem, value: string | number) => {
+    const newArr = [...formData.products];
     newArr[index] = { ...newArr[index], [field]: value };
     setFormData(prev => ({ ...prev, products: newArr }));
   };
@@ -88,19 +105,19 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
   const removeProduct = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      products: (prev.products as any[]).filter((_, i) => i !== index)
+      products: prev.products.filter((_, i) => i !== index)
     }));
   };
 
   const addUpdate = () => {
     setFormData(prev => ({
       ...prev,
-      updates: [...(prev.updates as any[] || []), { date: new Date().toISOString().split("T")[0], title: "", body: "", image_url: "" }]
+      updates: [...prev.updates, { date: new Date().toISOString().split("T")[0], title: "", body: "", image_url: "" }]
     }));
   };
 
-  const updateUpdateRow = (index: number, field: string, value: any) => {
-    const newArr = [...(formData.updates as any[])];
+  const updateUpdateRow = (index: number, field: keyof UpdateItem, value: string) => {
+    const newArr = [...formData.updates];
     newArr[index] = { ...newArr[index], [field]: value };
     setFormData(prev => ({ ...prev, updates: newArr }));
   };
@@ -108,7 +125,7 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
   const removeUpdateRow = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      updates: (prev.updates as any[]).filter((_, i) => i !== index)
+      updates: prev.updates.filter((_, i) => i !== index)
     }));
   };
 
@@ -118,18 +135,18 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
     setIsSubmitting(true);
 
     try {
-      if (isEditing) {
-        const res = await updateCampaignAction(initialData.id, formData);
+      if (isEditing && initialData) {
+        const res = await updateCampaignAction(initialData.id, formData as unknown as CampaignInsert);
         if (res.error) throw new Error(res.error);
         toast.success("Campaign updated successfully");
       } else {
-        const res = await createCampaignAction(formData);
+        const res = await createCampaignAction(formData as unknown as CampaignInsert);
         if (res.error) throw new Error(res.error);
         toast.success("Campaign created successfully");
         router.push("/admin/campaigns");
       }
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong.");
+    } catch (err: unknown) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setIsSubmitting(false);
     }
@@ -186,7 +203,7 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-brand-brown">Category</label>
-                <Select value={formData.category as string} onValueChange={(val) => handleChange("category", val)}>
+                <Select value={formData.category as string} onValueChange={(val) => handleChange("category", val as "education" | "health" | "livelihood" | "environment")}>
                   <SelectTrigger className="border-brand-brown/20 focus:ring-brand-pink">
                     <SelectValue />
                   </SelectTrigger>
@@ -200,7 +217,7 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-brand-brown">Status</label>
-                <Select value={formData.status as string} onValueChange={(val) => handleChange("status", val)}>
+                <Select value={formData.status as string} onValueChange={(val) => handleChange("status", val as "active" | "completed" | "archived")}>
                   <SelectTrigger className="border-brand-brown/20 focus:ring-brand-pink">
                     <SelectValue />
                   </SelectTrigger>
@@ -218,20 +235,16 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
               <Input required value={formData.short_desc} onChange={(e) => handleChange("short_desc", e.target.value)} maxLength={160} placeholder="Brief description for cards (max 160 chars)" className="border-brand-brown/20 focus-visible:ring-brand-pink" />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-brand-brown">Cover Image URL</label>
-              <Input value={formData.cover_image_url || ""} onChange={(e) => handleChange("cover_image_url", e.target.value)} placeholder="https://" className="border-brand-brown/20 focus-visible:ring-brand-pink" />
-              {formData.cover_image_url && (
-                <div className="mt-2 w-48 h-28 rounded-lg overflow-hidden border border-brand-brown/10">
-                  <img src={formData.cover_image_url} alt="Cover Preview" className="w-full h-full object-cover" />
-                </div>
-              )}
-            </div>
+            <ImageUploader
+              value={formData.cover_image_url || ""}
+              onChange={(url) => handleChange("cover_image_url", url)}
+              label="Cover Image"
+            />
 
             <div className="flex items-center space-x-2 pt-4 border-t border-brand-brown/10">
               <Checkbox 
                 id="is_featured" 
-                checked={formData.is_featured as boolean} 
+                checked={formData.is_featured} 
                 onCheckedChange={(checked) => handleChange("is_featured", !!checked)}
                 className="data-[state=checked]:bg-brand-pink data-[state=checked]:border-brand-pink" 
               />
@@ -257,7 +270,7 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
               <h3 className="text-lg font-bold font-playfair text-brand-brown">Funding Breakdown</h3>
               
               <div className="space-y-3">
-                {(formData.funding_breakdown as any[] || []).map((item, index) => (
+                {formData.funding_breakdown.map((item, index) => (
                   <div key={index} className="flex items-center gap-3 bg-brand-brown/5 p-3 rounded-lg border border-brand-brown/10">
                     <div className="flex-1 space-y-1">
                       <label className="text-xs font-bold text-brand-brown/60">Label</label>
@@ -286,7 +299,7 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
               <h3 className="text-lg font-bold font-playfair text-brand-brown">Products to Donate</h3>
               
               <div className="grid gap-4 md:grid-cols-2">
-                {(formData.products as any[] || []).map((item, index) => (
+                {formData.products.map((item, index) => (
                   <div key={index} className="space-y-3 bg-brand-brown/5 p-4 rounded-xl border border-brand-brown/10 relative">
                     <Button type="button" variant="ghost" size="icon" onClick={() => removeProduct(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-600 hover:bg-red-50 h-6 w-6">
                       <Trash2 className="w-3 h-3" />
@@ -332,7 +345,7 @@ export default function CampaignForm({ initialData }: CampaignFormProps) {
             <div className="border-t border-brand-brown/10 pt-6 space-y-4">
               <h3 className="text-lg font-bold font-playfair text-brand-brown">Impact Updates</h3>
               <div className="space-y-4">
-                {(formData.updates as any[] || []).map((item, index) => (
+                {formData.updates.map((item, index) => (
                   <div key={index} className="space-y-3 bg-brand-brown/5 p-4 rounded-xl border border-brand-brown/10 relative">
                     <Button type="button" variant="ghost" size="icon" onClick={() => removeUpdateRow(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-600 hover:bg-red-50 h-6 w-6">
                       <Trash2 className="w-3 h-3" />

@@ -39,7 +39,7 @@ export default function HowToHelp() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {WAYS_TO_HELP.map((way, i) => {
-                        const Icon = (Icons as any)[way.icon] as LucideIcon;
+                        const Icon = (Icons as unknown as Record<string, LucideIcon>)[way.icon];
                         const isDonate = way.cta.label === 'Donate Now';
                         return (
                             <motion.div

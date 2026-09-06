@@ -7,6 +7,7 @@ import CTABanner from "@/components/sections/CTABanner";
 export const metadata = constructMetadata({
     title: "Donate to Yuva Ekta foundation - 80G Tax Exemption",
     description: "Support Yuva Ekta India Foundation's work in Gurugram. Your donations provide education, healthcare, and nutrition to those in need. 100% tax-exempt under Section 80G.",
+    pathname: "/donate",
 });
 
 export default function DonatePage() {

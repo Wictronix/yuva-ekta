@@ -33,7 +33,7 @@ export default function RootLayout({
         <SEOHeader />
         <DonationProvider>
           <Navbar />
-          <main>{children}</main>
+          {children}
           <Footer />
         </DonationProvider>
       </body>

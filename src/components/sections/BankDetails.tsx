@@ -72,22 +72,31 @@ export default function BankDetails() {
                                 <h3 className="text-2xl font-black font-playfair text-brand-brown">Scan to Pay (UPI)</h3>
                             </div>
                             
-                            <div className="flex flex-col md:flex-row items-center gap-8">
-                                <div className="bg-white p-4 rounded-3xl shadow-lg shrink-0">
+                            <div className="flex flex-col sm:flex-row items-center gap-8">
+                                <div className="relative bg-white p-3.5 rounded-3xl shadow-xl border border-brand-brown/10 shrink-0 group">
                                     <Image 
-                                        src="/globe.svg" 
-                                        alt="UPI QR" 
-                                        width={160} 
-                                        height={160} 
-                                        className="w-40 h-40 object-contain grayscale opacity-30" 
+                                        src="/qr-square.jpeg" 
+                                        alt="Yuva Ekta India Foundation UPI QR Code" 
+                                        width={180} 
+                                        height={180} 
+                                        className="w-44 h-44 object-contain rounded-2xl" 
                                     />
+                                    <div className="absolute inset-0 bg-brand-pink/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity flex items-center justify-center pointer-events-none">
+                                        <span className="px-3 py-1 bg-white/95 text-brand-pink font-bold text-[10px] uppercase tracking-wider rounded-full shadow-sm">
+                                            Scan with any UPI App
+                                        </span>
+                                    </div>
                                 </div>
-                                <div className="space-y-4 text-center md:text-left">
-                                    <p className="text-brand-brown/60 text-sm leading-relaxed">
-                                        Scan this QR using any UPI app (PhonePe, GPay, Paytm) for quick, secure donations.
+                                <div className="space-y-4 text-center sm:text-left">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-pink/10 text-brand-pink text-xs font-bold uppercase tracking-wider">
+                                        <span>Instant & Zero Processing Fee</span>
+                                    </div>
+                                    <p className="text-brand-brown/70 text-sm leading-relaxed">
+                                        Scan using PhonePe, Google Pay, Paytm, BHIM, or any banking app for instant donations.
                                     </p>
-                                    <div className="p-3 bg-white rounded-xl border border-brand-brown/5 inline-block">
-                                        <p className="text-xs font-bold text-brand-brown">UPI ID: <span className="text-brand-pink select-all">{SITE.upi}</span></p>
+                                    <div className="p-3 bg-white rounded-2xl border border-brand-brown/10 shadow-sm inline-flex flex-col gap-1 w-full sm:w-auto">
+                                        <span className="text-[10px] uppercase font-bold text-brand-brown/50 tracking-wider">Official UPI VPA</span>
+                                        <span className="text-sm font-mono font-bold text-brand-pink select-all">{SITE.upi}</span>
                                     </div>
                                 </div>
                             </div>

@@ -36,7 +36,7 @@ export default function FeaturedProjects() {
                         className="text-brand-brown/70 max-w-2xl font-inter"
                     >
                         Each project targets a specific gap together they address education,
-                        livelihoods, and survival for Gurugram's rural communities.
+                        livelihoods, and survival for Gurugram&apos;s rural communities.
                     </motion.p>
                 </div>
 
@@ -79,9 +79,9 @@ export default function FeaturedProjects() {
                                 </p>
                                 <Link
                                     href={project.href}
-                                    className="inline-flex items-center gap-2 text-brand-pink font-bold uppercase tracking-widest text-xs group/link"
+                                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-pink/10 text-brand-pink hover:bg-brand-pink hover:text-white font-bold text-xs uppercase tracking-wider transition-all duration-200 self-start group/link"
                                 >
-                                    Learn More
+                                    <span>View Project</span>
                                     <ArrowRight size={14} className="transition-transform group-hover/link:translate-x-1" />
                                 </Link>
                             </div>

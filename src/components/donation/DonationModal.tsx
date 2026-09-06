@@ -3,11 +3,60 @@
 import { useState, useEffect } from "react";
 import Script from "next/script";
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatCurrency } from "@/lib/utils";
+import { ShoppingCart, Check, ShieldCheck, AlertCircle } from "lucide-react";
+
+interface RazorpaySuccessResponse {
+  razorpay_payment_id: string;
+  razorpay_order_id?: string;
+  razorpay_signature?: string;
+  razorpay_subscription_id?: string;
+}
+
+interface RazorpayFailureResponse {
+  error: {
+    code: string;
+    description: string;
+    source: string;
+    step: string;
+    reason: string;
+  };
+}
+
+interface RazorpayOptions {
+  key: string;
+  amount?: number;
+  currency: string;
+  name: string;
+  description: string;
+  image: string;
+  order_id?: string;
+  subscription_id?: string;
+  prefill: {
+    name: string;
+    email: string;
+    contact: string;
+  };
+  theme: {
+    color: string;
+  };
+  handler: (response: RazorpaySuccessResponse) => void;
+}
+
+interface RazorpayInstance {
+  open: () => void;
+  on: (event: string, handler: (response: RazorpayFailureResponse) => void) => void;
+}
+
+declare global {
+  interface Window {
+    Razorpay?: new (options: RazorpayOptions) => RazorpayInstance;
+  }
+}
 
 interface DonationModalProps {
   isOpen: boolean;
@@ -17,14 +66,30 @@ interface DonationModalProps {
   defaultAmount?: number;
 }
 
-const PRESET_AMOUNTS = {
-  one_time: [500, 1500, 3000, 5000],
-  monthly: [500, 1000, 2500, 5000],
+interface PresetTier {
+  amount: number;
+  label: string;
+  impact: string;
+}
+
+const PRESET_TIERS: Record<"one_time" | "monthly", PresetTier[]> = {
+  one_time: [
+    { amount: 500, label: "₹500", impact: "Learning Materials" },
+    { amount: 1500, label: "₹1,500", impact: "1 Mo. Nutritious Meals" },
+    { amount: 3000, label: "₹3,000", impact: "Digital Literacy Kit" },
+    { amount: 5000, label: "₹5,000", impact: "Women's Micro-Grant" },
+  ],
+  monthly: [
+    { amount: 500, label: "₹500/mo", impact: "Sponsor 1 Child's Class" },
+    { amount: 1000, label: "₹1,000/mo", impact: "Daily Meals for 2" },
+    { amount: 2500, label: "₹2,500/mo", impact: "Vocational Training" },
+    { amount: 5000, label: "₹5,000/mo", impact: "Classroom Sponsorship" },
+  ],
 };
 
 export default function DonationModal({ isOpen, onClose, campaignId, campaignName, defaultAmount }: DonationModalProps) {
   const [type, setType] = useState<"one_time" | "monthly">("one_time");
-  const [amount, setAmount] = useState<number | "">(defaultAmount || PRESET_AMOUNTS.one_time[1]);
+  const [amount, setAmount] = useState<number | "">(defaultAmount || PRESET_TIERS.one_time[1].amount);
   const [coverFee, setCoverFee] = useState(true);
   const [donorDetails, setDonorDetails] = useState({ name: "", email: "", phone: "" });
   const [isProcessing, setIsProcessing] = useState(false);
@@ -35,7 +100,7 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
     if (defaultAmount) {
       setAmount(defaultAmount);
     } else {
-      setAmount(PRESET_AMOUNTS[type][1]);
+      setAmount(PRESET_TIERS[type][1].amount);
     }
   }, [type, defaultAmount]);
 
@@ -44,10 +109,6 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
   const baseAmount = Number(amount) || 0;
   const fee = coverFee ? Math.round(baseAmount * (feePercent / 100)) : 0;
   const totalAmount = baseAmount + fee;
-
-  // Check if current amount matches a preset
-  const isPreset = PRESET_AMOUNTS[type].includes(baseAmount);
-  const isCartAmount = defaultAmount && defaultAmount > 0 && baseAmount === defaultAmount && !isPreset;
 
   const validateForm = () => {
     if (!amount || amount < 1) return "Minimum donation amount is ₹1";
@@ -88,13 +149,13 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
 
       const { order, subscription, razorpayKeyId } = await res.json();
 
-      const options: any = {
+      const options: RazorpayOptions = {
         key: razorpayKeyId,
         amount: order ? order.amount : undefined,
         currency: "INR",
         name: "Yuva Ekta India Foundation",
         description: campaignName ? `Donation for ${campaignName}` : "General Donation",
-        image: "/images/logo.png",
+        image: "/yuva-ekta-logo.jpg",
         prefill: {
           name: donorDetails.name,
           email: donorDetails.email,
@@ -103,11 +164,13 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
         theme: {
           color: "#BF3475",
         },
-        handler: function (response: any) {
+        handler: function (response: RazorpaySuccessResponse) {
           const params = new URLSearchParams({
             razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
           });
+          if (response.razorpay_signature) {
+            params.append('razorpay_signature', response.razorpay_signature);
+          }
           if (response.razorpay_order_id) {
             params.append('razorpay_order_id', response.razorpay_order_id);
           }
@@ -125,15 +188,19 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
         options.subscription_id = subscription.id;
       }
 
-      const rzp = new (window as any).Razorpay(options);
+      if (!window.Razorpay) {
+        throw new Error("Razorpay SDK is not loaded yet. Please try again in a few moments.");
+      }
 
-      rzp.on("payment.failed", function (response: any) {
+      const rzp = new window.Razorpay(options);
+
+      rzp.on("payment.failed", function (response: RazorpayFailureResponse) {
         setError(response.error.description);
       });
 
       rzp.open();
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An unexpected error occurred");
     } finally {
       setIsProcessing(false);
     }
@@ -159,11 +226,17 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
           {/* Body */}
           <div className="px-5 py-4 overflow-y-auto flex-1 custom-scrollbar">
             <Tabs defaultValue="one_time" onValueChange={(v) => setType(v as "one_time" | "monthly")} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-4 bg-brand-offwhite p-1 rounded-xl h-auto">
-                <TabsTrigger value="one_time" className="rounded-lg py-2 data-[state=active]:bg-white data-[state=active]:text-brand-pink data-[state=active]:shadow-sm font-bold text-sm">
+              <TabsList className="grid w-full grid-cols-2 mb-4 bg-[#F2EDE8] border border-brand-brown/10 p-1.5 rounded-2xl !h-12 group-data-horizontal/tabs:!h-12 gap-1.5 shadow-inner">
+                <TabsTrigger
+                  value="one_time"
+                  className="rounded-xl !h-full py-2 font-bold text-sm text-brand-brown/80 bg-brand-brown/[0.03] hover:bg-brand-brown/[0.07] hover:text-brand-brown transition-all data-[state=active]:bg-white data-[state=active]:text-brand-pink data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-brand-brown/10 data-active:bg-white data-active:text-brand-pink data-active:shadow-sm data-active:border data-active:border-brand-brown/10"
+                >
                   One-time
                 </TabsTrigger>
-                <TabsTrigger value="monthly" className="rounded-lg py-2 data-[state=active]:bg-white data-[state=active]:text-brand-pink data-[state=active]:shadow-sm font-bold text-sm">
+                <TabsTrigger
+                  value="monthly"
+                  className="rounded-xl !h-full py-2 font-bold text-sm text-brand-brown/80 bg-brand-brown/[0.03] hover:bg-brand-brown/[0.07] hover:text-brand-brown transition-all data-[state=active]:bg-white data-[state=active]:text-brand-pink data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-brand-brown/10 data-active:bg-white data-active:text-brand-pink data-active:shadow-sm data-active:border data-active:border-brand-brown/10"
+                >
                   Monthly
                 </TabsTrigger>
               </TabsList>
@@ -171,43 +244,71 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
               <div className="space-y-4">
                 {/* Amount Selection */}
                 <div>
-                  <Label className="text-[10px] font-bold uppercase tracking-wider text-brand-brown/60 mb-2 block">
+                  <Label className="text-[10px] font-bold uppercase tracking-wider text-brand-brown/60 mb-2.5 block">
                     Select Amount
                   </Label>
-                  <div className="grid grid-cols-2 gap-2 mb-3">
-                    {/* Cart total as a preset option (if available and not already a preset) */}
-                    {defaultAmount && defaultAmount > 0 && !PRESET_AMOUNTS[type].includes(defaultAmount) && (
-                      <button
-                        onClick={() => setAmount(defaultAmount)}
-                        className={`py-2.5 rounded-xl font-bold text-sm border transition-all col-span-2 flex items-center justify-center gap-2 ${amount === defaultAmount
-                          ? "border-brand-pink bg-brand-pink/5 text-brand-pink"
-                          : "border-brand-brown/10 text-brand-brown hover:border-brand-pink/30 hover:bg-brand-pink/5"
+
+                  {/* Cart total as a prominent banner (if cart has items) */}
+                  {defaultAmount && defaultAmount > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setAmount(defaultAmount)}
+                      className={`w-full p-3 rounded-2xl border mb-3 flex items-center justify-between text-xs font-bold transition-all ${
+                        amount === defaultAmount
+                          ? "border-brand-pink bg-brand-pink/5 text-brand-pink ring-2 ring-brand-pink/20 shadow-sm"
+                          : "border-brand-brown/10 bg-brand-offwhite/50 text-brand-brown hover:border-brand-pink/30 hover:bg-brand-pink/[0.02]"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <ShoppingCart size={15} className="text-brand-pink" />
+                        <span>Selected Cart Total</span>
+                      </div>
+                      <span className="text-sm font-black">{formatCurrency(defaultAmount)}</span>
+                    </button>
+                  )}
+
+                  {/* 2x2 Structured Tier Cards */}
+                  <div className="grid grid-cols-2 gap-2.5 mb-3">
+                    {PRESET_TIERS[type].map((tier) => {
+                      const isSelected = amount === tier.amount;
+                      return (
+                        <button
+                          key={tier.amount}
+                          type="button"
+                          onClick={() => setAmount(tier.amount)}
+                          className={`relative p-3 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between min-h-[72px] ${
+                            isSelected
+                              ? "border-brand-pink bg-brand-pink/5 ring-2 ring-brand-pink/20 shadow-sm"
+                              : "border-brand-brown/10 bg-white hover:border-brand-pink/30 hover:bg-brand-pink/[0.02]"
                           }`}
-                      >
-                        🛒 Cart Total: {formatCurrency(defaultAmount)}
-                      </button>
-                    )}
-                    {PRESET_AMOUNTS[type].map((preset) => (
-                      <button
-                        key={preset}
-                        onClick={() => setAmount(preset)}
-                        className={`py-2.5 rounded-xl font-bold text-sm border transition-all ${amount === preset
-                          ? "border-brand-pink bg-brand-pink/5 text-brand-pink"
-                          : "border-brand-brown/10 text-brand-brown hover:border-brand-pink/30 hover:bg-brand-pink/5"
-                          }`}
-                      >
-                        {formatCurrency(preset)}
-                      </button>
-                    ))}
+                        >
+                          <div className="flex justify-between items-center w-full mb-1">
+                            <span className={`text-base font-black ${isSelected ? "text-brand-pink" : "text-brand-brown"}`}>
+                              {tier.label}
+                            </span>
+                            {isSelected && (
+                              <div className="w-4 h-4 rounded-full bg-brand-pink text-white flex items-center justify-center">
+                                <Check size={10} strokeWidth={3} />
+                              </div>
+                            )}
+                          </div>
+                          <p className="text-[11px] text-brand-brown/65 leading-tight font-medium">
+                            {tier.impact}
+                          </p>
+                        </button>
+                      );
+                    })}
                   </div>
+
+                  {/* Custom Amount Input */}
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-brand-brown/60 text-sm">₹</span>
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-brand-brown/50 text-sm">₹</span>
                     <Input
                       type="number"
                       value={amount}
                       onChange={(e) => setAmount(e.target.value ? Number(e.target.value) : "")}
-                      placeholder="Custom Amount"
-                      className="pl-7 py-5 rounded-xl border-brand-brown/10 focus-visible:ring-brand-pink font-bold text-brand-brown text-base h-auto"
+                      placeholder="Or enter custom amount"
+                      className="pl-8 pr-4 py-3.5 rounded-xl border-brand-brown/15 focus-visible:ring-brand-pink font-bold text-brand-brown text-sm h-auto bg-white"
                     />
                   </div>
                 </div>
@@ -267,8 +368,8 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
 
             {error && (
               <div className="bg-red-50 text-brand-terra p-3 rounded-xl text-xs font-bold border border-brand-terra/20 mb-3 flex items-start gap-2">
-                <span className="text-sm leading-none mt-0.5">⚠️</span>
-                {error}
+                <AlertCircle size={15} className="text-brand-terra shrink-0 mt-0.5" />
+                <span>{error}</span>
               </div>
             )}
 
@@ -282,9 +383,10 @@ export default function DonationModal({ isOpen, onClose, campaignId, campaignNam
             >
               {isProcessing ? "Processing..." : `Donate ${formatCurrency(totalAmount)}`}
             </button>
-            <p className="text-center text-[10px] text-brand-brown/60 mt-3 font-bold tracking-wide">
-              🔒 SECURE PAYMENTS BY RAZORPAY
-            </p>
+            <div className="flex items-center justify-center gap-1.5 text-[10px] text-brand-brown/60 mt-3 font-bold tracking-wider uppercase">
+              <ShieldCheck size={13} className="text-brand-green" />
+              <span>100% Secure Payments via Razorpay</span>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

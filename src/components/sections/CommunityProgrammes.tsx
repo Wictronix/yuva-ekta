@@ -143,67 +143,84 @@ export default function CommunityProgrammes() {
 
             <AnimatePresence>
                 {selectedId && selectedProg && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12">
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-10">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setSelectedId(null)}
-                            className="absolute inset-0 bg-brand-brown/90 backdrop-blur-md"
+                            className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100]"
                         />
 
                         <motion.div
                             layoutId={selectedId}
-                            className="relative w-full max-w-4xl bg-white rounded-[3rem] overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
+                            className="relative w-full max-w-4xl bg-white rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/20 flex flex-col md:flex-row max-h-[90vh] z-[101]"
                         >
                             <button
                                 onClick={() => setSelectedId(null)}
-                                className="absolute top-8 right-8 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white md:text-brand-brown md:bg-brand-offwhite hover:bg-brand-pink hover:text-white transition-all z-20"
+                                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-brand-brown hover:text-brand-pink shadow-md flex items-center justify-center transition-all z-30"
+                                aria-label="Close modal"
                             >
-                                <X size={20} />
+                                <X size={18} />
                             </button>
 
-                            <div className="relative w-full md:w-1/2 h-64 md:h-auto overflow-hidden">
+                            <div className="relative w-full md:w-1/2 h-56 sm:h-64 md:h-auto min-h-[220px] md:min-h-[440px] overflow-hidden bg-brand-brown/10">
                                 <Image
                                     src={selectedProg.image}
                                     alt={selectedProg.name}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 50vw"
                                     className="object-cover"
                                 />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                                <div className="absolute bottom-6 left-6 right-6 text-white">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/20 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-widest mb-2">
+                                        <span>Village Mobilisation</span>
+                                    </div>
+                                    <p className="text-xs sm:text-sm text-white/90 line-clamp-2 font-inter font-light">
+                                        {selectedProg.summary}
+                                    </p>
+                                </div>
                             </div>
 
-                            <div className="w-full md:w-1/2 p-10 md:p-16 overflow-y-auto custom-scrollbar">
-                                <div className="space-y-10">
-                                    <div className="space-y-4">
-                                        <div className={`w-16 h-16 rounded-[1.5rem] flex items-center justify-center text-white shadow-lg`}
-                                            style={{ backgroundColor: `var(--color-${selectedProg.color})` }}>
+                            <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-10 overflow-y-auto custom-scrollbar flex flex-col justify-between">
+                                <div className="space-y-6">
+                                    <div className="space-y-3">
+                                        <div
+                                            className="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-md"
+                                            style={{ backgroundColor: `var(--color-${selectedProg.color})` }}
+                                        >
                                             {(() => {
                                                 const Icon = iconMap[selectedProg.icon as keyof typeof iconMap];
-                                                return <Icon size={32} />;
+                                                return <Icon size={24} />;
                                             })()}
                                         </div>
                                         <div>
-                                            <span className="text-brand-pink font-bold text-[10px] uppercase tracking-[0.4em] block mb-2">Community Initiative</span>
-                                            <h2 className="text-3xl md:text-4xl font-black text-brand-brown font-playfair">{selectedProg.name}</h2>
+                                            <span className="text-brand-pink font-bold text-[10px] uppercase tracking-[0.3em] block mb-1">
+                                                Community Initiative · Grassroots
+                                            </span>
+                                            <h2 className="text-2xl sm:text-3xl font-black text-brand-brown font-playfair">
+                                                {selectedProg.name}
+                                            </h2>
                                         </div>
                                     </div>
 
-                                    <div className="prose prose-lg text-brand-brown/70 font-inter font-light leading-relaxed">
+                                    <div className="text-brand-brown/75 font-inter font-light leading-relaxed text-sm sm:text-base">
                                         <p>{selectedProg.details}</p>
                                     </div>
+                                </div>
 
-                                    <div className="pt-8 border-t border-brand-brown/10 flex flex-col gap-4">
-                                        <button
-                                            onClick={() => {
-                                                setSelectedId(null);
-                                                openDonationModal();
-                                            }}
-                                            className="w-full bg-brand-pink text-white font-bold py-5 rounded-2xl shadow-lg shadow-brand-pink/20 flex items-center justify-center gap-3 hover:bg-brand-pink/90 hover:scale-[1.02] active:scale-95 transition-all text-center"
-                                        >
-                                            <Heart size={18} />
-                                            <span>Donate to this Initiative</span>
-                                        </button>
-                                    </div>
+                                <div className="pt-6 mt-6 border-t border-brand-brown/10">
+                                    <button
+                                        onClick={() => {
+                                            setSelectedId(null);
+                                            openDonationModal();
+                                        }}
+                                        className="w-full bg-brand-pink text-white font-bold py-3.5 sm:py-4 rounded-xl shadow-lg shadow-brand-pink/20 flex items-center justify-center gap-2 hover:bg-brand-pink-dark hover:scale-[1.01] active:scale-95 transition-all text-sm tracking-wide"
+                                    >
+                                        <Heart size={16} />
+                                        <span>Donate to this Initiative</span>
+                                    </button>
                                 </div>
                             </div>
                         </motion.div>

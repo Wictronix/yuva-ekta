@@ -9,6 +9,7 @@ import CTABanner from "@/components/sections/CTABanner";
 export const metadata = constructMetadata({
     title: "Contact Yuva Ekta foundation - NGO in Gurugram, Haryana",
     description: "Connect with Yuva Ekta India Foundation in Gurugram for donations, volunteering, and CSR. Our office is located near Damdama Lake. 80G and 12A certified.",
+    pathname: "/contact",
 });
 
 export default function ContactPage() {

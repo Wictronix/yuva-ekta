@@ -7,6 +7,7 @@ import CTABanner from "@/components/sections/CTABanner";
 export const metadata = constructMetadata({
     title: "NGO Projects in Gurugram | Yuva Ekta foundation",
     description: "Explore our active projects in remediation, digital literacy, and women's livelihood in Sohna block, Gurugram. Registered NGO with 80G and 12A.",
+    pathname: "/projects",
 });
 
 export default function ProjectsPage() {

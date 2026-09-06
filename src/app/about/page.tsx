@@ -10,6 +10,7 @@ import MediaMentions from "@/components/sections/MediaMentions";
 export const metadata = constructMetadata({
     title: "About Yuva Ekta foundation - Grassroot NGO in Gurugram",
     description: "Learn about Yuva Ekta India Foundation, founded in 2018. We are a registered NGO in Gurugram dedicated to education, healthcare, and women empowerment. 80G and 12A certified.",
+    pathname: "/about",
 });
 
 export default function AboutPage() {

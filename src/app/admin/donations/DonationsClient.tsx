@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import type { DonationWithDonor } from "@/lib/supabase/types";
 
-export default function DonationsClient({ donations }: { donations: any[] }) {
+export default function DonationsClient({ donations }: { donations: DonationWithDonor[] }) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 

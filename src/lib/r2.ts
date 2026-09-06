@@ -82,8 +82,9 @@ export async function uploadBuffer(
       })
     );
     console.log(`R2: Upload successful for ${key}`);
-  } catch (error: any) {
-    console.error(`R2: Upload FAILED for ${key}. Error:`, error.message);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`R2: Upload FAILED for ${key}. Error:`, message);
     throw error;
   }
 

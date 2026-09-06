@@ -12,7 +12,7 @@ interface ProductGridProps {
 }
 
 export default function ProductGrid({ campaignId, products }: ProductGridProps) {
-  const { cart, updateCartQuantity, getTotalItems } = useDonation();
+  const { cart, updateCartQuantity } = useDonation();
   if (!products || products.length === 0) return null;
 
   const getQuantity = (index: number) => {
@@ -23,8 +23,6 @@ export default function ProductGrid({ campaignId, products }: ProductGridProps) 
     const product = products[index];
     updateCartQuantity(campaignId, index, { name: product.name, price: product.price }, delta);
   };
-
-  const totalItems = getTotalItems();
 
   return (
     <div className="space-y-6">

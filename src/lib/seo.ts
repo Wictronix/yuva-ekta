@@ -7,13 +7,25 @@ export function constructMetadata({
     image = "/cinematic-hero.png",
     icons = "/favicon.ico",
     noIndex = false,
+    canonicalUrl,
+    pathname,
 }: {
     title?: string;
     description?: string;
     image?: string;
     icons?: string;
     noIndex?: boolean;
+    canonicalUrl?: string;
+    pathname?: string;
 } = {}): Metadata {
+    const cleanPath = pathname
+        ? pathname.startsWith("/") ? pathname : `/${pathname}`
+        : "";
+    const resolvedCanonical = canonicalUrl || (cleanPath ? `${SITE.url}${cleanPath}` : SITE.url);
+    const resolvedImage = image.startsWith("http")
+        ? image
+        : `${SITE.url}${image.startsWith("/") ? image : `/${image}`}`;
+
     return {
         title: title === SITE.name ? title : {
             default: title,
@@ -27,17 +39,18 @@ export function constructMetadata({
             "Women Empowerment",
             "80G Certified NGO",
             "12A Certified NGO",
+            "CSR 1 Registered NGO",
             "Donate to NGO NCR"
         ],
         openGraph: {
             title,
             description,
-            url: SITE.url,
+            url: resolvedCanonical,
             siteName: SITE.name,
             locale: "en_IN",
             images: [
                 {
-                    url: image,
+                    url: resolvedImage,
                     alt: title,
                 },
             ],
@@ -47,7 +60,7 @@ export function constructMetadata({
             card: "summary_large_image",
             title,
             description,
-            images: [image],
+            images: [resolvedImage],
             creator: "@yuvaekta",
         },
         icons,
@@ -59,7 +72,7 @@ export function constructMetadata({
             },
         }),
         alternates: {
-            canonical: SITE.url,
+            canonical: resolvedCanonical,
         },
     };
 }

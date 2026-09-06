@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { type UpdateItem } from "@/lib/supabase/types";
 import { formatDate } from "@/lib/utils";
+import { Calendar } from "lucide-react";
 
 export default function CampaignUpdates({ updates }: { updates: UpdateItem[] }) {
   if (!updates || updates.length === 0) {
@@ -22,9 +23,9 @@ export default function CampaignUpdates({ updates }: { updates: UpdateItem[] }) 
           <div className="desi-card relative z-10 md:ml-8 mb-8 last:mb-0">
             <div className="absolute -left-12 md:-left-[2.75rem] top-8 w-4 h-4 rounded-full bg-brand-pink border-4 border-white shadow-sm"></div>
             
-            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-brand-brown/40 mb-3">
-              <span className="text-brand-pink">📅</span>
-              {formatDate(update.date)}
+            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-brand-brown/60 mb-3">
+              <Calendar size={13} className="text-brand-pink shrink-0" />
+              <span>{formatDate(update.date)}</span>
             </div>
             
             <h4 className="text-xl font-black font-playfair text-brand-brown mb-4">

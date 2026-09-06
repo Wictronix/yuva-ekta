@@ -2,21 +2,22 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import type { CampaignInsert, CampaignUpdate } from "@/lib/supabase/types";
 import { revalidatePath } from "next/cache";
 
-export async function createCampaignAction(formData: any) {
+export async function createCampaignAction(formData: CampaignInsert) {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-  // Validate admin session
-  if (!session) {
-    return { error: "Unauthorized. Admin session required." };
+  // Validate admin user
+  if (authError || !user) {
+    return { error: "Unauthorized. Admin authentication required." };
   }
 
   const adminClient = createAdminClient();
 
   try {
-    const { data, error } = await (adminClient as any)
+    const { data, error } = await adminClient
       .from("campaigns")
       .insert([formData])
       .select()
@@ -30,23 +31,23 @@ export async function createCampaignAction(formData: any) {
     revalidatePath("/");
 
     return { data };
-  } catch (error: any) {
-    return { error: error.message };
+  } catch (error: unknown) {
+    return { error: error instanceof Error ? error.message : "An unexpected error occurred" };
   }
 }
 
-export async function updateCampaignAction(id: string, formData: any) {
+export async function updateCampaignAction(id: string, formData: CampaignUpdate) {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-  if (!session) {
-    return { error: "Unauthorized. Admin session required." };
+  if (authError || !user) {
+    return { error: "Unauthorized. Admin authentication required." };
   }
 
   const adminClient = createAdminClient();
 
   try {
-    const { data, error } = await (adminClient as any)
+    const { data, error } = await adminClient
       .from("campaigns")
       .update(formData)
       .eq("id", id)
@@ -62,17 +63,17 @@ export async function updateCampaignAction(id: string, formData: any) {
     revalidatePath("/");
 
     return { data };
-  } catch (error: any) {
-    return { error: error.message };
+  } catch (error: unknown) {
+    return { error: error instanceof Error ? error.message : "An unexpected error occurred" };
   }
 }
 
 export async function deleteCampaignAction(id: string) {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-  if (!session) {
-    return { error: "Unauthorized. Admin session required." };
+  if (authError || !user) {
+    return { error: "Unauthorized. Admin authentication required." };
   }
 
   const adminClient = createAdminClient();
@@ -91,7 +92,7 @@ export async function deleteCampaignAction(id: string) {
     revalidatePath("/");
 
     return { success: true };
-  } catch (error: any) {
-    return { error: error.message };
+  } catch (error: unknown) {
+    return { error: error instanceof Error ? error.message : "An unexpected error occurred" };
   }
 }

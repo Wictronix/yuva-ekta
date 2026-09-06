@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     const amountInPaise = toPaise(total);
 
     const razorpay = getRazorpay();
-    const supabase = createAdminClient() as any;
+    const supabase = createAdminClient();
 
     // 1. Ensure Donor exists
     let donorId: string;
@@ -61,14 +61,14 @@ export async function POST(req: Request) {
         }
     };
     
-    // Using any type because Razorpay typings might not fully cover plans
-    const plan = await (razorpay.plans as any).create(planOptions);
+    const plansApi = razorpay.plans as unknown as { create: (options: typeof planOptions) => Promise<{ id: string }> };
+    const plan = await plansApi.create(planOptions);
 
     // 3. Create Subscription
     const subscriptionOptions = {
       plan_id: plan.id,
       total_count: 120, // max 10 years
-      customer_notify: true,
+      customer_notify: 1, // Razorpay expects 1 or 0
       notes: {
         donorId,
         campaignId: campaignId || 'general',
@@ -78,7 +78,10 @@ export async function POST(req: Request) {
       },
     };
 
-    const subscription = await razorpay.subscriptions.create(subscriptionOptions) as any;
+    const subscriptionsApi = razorpay.subscriptions as unknown as {
+      create: (options: typeof subscriptionOptions) => Promise<{ id: string; [key: string]: unknown }>;
+    };
+    const subscription = await subscriptionsApi.create(subscriptionOptions);
 
     // 4. Create Subscription record in pending/created state
     const { error: subscriptionError } = await supabase.from("subscriptions").insert({
@@ -99,10 +102,11 @@ export async function POST(req: Request) {
       subscription,
       razorpayKeyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Create Subscription Error:", error);
+    const message = error instanceof Error ? error.message : "Failed to create subscription";
     return NextResponse.json(
-      { error: error.message || "Failed to create subscription" },
+      { error: message },
       { status: 500 }
     );
   }

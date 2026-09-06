@@ -19,18 +19,18 @@ export async function POST(req: Request) {
     const amountInPaise = toPaise(total);
 
     const razorpay = getRazorpay();
-    const supabase = createAdminClient() as any;
+    const supabase = createAdminClient();
 
     // 1. Ensure Donor exists
     let donorId: string;
-    const { data: existingDonor, error: donorSelectError } = await supabase
+    const { data: existingDonor } = await supabase
       .from("donors")
       .select("id")
       .eq("email", donorDetails.email)
       .single();
 
     if (existingDonor) {
-      donorId = (existingDonor as any).id;
+      donorId = existingDonor.id;
       // Update phone if different
       await supabase.from("donors").update({ phone: donorDetails.phone, name: donorDetails.name }).eq("id", donorId);
     } else {
@@ -86,10 +86,11 @@ export async function POST(req: Request) {
       order,
       razorpayKeyId: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Create Order Error:", error);
+    const message = error instanceof Error ? error.message : "Failed to create order";
     return NextResponse.json(
-      { error: error.message || "Failed to create order" },
+      { error: message },
       { status: 500 }
     );
   }

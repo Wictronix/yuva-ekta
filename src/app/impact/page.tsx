@@ -9,6 +9,7 @@ import CTABanner from "@/components/sections/CTABanner";
 export const metadata = constructMetadata({
     title: "Our Impact | Yuva Ekta foundation Gurugram",
     description: "Discover the measurable change Yuva Ekta foundation has brought to 1000+ children and families in Gurugram through education and nutrition. Verified 80G NGO.",
+    pathname: "/impact",
 });
 
 export default function ImpactPage() {

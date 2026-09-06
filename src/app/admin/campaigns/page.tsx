@@ -4,7 +4,7 @@ import CampaignsClient from "./CampaignsClient";
 export const revalidate = 0;
 
 export default async function CampaignsPage() {
-  const supabase = (await createClient()) as any;
+  const supabase = await createClient();
   const { data: campaigns } = await supabase
     .from("campaigns")
     .select("*")

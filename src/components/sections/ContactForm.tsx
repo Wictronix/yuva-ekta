@@ -6,16 +6,42 @@ import { Send, CheckCircle2 } from "lucide-react";
 
 export default function ContactForm() {
     const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "General Enquiry",
+        message: "",
+    });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus("submitting");
+        setErrorMessage(null);
 
-        // Simulating submission for now
-        setTimeout(() => {
-            setStatus("success");
-            setTimeout(() => setStatus("idle"), 5000);
-        }, 1500);
+        try {
+          const res = await fetch("/api/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              type: "contact",
+              ...formData,
+            }),
+          });
+
+          if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || "Failed to submit your message");
+          }
+
+          setStatus("success");
+          setFormData({ name: "", email: "", phone: "", subject: "General Enquiry", message: "" });
+          setTimeout(() => setStatus("idle"), 6000);
+        } catch (err: unknown) {
+          setStatus("error");
+          setErrorMessage(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+        }
     };
 
     if (status === "success") {
@@ -30,7 +56,7 @@ export default function ContactForm() {
                 </div>
                 <div className="space-y-2">
                     <h3 className="text-2xl font-black font-playfair text-brand-brown">Message Sent!</h3>
-                    <p className="text-brand-brown/60 font-inter">Thank you, We'll get back to you within 2 working days.</p>
+                    <p className="text-brand-brown/60 font-inter">Thank you! We&apos;ll get back to you within 2 working days.</p>
                 </div>
             </motion.div>
         );
@@ -48,6 +74,12 @@ export default function ContactForm() {
                 <h3 className="text-3xl font-black font-playfair text-brand-brown">Send a Message</h3>
             </div>
 
+            {status === "error" && errorMessage && (
+              <div className="mb-6 p-4 rounded-2xl bg-red-50 text-red-700 text-sm font-medium border border-red-200">
+                ⚠️ {errorMessage}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
@@ -56,6 +88,8 @@ export default function ContactForm() {
                             required
                             type="text"
                             placeholder="Your full name"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 font-inter text-brand-brown placeholder:text-brand-brown/20 focus:ring-2 focus:ring-brand-pink/20 outline-none transition-all"
                         />
                     </div>
@@ -65,6 +99,8 @@ export default function ContactForm() {
                             required
                             type="email"
                             placeholder="you@example.com"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 font-inter text-brand-brown placeholder:text-brand-brown/20 focus:ring-2 focus:ring-brand-pink/20 outline-none transition-all"
                         />
                     </div>
@@ -76,6 +112,8 @@ export default function ContactForm() {
                         <input
                             type="tel"
                             placeholder="+91 98765 43210"
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 font-inter text-brand-brown placeholder:text-brand-brown/20 focus:ring-2 focus:ring-brand-pink/20 outline-none transition-all"
                         />
                     </div>
@@ -83,6 +121,8 @@ export default function ContactForm() {
                         <label className="text-[10px] uppercase tracking-widest font-bold text-brand-brown/60 ml-4">Subject *</label>
                         <select
                             required
+                            value={formData.subject}
+                            onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                             className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 font-inter text-brand-brown focus:ring-2 focus:ring-brand-pink/20 outline-none transition-all appearance-none"
                         >
                             <option value="General Enquiry">General Enquiry</option>
@@ -101,13 +141,15 @@ export default function ContactForm() {
                         required
                         rows={5}
                         placeholder="Tell us how we can help..."
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         className="w-full bg-brand-offwhite/50 border-none rounded-2xl px-6 py-4 font-inter text-brand-brown placeholder:text-brand-brown/20 focus:ring-2 focus:ring-brand-pink/20 outline-none transition-all resize-none"
                     />
                 </div>
 
                 <button
                     disabled={status === "submitting"}
-                    className="w-full bg-brand-pink text-white font-bold py-5 rounded-2xl shadow-lg shadow-brand-pink/20 flex items-center justify-center gap-3 hover:bg-brand-pink/90 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:scale-100"
+                    className="w-full bg-brand-pink text-white font-bold py-5 rounded-2xl shadow-lg shadow-brand-pink/20 flex items-center justify-center gap-3 hover:bg-brand-pink/90 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:scale-100 cursor-pointer"
                 >
                     {status === "submitting" ? (
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

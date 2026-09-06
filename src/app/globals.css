@@ -17,6 +17,7 @@
   --color-brand-terra: #D94A3D;
   --color-brand-brown: #593414;
   --color-brand-brown-tint: #F5EDE5;
+  --color-brand-offwhite: #F5EDE5;
 
   --color-background: #F2F2F2;
   --color-foreground: #1A1A2E;
@@ -75,10 +76,6 @@
   --sidebar-ring: #BF3475;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
 
 /* Cinematic Transitions */
 .page-transition-enter {
@@ -223,6 +220,10 @@ a {
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
   }
   body {
     @apply bg-background text-foreground;

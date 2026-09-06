@@ -42,7 +42,7 @@ export default function MediaMentions() {
                                     <span>{item.date}</span>
                                 </div>
                                 <h4 className="text-lg font-bold text-white leading-snug group-hover:text-brand-pink transition-colors">
-                                    "{item.title}"
+                                    &ldquo;{item.title}&rdquo;
                                 </h4>
                             </div>
                         </motion.div>

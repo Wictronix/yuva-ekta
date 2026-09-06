@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
 import { Campaign } from "@/lib/supabase/types";
 import { deleteCampaignAction } from "@/app/actions/campaigns";
@@ -102,7 +103,7 @@ export default function CampaignsClient({ campaigns }: { campaigns: Campaign[] }
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 rounded-lg bg-brand-brown/5 flex-shrink-0 overflow-hidden relative">
                             {c.cover_image_url ? (
-                              <img src={c.cover_image_url} alt={c.title} className="w-full h-full object-cover" />
+                              <Image src={c.cover_image_url} alt={c.title} fill unoptimized className="object-cover" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-xs text-brand-brown/30">No Img</div>
                             )}
