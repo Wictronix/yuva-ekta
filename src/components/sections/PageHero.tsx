@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
@@ -35,7 +35,7 @@ export default function PageHero({ title, subtitle, imageUrl, breadcrumb, cta }:
             <div className="absolute inset-0 bg-gradient-to-t from-brand-brown via-transparent to-brand-brown/40 z-10" />
 
             <div className="container relative z-20 text-center px-6 transition-all duration-700">
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
@@ -85,7 +85,7 @@ export default function PageHero({ title, subtitle, imageUrl, breadcrumb, cta }:
                             )}
                         </div>
                     )}
-                </motion.div>
+                </m.div>
             </div>
         </section>
     );

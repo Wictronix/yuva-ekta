@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Newspaper } from "lucide-react";
 
 const mediaData = [
@@ -27,7 +27,7 @@ export default function MediaMentions() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
                     {mediaData.map((item, i) => (
-                        <motion.div
+                        <m.div
                             key={i}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
@@ -45,7 +45,7 @@ export default function MediaMentions() {
                                     &ldquo;{item.title}&rdquo;
                                 </h4>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
 

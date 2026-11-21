@@ -425,7 +425,11 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 
 ---
 
-## Deployment (Vercel — recommended)
+## Deployment
+
+> Superseded: the site now deploys to Cloudflare Workers. See [DEPLOYMENT_CLOUDFLARE.md](DEPLOYMENT_CLOUDFLARE.md). Vercel notes below are historical.
+
+### Vercel (legacy)
 
 ```bash
 npm run build          # verify static export compiles

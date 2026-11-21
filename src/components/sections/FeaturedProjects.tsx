@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -11,15 +11,15 @@ export default function FeaturedProjects() {
         <section className="py-24 bg-white">
             <div className="container">
                 <div className="flex flex-col items-center text-center mb-16">
-                    <motion.span
+                    <m.span
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-brand-pink font-bold text-[10px] uppercase tracking-[0.3em] mb-4"
                     >
                         Our Active Projects
-                    </motion.span>
-                    <motion.h2
+                    </m.span>
+                    <m.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -27,8 +27,8 @@ export default function FeaturedProjects() {
                         className="text-4xl md:text-5xl font-black text-gray-900 mb-6 font-playfair"
                     >
                         Projects That Change Lives
-                    </motion.h2>
-                    <motion.p
+                    </m.h2>
+                    <m.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -37,12 +37,12 @@ export default function FeaturedProjects() {
                     >
                         Each project targets a specific gap together they address education,
                         livelihoods, and survival for Gurugram&apos;s rural communities.
-                    </motion.p>
+                    </m.p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                     {PROJECT_CARDS.map((project, i) => (
-                        <motion.div
+                        <m.div
                             key={project.id}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -85,7 +85,7 @@ export default function FeaturedProjects() {
                                     <ArrowRight size={14} className="transition-transform group-hover/link:translate-x-1" />
                                 </Link>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>

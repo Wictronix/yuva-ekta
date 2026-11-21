@@ -8,7 +8,6 @@ interface DonationReceiptEmailProps {
   date: string;
   receiptNumber: string;
   campaignName?: string;
-  receiptUrl: string;
 }
 
 export const DonationReceiptEmail: React.FC<Readonly<DonationReceiptEmailProps>> = ({
@@ -17,7 +16,6 @@ export const DonationReceiptEmail: React.FC<Readonly<DonationReceiptEmailProps>>
   date,
   receiptNumber,
   campaignName,
-  receiptUrl,
 }) => (
   <Html>
     <Head />
@@ -43,18 +41,13 @@ export const DonationReceiptEmail: React.FC<Readonly<DonationReceiptEmailProps>>
         <Section style={{ backgroundColor: '#FCE8F0', padding: '20px', borderRadius: '8px', marginTop: '30px', marginBottom: '30px' }}>
           <Text style={{ margin: 0, color: '#1A1A2E', fontSize: '14px' }}><strong>Receipt No:</strong> {receiptNumber}</Text>
           <Text style={{ margin: '10px 0 0', color: '#1A1A2E', fontSize: '14px' }}><strong>Date:</strong> {formatDate(date)}</Text>
-        </Section>
-
-        <Section style={{ textAlign: 'center', marginBottom: '30px' }}>
-          <a href={receiptUrl} style={{ backgroundColor: '#BF3475', color: '#ffffff', padding: '12px 24px', borderRadius: '6px', textDecoration: 'none', fontWeight: 'bold', display: 'inline-block' }}>
-            Download 80G Receipt (PDF)
-          </a>
+          <Text style={{ margin: '10px 0 0', color: '#1A1A2E', fontSize: '14px' }}><strong>Amount:</strong> {formatCurrency(amount)}</Text>
         </Section>
 
         <Hr style={{ borderColor: '#E0E0E0', marginBottom: '20px' }} />
 
         <Text style={{ color: '#6B6B6B', fontSize: '12px', textAlign: 'center' }}>
-          Donations made to Yuva Ekta India Foundation are exempt from tax under Section 80G of the Income Tax Act. Provide the attached receipt to your CA or tax preparer.
+          Donations made to Yuva Ekta India Foundation are exempt from tax under Section 80G of the Income Tax Act. Keep this email for your records. Need a PDF receipt? Reply to this email and we will send one.
         </Text>
         <Text style={{ color: '#6B6B6B', fontSize: '12px', textAlign: 'center', marginTop: '10px' }}>
           Reg. No: 03485 | Contact: yuvaekta2018@gmail.com

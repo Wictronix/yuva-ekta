@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useState } from "react";
 import { Send, CheckCircle2 } from "lucide-react";
 
@@ -46,7 +46,7 @@ export default function ContactForm() {
 
     if (status === "success") {
         return (
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="h-full flex flex-col items-center justify-center text-center space-y-6 bg-brand-green/5 border-2 border-dashed border-brand-green/20 rounded-[2.5rem] p-12"
@@ -58,12 +58,12 @@ export default function ContactForm() {
                     <h3 className="text-2xl font-black font-playfair text-brand-brown">Message Sent!</h3>
                     <p className="text-brand-brown/60 font-inter">Thank you! We&apos;ll get back to you within 2 working days.</p>
                 </div>
-            </motion.div>
+            </m.div>
         );
     }
 
     return (
-        <motion.div
+        <m.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -161,6 +161,6 @@ export default function ContactForm() {
                     )}
                 </button>
             </form>
-        </motion.div>
+        </m.div>
     );
 }

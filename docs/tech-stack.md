@@ -20,7 +20,7 @@
 | **Email** | Resend | Latest | Transactional HTML emails to donors; 3,000 free/month |
 | **PDF** | @react-pdf/renderer | Latest | Server-side PDF receipt generation; streamed as attachment |
 | **Code Editor** | Antigravity | — | AI-assisted development environment |
-| **Deployment** | Vercel | — | Native Next.js host; environment variables for all secrets |
+| **Deployment** | Cloudflare Workers (OpenNext) | — | See docs/DEPLOYMENT_CLOUDFLARE.md |
 
 ---
 

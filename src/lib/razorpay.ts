@@ -1,27 +1,46 @@
-import Razorpay from 'razorpay';
-
-// Server-side Razorpay SDK instance
+// Minimal fetch-based Razorpay REST client (replaces the `razorpay` SDK).
 // Only import this in API routes — NEVER in client components
-let razorpayInstance: Razorpay | null = null;
+type RazorpayEntity = { id: string; [key: string]: unknown };
 
-export function getRazorpay(): Razorpay {
-  if (!razorpayInstance) {
-    const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
-    const keySecret = process.env.RAZORPAY_KEY_SECRET;
+async function rzPost(path: string, body: object = {}): Promise<RazorpayEntity> {
+  const keyId = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+  const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
-    if (!keyId || !keySecret) {
-      throw new Error(
-        'Missing NEXT_PUBLIC_RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET environment variables'
-      );
-    }
-
-    razorpayInstance = new Razorpay({
-      key_id: keyId,
-      key_secret: keySecret,
-    });
+  if (!keyId || !keySecret) {
+    throw new Error(
+      'Missing NEXT_PUBLIC_RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET environment variables'
+    );
   }
 
-  return razorpayInstance;
+  const res = await fetch(`https://api.razorpay.com/v1${path}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${btoa(`${keyId}:${keySecret}`)}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data?.error?.description || `Razorpay ${path} failed (${res.status})`);
+  }
+  return data;
+}
+
+const razorpay = {
+  orders: { create: (options: object) => rzPost('/orders', options) },
+  plans: { create: (options: object) => rzPost('/plans', options) },
+  subscriptions: {
+    create: (options: object) => rzPost('/subscriptions', options),
+    pause: (id: string, options: object) => rzPost(`/subscriptions/${id}/pause`, options),
+    resume: (id: string, options: object) => rzPost(`/subscriptions/${id}/resume`, options),
+    cancel: (id: string, cancelAtCycleEnd = false) =>
+      rzPost(`/subscriptions/${id}/cancel`, { cancel_at_cycle_end: cancelAtCycleEnd ? 1 : 0 }),
+  },
+};
+
+export function getRazorpay() {
+  return razorpay;
 }
 
 // Transaction fee calculation

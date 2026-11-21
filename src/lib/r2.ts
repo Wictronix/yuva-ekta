@@ -1,31 +1,22 @@
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { AwsClient } from 'aws4fetch';
 
-let s3Client: S3Client | null = null;
+let r2Client: AwsClient | null = null;
 
-function getS3Client(): S3Client {
-  if (!s3Client) {
-    const accountId = process.env.R2_ACCOUNT_ID;
+function getR2Client(): AwsClient {
+  if (!r2Client) {
     const accessKeyId = process.env.R2_ACCESS_KEY_ID;
     const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
 
-    if (!accountId || !accessKeyId || !secretAccessKey) {
+    if (!process.env.R2_ACCOUNT_ID || !accessKeyId || !secretAccessKey) {
       throw new Error(
         'Missing R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, or R2_SECRET_ACCESS_KEY environment variables'
       );
     }
 
-    s3Client = new S3Client({
-      region: 'auto',
-      endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
-      credentials: {
-        accessKeyId,
-        secretAccessKey,
-      },
-    });
+    r2Client = new AwsClient({ accessKeyId, secretAccessKey, service: 's3', region: 'auto' });
   }
 
-  return s3Client;
+  return r2Client;
 }
 
 // Bucket name
@@ -35,6 +26,7 @@ export const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL ?? '';
 /**
  * Generate a pre-signed upload URL for direct client upload to R2.
  * Used by admin image uploader to bypass server bandwidth.
+ * The client must send the same Content-Type header (it is part of the signature).
  */
 export async function getPresignedUploadUrl(
   bucket: string,
@@ -42,70 +34,15 @@ export async function getPresignedUploadUrl(
   contentType: string,
   expiresIn: number = 3600
 ): Promise<{ uploadUrl: string; publicUrl: string }> {
-  const client = getS3Client();
+  const url = new URL(
+    `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${bucket}/${key}`
+  );
+  url.searchParams.set('X-Amz-Expires', String(expiresIn));
 
-  const command = new PutObjectCommand({
-    Bucket: bucket,
-    Key: key,
-    ContentType: contentType,
-  });
+  const signed = await getR2Client().sign(
+    new Request(url, { method: 'PUT', headers: { 'Content-Type': contentType } }),
+    { aws: { signQuery: true } }
+  );
 
-  const uploadUrl = await getSignedUrl(client, command, { expiresIn });
-  const publicUrl = `${R2_PUBLIC_URL}/${key}`;
-
-  return { uploadUrl, publicUrl };
-}
-
-/**
- * Upload a buffer directly to R2 (server-side).
- * Used for PDF receipt uploads from the webhook handler.
- */
-export async function uploadBuffer(
-  bucket: string,
-  key: string,
-  body: Buffer | Uint8Array,
-  contentType: string
-): Promise<string> {
-  const client = getS3Client();
-  const accountId = process.env.R2_ACCOUNT_ID;
-
-  console.log(`R2: Uploading to bucket "${bucket}" with key "${key}"`);
-  console.log(`R2: Endpoint: https://${accountId}.r2.cloudflarestorage.com`);
-
-  try {
-    await client.send(
-      new PutObjectCommand({
-        Bucket: bucket,
-        Key: key,
-        Body: body,
-        ContentType: contentType,
-      })
-    );
-    console.log(`R2: Upload successful for ${key}`);
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error(`R2: Upload FAILED for ${key}. Error:`, message);
-    throw error;
-  }
-
-  return `${R2_PUBLIC_URL}/${key}`;
-}
-
-/**
- * Get a pre-signed download URL from R2.
- * Used for receipts if we want time-limited access.
- */
-export async function getPresignedDownloadUrl(
-  bucket: string,
-  key: string,
-  expiresIn: number = 604800 // 7 days
-): Promise<string> {
-  const client = getS3Client();
-
-  const command = new GetObjectCommand({
-    Bucket: bucket,
-    Key: key,
-  });
-
-  return getSignedUrl(client, command, { expiresIn });
+  return { uploadUrl: signed.url, publicUrl: `${R2_PUBLIC_URL}/${key}` };
 }

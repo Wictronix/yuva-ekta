@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ShieldCheck, Heart, ArrowRight, Users, GraduationCap, CheckCircle2 } from "lucide-react";
@@ -36,7 +36,7 @@ export default function HeroSection({
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-12 items-center">
                     
                     {/* Left Column: Text Outside the Card */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.7, ease: "easeOut" }}
@@ -62,10 +62,10 @@ export default function HeroSection({
                             A grassroots foundation delivering free quality education, digital literacy,
                             healthcare, and daily nutrition to underprivileged children and families formal systems leave behind.
                         </p>
-                    </motion.div>
+                    </m.div>
 
                     {/* Right Column: Unified Card with Metrics on Top & Buttons Below */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
@@ -123,7 +123,7 @@ export default function HeroSection({
                                 </Link>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
         </section>

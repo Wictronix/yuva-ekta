@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { WAYS_TO_HELP } from "@/lib/projects";
 import * as Icons from "lucide-react";
 import { LucideIcon } from "lucide-react";
@@ -19,22 +19,22 @@ export default function HowToHelp() {
 
             <div className="container relative z-10">
                 <div className="flex flex-col items-center text-center mb-16">
-                    <motion.span
+                    <m.span
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-white/80 font-bold text-[10px] uppercase tracking-[0.3em] mb-4"
                     >
                         Get Involved
-                    </motion.span>
-                    <motion.h2
+                    </m.span>
+                    <m.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-4xl md:text-5xl font-black text-white mb-6 font-playfair"
                     >
                         Three Ways to Make a Difference
-                    </motion.h2>
+                    </m.h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -42,7 +42,7 @@ export default function HowToHelp() {
                         const Icon = (Icons as unknown as Record<string, LucideIcon>)[way.icon];
                         const isDonate = way.cta.label === 'Donate Now';
                         return (
-                            <motion.div
+                            <m.div
                                 key={way.title}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -72,7 +72,7 @@ export default function HowToHelp() {
                                         {way.cta.label}
                                     </Link>
                                 )}
-                            </motion.div>
+                            </m.div>
                         );
                     })}
                 </div>

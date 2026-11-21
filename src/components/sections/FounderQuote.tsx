@@ -1,22 +1,22 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 
 export default function FounderQuote() {
     return (
         <section className="py-24 bg-brand-offwhite relative overflow-hidden">
             <div className="container relative z-10 text-center max-w-4xl mx-auto px-6">
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     className="text-brand-pink/30 font-playfair text-[80px] leading-none select-none mb-0"
                 >
                     &ldquo;
-                </motion.div>
+                </m.div>
 
-                <motion.blockquote
+                <m.blockquote
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -25,9 +25,9 @@ export default function FounderQuote() {
                 >
                     Every child deserves to learn. Every woman deserves to earn.
                     Every family deserves dignity. That is why we do this work, every single day.
-                </motion.blockquote>
+                </m.blockquote>
 
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -51,7 +51,7 @@ export default function FounderQuote() {
                             Social Worker · Mentored by Dr. Kiran Bedi
                         </span>
                     </div>
-                </motion.div>
+                </m.div>
             </div>
         </section>
     );

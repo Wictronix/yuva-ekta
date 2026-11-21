@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 
 const images = [
@@ -23,7 +23,7 @@ export default function ImpactGallery() {
 
                 <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8 max-w-7xl mx-auto">
                     {images.map((img, i) => (
-                        <motion.div
+                        <m.div
                             key={i}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
@@ -43,7 +43,7 @@ export default function ImpactGallery() {
                             <div className="absolute inset-0 bg-brand-brown/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-8">
                                 <p className="text-white font-medium text-sm">{img.alt}</p>
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>

@@ -61,8 +61,7 @@ export async function POST(req: Request) {
         }
     };
     
-    const plansApi = razorpay.plans as unknown as { create: (options: typeof planOptions) => Promise<{ id: string }> };
-    const plan = await plansApi.create(planOptions);
+    const plan = await razorpay.plans.create(planOptions);
 
     // 3. Create Subscription
     const subscriptionOptions = {
@@ -78,10 +77,7 @@ export async function POST(req: Request) {
       },
     };
 
-    const subscriptionsApi = razorpay.subscriptions as unknown as {
-      create: (options: typeof subscriptionOptions) => Promise<{ id: string; [key: string]: unknown }>;
-    };
-    const subscription = await subscriptionsApi.create(subscriptionOptions);
+    const subscription = await razorpay.subscriptions.create(subscriptionOptions);
 
     // 4. Create Subscription record in pending/created state
     const { error: subscriptionError } = await supabase.from("subscriptions").insert({

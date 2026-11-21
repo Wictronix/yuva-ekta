@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import { Building2, ShieldCheck, CheckCircle2, FileText, ArrowRight, TrendingUp } from "lucide-react";
 
@@ -15,7 +15,7 @@ export default function CSRTeaser() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Content Column */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -74,10 +74,10 @@ export default function CSRTeaser() {
                   <span>Request Proposal</span>
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
 
             {/* Right Interactive Card Column */}
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -130,7 +130,7 @@ export default function CSRTeaser() {
                   <span>→</span>
                 </Link>
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </div>

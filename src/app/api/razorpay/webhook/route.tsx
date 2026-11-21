@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server';
 import { verifyWebhookSignature } from '@/lib/razorpay';
 import { createAdminClient } from '@/lib/supabase/admin';
 import type { SubscriptionStatus } from '@/lib/supabase/types';
-import { generateReceiptPDF } from '@/lib/pdf';
-import { uploadBuffer, BUCKET_ASSETS } from '@/lib/r2';
 import { getResend, EMAIL_FROM, EMAIL_REPLY_TO } from '@/lib/resend';
 import { DonationReceiptEmail } from '@/lib/email-templates/DonationReceipt';
 
@@ -74,34 +72,11 @@ export async function POST(req: Request) {
           console.log(`Webhook: Marked donation ${d.id} as captured`);
         }
 
-        if (!d.receipt_url) {
+        if (!d.receipt_number && !d.receipt_url) {
           try {
             const { data: rpcData } = await supabase.rpc('generate_receipt_number');
             const receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
-            let receiptUrl = null;
-            
-            try {
-              const pdfBuffer = await generateReceiptPDF({
-                receiptNumber,
-                date: new Date().toISOString(),
-                donorName: d.donor?.name || "Supporter",
-                donorEmail: d.donor?.email || "",
-                donorPhone: d.donor?.phone || "",
-                amount: d.amount,
-                paymentId: paymentId || 'N/A',
-                campaignName: d.campaign?.title
-              });
-              
-              const r2Key = `receipts/${receiptNumber}.pdf`;
-              receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, 'application/pdf');
-              
-              await supabase.from('donations').update({
-                receipt_url: receiptUrl,
-                receipt_number: receiptNumber
-              }).eq('id', d.id);
-            } catch (pdfErr) {
-              console.error('Webhook: PDF/R2 failure (non-critical):', pdfErr);
-            }
+            await supabase.from('donations').update({ receipt_number: receiptNumber }).eq('id', d.id);
 
             if (d.donor?.email) {
               try {
@@ -117,7 +92,6 @@ export async function POST(req: Request) {
                       amount={Number(d.amount)}
                       date={new Date().toISOString()}
                       receiptNumber={receiptNumber}
-                      receiptUrl={receiptUrl || ''}
                       campaignName={d.campaign?.title}
                     />
                   )
@@ -171,26 +145,6 @@ export async function POST(req: Request) {
           }).select().single();
           
           if (!donationError && donation) {
-            let receiptUrl = null;
-            try {
-              const pdfBuffer = await generateReceiptPDF({
-                receiptNumber,
-                date: new Date().toISOString(),
-                donorName: s.donor?.name || "Supporter",
-                donorEmail: s.donor?.email || "",
-                donorPhone: s.donor?.phone || "",
-                amount,
-                paymentId,
-                campaignName: s.campaign?.title
-              });
-
-              const r2Key = `receipts/${receiptNumber}.pdf`;
-              receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, 'application/pdf');
-              await supabase.from('donations').update({ receipt_url: receiptUrl }).eq('id', donation.id);
-            } catch (pdfErr) {
-              console.error('Subscription Webhook: PDF upload failed', pdfErr);
-            }
-
             if (s.donor?.email) {
               try {
                 const resend = getResend();
@@ -205,7 +159,6 @@ export async function POST(req: Request) {
                       amount={amount}
                       date={new Date().toISOString()}
                       receiptNumber={receiptNumber}
-                      receiptUrl={receiptUrl || ''}
                       campaignName={s.campaign?.title}
                     />
                   )

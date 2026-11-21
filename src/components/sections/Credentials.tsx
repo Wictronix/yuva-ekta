@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FileCheck, IdCard, Calendar, BadgeCheck, Globe, Building2 } from "lucide-react";
 
 const credentialsData = [
@@ -27,7 +27,7 @@ export default function Credentials() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {credentialsData.map((item, i) => (
-                        <motion.div
+                        <m.div
                             key={item.label}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -42,7 +42,7 @@ export default function Credentials() {
                             <p className="text-sm text-brand-brown/75 font-inter font-light leading-relaxed">
                                 {item.detail}
                             </p>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>

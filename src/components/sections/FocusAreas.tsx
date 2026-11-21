@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import { FOCUS_AREAS } from "@/lib/constants";
 import { BookOpen, HeartPulse, Leaf, HandHeart, Sparkles, ArrowRight, type LucideIcon } from "lucide-react";
@@ -41,15 +41,15 @@ export default function FocusAreas() {
         <section id="focus-areas" className="py-24 bg-white scroll-mt-20">
             <div className="container">
                 <div className="flex flex-col items-center text-center mb-16">
-                    <motion.span
+                    <m.span
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-brand-pink font-bold text-[10px] uppercase tracking-[0.3em] mb-4"
                     >
                         What We Work On
-                    </motion.span>
-                    <motion.h2
+                    </m.span>
+                    <m.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -57,8 +57,8 @@ export default function FocusAreas() {
                         className="text-4xl md:text-5xl font-black text-brand-brown font-playfair mb-6"
                     >
                         Four Areas. One Mission.
-                    </motion.h2>
-                    <motion.p
+                    </m.h2>
+                    <m.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -67,7 +67,7 @@ export default function FocusAreas() {
                     >
                         Everything we do is designed to create lasting change at the grassroot level
                         by addressing the most critical needs of rural Gurugram.
-                    </motion.p>
+                    </m.p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -82,7 +82,7 @@ export default function FocusAreas() {
                         const Icon = styleInfo.icon;
 
                         return (
-                            <motion.div
+                            <m.div
                                 key={area.title}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -114,13 +114,13 @@ export default function FocusAreas() {
                                         {area.desc}
                                     </p>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         );
                     })}
                 </div>
 
                 {/* Explore Impact CTA */}
-                <motion.div
+                <m.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -134,7 +134,7 @@ export default function FocusAreas() {
                         <span>Explore Our On-Ground Impact</span>
                         <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
-                </motion.div>
+                </m.div>
             </div>
         </section>
     );

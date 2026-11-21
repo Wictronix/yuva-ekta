@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useState } from "react";
 import { Users, Heart, Sparkles } from "lucide-react";
 
@@ -47,7 +47,7 @@ export default function VolunteerSection() {
             <div className="container">
                 <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, x: -30 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
@@ -83,9 +83,9 @@ export default function VolunteerSection() {
                                     <span className="text-xs font-bold uppercase tracking-widest text-brand-brown">Skill Sharing</span>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
 
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, x: 30 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
@@ -158,7 +158,7 @@ export default function VolunteerSection() {
                                     </button>
                                 </form>
                             )}
-                        </motion.div>
+                        </m.div>
                     </div>
                 </div>
             </div>

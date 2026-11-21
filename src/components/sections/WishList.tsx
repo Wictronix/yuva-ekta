@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Utensils, Book, Scissors, GraduationCap, ArrowRight } from "lucide-react";
 import { useDonation } from "../providers/DonationProvider";
 
@@ -47,7 +47,7 @@ export default function WishList() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {wishes.map((wish, i) => (
-                        <motion.div
+                        <m.div
                             key={wish.title}
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
@@ -71,7 +71,7 @@ export default function WishList() {
                                 <span>Fulfill this wish</span>
                                 <ArrowRight size={14} />
                             </button>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import { PARTNERS } from "@/lib/projects";
 import { Handshake, CheckCircle2, ArrowRight } from "lucide-react";
@@ -14,7 +14,7 @@ export default function Partners() {
             <div className="container relative z-10">
                 {/* Header */}
                 <div className="flex flex-col items-center text-center max-w-xl mx-auto mb-8 sm:mb-10 space-y-2.5">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -22,9 +22,9 @@ export default function Partners() {
                     >
                         <Handshake size={12} />
                         <span>Institutional Ecosystem</span>
-                    </motion.div>
+                    </m.div>
 
-                    <motion.h2
+                    <m.h2
                         initial={{ opacity: 0, y: 15 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -32,9 +32,9 @@ export default function Partners() {
                         className="text-2xl sm:text-3xl font-black text-brand-brown font-playfair"
                     >
                         Alliances Making Change Possible
-                    </motion.h2>
+                    </m.h2>
 
-                    <motion.p
+                    <m.p
                         initial={{ opacity: 0, y: 15 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -42,13 +42,13 @@ export default function Partners() {
                         className="text-brand-brown/70 font-inter font-light text-xs sm:text-sm leading-relaxed"
                     >
                         Collaborating with trusted foundations, hospitality partners, and trusts to sustain grassroots initiatives in Gurugram.
-                    </motion.p>
+                    </m.p>
                 </div>
 
                 {/* Compact 4-Card Modern Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 max-w-6xl mx-auto">
                     {PARTNERS.map((partner, i) => (
-                        <motion.div
+                        <m.div
                             key={partner.name}
                             initial={{ opacity: 0, y: 15 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -89,7 +89,7 @@ export default function Partners() {
                                 </span>
                                 <span className="w-1.5 h-1.5 rounded-full bg-brand-pink/30 group-hover:bg-brand-pink transition-colors" />
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
 

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { exportToCSV } from "@/lib/export";
-import { Search, Download, Filter } from "lucide-react";
+import { Search, Download, Filter, FileText } from "lucide-react";
+import { downloadReceiptPDF } from "@/lib/pdf";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
@@ -91,12 +92,13 @@ export default function DonationsClient({ donations }: { donations: DonationWith
                 <th className="px-6 py-4 font-bold tracking-wider">Net Amount</th>
                 <th className="px-6 py-4 font-bold tracking-wider">Total</th>
                 <th className="px-6 py-4 font-bold tracking-wider">Status</th>
+                <th className="px-6 py-4 font-bold tracking-wider">Receipt</th>
               </tr>
             </thead>
             <tbody>
               {filteredDonations.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-brand-brown/40">
+                  <td colSpan={7} className="px-6 py-8 text-center text-brand-brown/40">
                     No donations found matching your filters.
                   </td>
                 </tr>
@@ -122,6 +124,32 @@ export default function DonationsClient({ donations }: { donations: DonationWith
                       }`}>
                         {d.status.toUpperCase()}
                       </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      {d.receipt_number && d.status === 'captured' ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          title={`Download receipt ${d.receipt_number}`}
+                          onClick={() =>
+                            downloadReceiptPDF({
+                              receiptNumber: d.receipt_number!,
+                              date: d.created_at,
+                              donorName: d.donor?.name || "Supporter",
+                              donorEmail: d.donor?.email || "",
+                              donorPhone: d.donor?.phone || "",
+                              amount: Number(d.amount),
+                              paymentId: d.razorpay_payment_id || "N/A",
+                              campaignName: d.campaign?.title,
+                            })
+                          }
+                        >
+                          <FileText className="w-4 h-4 mr-1" />
+                          PDF
+                        </Button>
+                      ) : (
+                        <span className="text-brand-brown/30">—</span>
+                      )}
                     </td>
                   </tr>
                 ))

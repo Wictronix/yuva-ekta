@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useState } from "react";
 import Image from "next/image";
 import { ShieldCheck, Heart } from "lucide-react";
@@ -14,7 +14,7 @@ export default function DonateForm() {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* Left Column: Form */}
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -80,10 +80,10 @@ export default function DonateForm() {
                         </div>
                     </div>
                 </div>
-            </motion.div>
+            </m.div>
 
             {/* Right Column: Other Ways */}
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -141,7 +141,7 @@ export default function DonateForm() {
                         Donations to Yuva Ekta India Foundation are eligible for tax deduction under Section 80G of the Income Tax Act. You will receive your tax receipt via email after the transaction is confirmed.
                     </p>
                 </div>
-            </motion.div>
+            </m.div>
         </div>
     );
 }

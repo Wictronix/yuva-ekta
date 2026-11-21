@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyPaymentSignature } from "@/lib/razorpay";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { generateReceiptPDF } from "@/lib/pdf";
-import { uploadBuffer, BUCKET_ASSETS } from "@/lib/r2";
 import { getResend, EMAIL_FROM, EMAIL_REPLY_TO } from "@/lib/resend";
 import { DonationReceiptEmail } from "@/lib/email-templates/DonationReceipt";
 
@@ -92,9 +90,10 @@ export async function POST(req: Request) {
 
     const d = donationData;
     const donationAmount = Number((isSubscription ? d.plan_amount : d.amount) || 0);
-    let receiptUrl = d.receipt_url;
+    let receiptNumber = d.receipt_number;
     const isAlreadyCaptured = d.status === "captured" || d.status === "active";
-    const hasReceipt = Boolean(receiptUrl);
+    // Old donations have receipt_url only; new ones have receipt_number (PDF is built on the donor's device).
+    const hasReceipt = Boolean(receiptNumber || d.receipt_url);
 
     // 3. Update DB status and increment campaign amount ONLY IF not already captured
     if (!isAlreadyCaptured) {
@@ -119,42 +118,19 @@ export async function POST(req: Request) {
       }
     }
 
-    // 4. Generate receipt PDF + upload to R2 + send email IF not already done
-    // We must await this block so Vercel doesn't kill the serverless function,
-    // but the try/catch ensures it won't break the client response if it fails.
+    // 4. Assign receipt number + send email IF not already done.
+    // The try/catch ensures it won't break the client response if it fails.
     if (!hasReceipt) {
       try {
         const { data: rpcData } = await supabase.rpc("generate_receipt_number");
-        const receiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
+        const newReceiptNumber = (rpcData as unknown as string) || `RCVD-${Date.now()}`;
+        receiptNumber = newReceiptNumber;
 
-        try {
-          console.log("Attempting to generate PDF for", receiptNumber);
-          const pdfBuffer = await generateReceiptPDF({
-            receiptNumber,
-            date: new Date().toISOString(),
-            donorName: d.donor?.name || "Donor",
-            donorEmail: d.donor?.email || "",
-            donorPhone: d.donor?.phone || "",
-            amount: donationAmount,
-            paymentId: razorpay_payment_id,
-            campaignName: d.campaign?.title,
-          });
-
-          console.log("PDF generated, attempting to upload to R2...");
-          const r2Key = `receipts/${receiptNumber}.pdf`;
-          receiptUrl = await uploadBuffer(BUCKET_ASSETS, r2Key, pdfBuffer, "application/pdf");
-          console.log("PDF uploaded to R2 successfully at", receiptUrl);
-
-          // Save receipt URL & number back to DB for donations
-          if (!isSubscription) {
-            await supabase
-              .from("donations")
-              .update({ receipt_url: receiptUrl, receipt_number: receiptNumber })
-              .eq("id", d.id);
-          }
-        } catch (pdfErr) {
-          console.error("PDF Generation or R2 Upload FAILED:", pdfErr);
-          // We continue to send the email anyway!
+        if (!isSubscription) {
+          await supabase
+            .from("donations")
+            .update({ receipt_number: newReceiptNumber })
+            .eq("id", d.id);
         }
 
         const recipientEmail = d.donor?.email;
@@ -166,19 +142,18 @@ export async function POST(req: Request) {
               from: `Yuva Ekta <${EMAIL_FROM}>`,
               replyTo: EMAIL_REPLY_TO,
               to: [recipientEmail],
-              subject: `Thank you for your donation! (Receipt ${receiptNumber})`,
+              subject: `Thank you for your donation! (Receipt ${newReceiptNumber})`,
               react: (
                 <DonationReceiptEmail
                   donorName={d.donor?.name || "Donor"}
                   amount={Number(donationAmount)}
                   date={new Date().toISOString()}
-                  receiptNumber={receiptNumber}
-                  receiptUrl={receiptUrl || ""}
+                  receiptNumber={newReceiptNumber}
                   campaignName={d.campaign?.title}
                 />
               ),
             });
-            console.log(`Receipt emailed successfully: ${receiptNumber} → ${recipientEmail}`);
+            console.log(`Receipt emailed successfully: ${newReceiptNumber} → ${recipientEmail}`);
           } catch (emailErr) {
             console.error("Resend Email FAILED:", emailErr);
           }
@@ -196,7 +171,19 @@ export async function POST(req: Request) {
         amount: donationAmount,
         donorName: d.donor?.name || "Supporter",
         donorEmail: d.donor?.email || "",
-        receiptUrl: receiptUrl ?? null,
+        // Data for the on-device receipt PDF (null if numbering failed)
+        receipt: receiptNumber
+          ? {
+              receiptNumber,
+              date: new Date().toISOString(),
+              donorName: d.donor?.name || "Donor",
+              donorEmail: d.donor?.email || "",
+              donorPhone: d.donor?.phone || "",
+              amount: donationAmount,
+              paymentId: razorpay_payment_id,
+              campaignName: d.campaign?.title ?? null,
+            }
+          : null,
       },
     });
   } catch (error: unknown) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Users, GraduationCap, Heart, Calendar } from "lucide-react";
 
 const impactDetails = [
@@ -40,7 +40,7 @@ export default function ImpactStatsDetail() {
             <div className="container">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {impactDetails.map((stat, i) => (
-                        <motion.div
+                        <m.div
                             key={stat.label}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -57,7 +57,7 @@ export default function ImpactStatsDetail() {
                             <p className="text-brand-brown/60 font-inter text-sm leading-relaxed">
                                 {stat.description}
                             </p>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>

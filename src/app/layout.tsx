@@ -7,6 +7,7 @@ import { constructMetadata } from "@/lib/seo";
 import SEOHeader from "@/components/seo/SEOHeader";
 import { cn } from "@/lib/utils";
 import { DonationProvider } from "@/components/providers/DonationProvider";
+import { MotionProvider } from "@/components/providers/MotionProvider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -31,11 +32,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={cn(inter.variable, playfair.variable, "font-sans", geist.variable)}>
       <body className="antialiased font-inter">
         <SEOHeader />
-        <DonationProvider>
-          <Navbar />
-          {children}
-          <Footer />
-        </DonationProvider>
+        <MotionProvider>
+          <DonationProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </DonationProvider>
+        </MotionProvider>
       </body>
     </html>
   );

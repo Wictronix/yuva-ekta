@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Award, CheckCircle2 } from "lucide-react";
@@ -12,7 +12,7 @@ export default function AboutTeaser() {
                 <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                     {/* Image Column */}
                     <div className="w-full lg:w-1/2 relative group">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, x: -50 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
@@ -27,10 +27,10 @@ export default function AboutTeaser() {
                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent z-10" />
-                        </motion.div>
+                        </m.div>
 
                         {/* Decorative Frame */}
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, scale: 0.8 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
@@ -51,15 +51,15 @@ export default function AboutTeaser() {
 
                     {/* Text Column */}
                     <div className="w-full lg:w-1/2">
-                        <motion.span
+                        <m.span
                             initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="text-secondary font-bold text-[10px] uppercase tracking-[0.3em] mb-4 block"
                         >
                             Who We Are
-                        </motion.span>
-                        <motion.h2
+                        </m.span>
+                        <m.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -67,9 +67,9 @@ export default function AboutTeaser() {
                             className="text-4xl md:text-5xl font-black text-gray-900 mb-8 leading-tight font-playfair"
                         >
                             Yuva Ekta India Foundation: Top NGO in Gurugram
-                        </motion.h2>
+                        </m.h2>
 
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -108,9 +108,9 @@ export default function AboutTeaser() {
                                 <strong> Dr. Kiran Bedi</strong>, India&apos;s first female IPS officer. Our foundation has grown from
                                 a handful of children in a single room to a multi-project NGO serving over 1,000 lives.
                             </p>
-                        </motion.div>
+                        </m.div>
 
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -152,7 +152,7 @@ export default function AboutTeaser() {
                                     <span className="text-[10px] text-brand-brown/60 uppercase tracking-tighter">Joined the movement</span>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     </div>
                 </div>
             </div>

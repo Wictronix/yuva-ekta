@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { BookOpen, Monitor, Briefcase, HeartPulse } from "lucide-react";
 
 const detailedFocusSession = [
@@ -41,7 +41,7 @@ export default function FocusAreasAbout() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
                     {detailedFocusSession.map((item, i) => (
-                        <motion.div
+                        <m.div
                             key={item.title}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -59,7 +59,7 @@ export default function FocusAreasAbout() {
                             <p className="text-brand-brown/70 font-inter font-light leading-relaxed">
                                 {item.content}
                             </p>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>

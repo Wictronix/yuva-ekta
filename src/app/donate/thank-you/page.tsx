@@ -3,17 +3,18 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { CheckCircle2, Heart, ArrowRight, Share2, Copy, Check, Download } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { SITE } from "@/lib/constants";
+import { downloadReceiptPDF, type ReceiptProps } from "@/lib/pdf";
 
 interface DonationInfo {
   id: string;
   amount: number;
   donorName: string;
   donorEmail: string;
-  receiptUrl?: string;
+  receipt?: ReceiptProps | null;
 }
 
 function ThankYouContent() {
@@ -69,14 +70,14 @@ function ThankYouContent() {
   if (status === "verifying") {
     return (
       <main className="min-h-screen flex items-center justify-center bg-brand-offwhite">
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="text-center space-y-6 p-8"
         >
           <div className="w-16 h-16 border-4 border-brand-pink/30 border-t-brand-pink rounded-full animate-spin mx-auto" />
           <p className="text-brand-brown/70 font-bold text-lg">Verifying your payment...</p>
-        </motion.div>
+        </m.div>
       </main>
     );
   }
@@ -84,7 +85,7 @@ function ThankYouContent() {
   if (status === "error") {
     return (
       <main className="min-h-screen flex items-center justify-center bg-brand-offwhite px-4">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-md w-full bg-white rounded-3xl p-8 md:p-12 shadow-2xl text-center space-y-6"
@@ -105,7 +106,7 @@ function ThankYouContent() {
           >
             Return Home <ArrowRight size={18} />
           </Link>
-        </motion.div>
+        </m.div>
       </main>
     );
   }
@@ -115,7 +116,7 @@ function ThankYouContent() {
       {/* Confetti-like background dots */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
-          <motion.div
+          <m.div
             key={i}
             initial={{ opacity: 0, y: -20 }}
             animate={{
@@ -141,7 +142,7 @@ function ThankYouContent() {
         ))}
       </div>
 
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -152,38 +153,38 @@ function ThankYouContent() {
 
         <div className="p-8 md:p-12 text-center space-y-8">
           {/* Success icon */}
-          <motion.div
+          <m.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
             className="w-24 h-24 rounded-full bg-green-50 flex items-center justify-center mx-auto"
           >
             <CheckCircle2 size={48} className="text-green-500" />
-          </motion.div>
+          </m.div>
 
           {/* Thank you message */}
           <div className="space-y-3">
-            <motion.h1
+            <m.h1
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
               className="text-3xl md:text-4xl font-black font-playfair text-brand-brown"
             >
               Thank You{donationInfo?.donorName ? `, ${donationInfo.donorName.split(" ")[0]}` : ""}!
-            </motion.h1>
-            <motion.p
+            </m.h1>
+            <m.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
               className="text-brand-brown/70 text-lg"
             >
               Your generosity is making a real difference.
-            </motion.p>
+            </m.p>
           </div>
 
           {/* Donation amount card */}
           {donationInfo && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
@@ -199,21 +200,20 @@ function ThankYouContent() {
                 A receipt will be sent to {donationInfo.donorEmail}
               </p>
 
-              {donationInfo.receiptUrl && (
-                <a
-                  href={donationInfo.receiptUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+              {donationInfo.receipt && (
+                <button
+                  type="button"
+                  onClick={() => downloadReceiptPDF(donationInfo.receipt!)}
                   className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-brown border border-brand-brown text-white rounded-xl font-bold text-sm hover:!bg-brand-pink hover:!border-brand-pink transition-all w-full md:w-auto"
                 >
                   <Download size={16} /> Download PDF Receipt
-                </a>
+                </button>
               )}
-            </motion.div>
+            </m.div>
           )}
 
           {/* Impact message */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
@@ -224,10 +224,10 @@ function ThankYouContent() {
               Every contribution, big or small, helps us empower communities through education,
               healthcare, and sustainable development across India.
             </p>
-          </motion.div>
+          </m.div>
 
           {/* Actions */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
@@ -270,9 +270,9 @@ function ThankYouContent() {
                 <Share2 size={16} /> Share
               </button>
             </div>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
@@ -283,9 +283,9 @@ function ThankYouContent() {
             >
               ← Back to Home
             </Link>
-          </motion.div>
+          </m.div>
         </div>
-      </motion.div>
+      </m.div>
     </main>
   );
 }

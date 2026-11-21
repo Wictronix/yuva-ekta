@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Heart } from "lucide-react";
 import { useDonation } from "@/components/providers/DonationProvider";
 
@@ -14,15 +14,15 @@ export default function CTABanner() {
 
             <div className="container relative z-10">
                 <div className="flex flex-col items-center text-center max-w-4xl mx-auto px-6">
-                    <motion.h2
+                    <m.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight font-playfair"
                     >
                         Together, We Can Reach More Families.
-                    </motion.h2>
-                    <motion.p
+                    </m.h2>
+                    <m.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -31,9 +31,9 @@ export default function CTABanner() {
                     >
                         Every rupee you give goes directly to children, women, and families
                         in Gurugram&apos;s villages. Donations are tax-deductible under Section 80G.
-                    </motion.p>
+                    </m.p>
 
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -47,7 +47,7 @@ export default function CTABanner() {
                             <Heart size={20} className="text-brand-pink fill-brand-pink group-hover:scale-110 transition-transform flex-shrink-0" />
                             <span>Donate Now · 80G Tax Exemption</span>
                         </button>
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
         </section>

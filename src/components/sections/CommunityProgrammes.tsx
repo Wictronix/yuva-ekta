@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Image from "next/image";
 import { Megaphone, BookOpen, MessageCircle, GraduationCap, Star, Laptop, Droplets, X, ArrowRight, Heart } from "lucide-react";
@@ -102,7 +102,7 @@ export default function CommunityProgrammes() {
                     {programmes.map((prog, i) => {
                         const Icon = iconMap[prog.icon as keyof typeof iconMap];
                         return (
-                            <motion.div
+                            <m.div
                                 key={prog.id}
                                 layoutId={prog.id}
                                 onClick={() => setSelectedId(prog.id)}
@@ -135,7 +135,7 @@ export default function CommunityProgrammes() {
                                         <ArrowRight size={14} />
                                     </div>
                                 </div>
-                            </motion.div>
+                            </m.div>
                         );
                     })}
                 </div>
@@ -144,7 +144,7 @@ export default function CommunityProgrammes() {
             <AnimatePresence>
                 {selectedId && selectedProg && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-10">
-                        <motion.div
+                        <m.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
@@ -152,7 +152,7 @@ export default function CommunityProgrammes() {
                             className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100]"
                         />
 
-                        <motion.div
+                        <m.div
                             layoutId={selectedId}
                             className="relative w-full max-w-4xl bg-white rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/20 flex flex-col md:flex-row max-h-[90vh] z-[101]"
                         >
@@ -223,7 +223,7 @@ export default function CommunityProgrammes() {
                                     </button>
                                 </div>
                             </div>
-                        </motion.div>
+                        </m.div>
                     </div>
                 )}
             </AnimatePresence>

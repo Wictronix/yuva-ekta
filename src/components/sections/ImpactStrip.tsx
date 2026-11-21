@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { m, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { IMPACT_STATS } from "@/lib/constants";
 
@@ -42,7 +42,7 @@ export default function ImpactStrip() {
             <div className="container">
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 text-center text-white">
                     {IMPACT_STATS.map((stat, i) => (
-                        <motion.div
+                        <m.div
                             key={stat.label}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -58,7 +58,7 @@ export default function ImpactStrip() {
                             </span>
                             {/* Animated underline */}
                             <div className="w-8 h-1 bg-brand-pink/30 mx-auto mt-4 rounded-full overflow-hidden">
-                                <motion.div
+                                <m.div
                                     initial={{ x: "-100%" }}
                                     whileInView={{ x: "0%" }}
                                     viewport={{ once: true }}
@@ -66,7 +66,7 @@ export default function ImpactStrip() {
                                     className="w-full h-full bg-brand-pink"
                                 />
                             </div>
-                        </motion.div>
+                        </m.div>
                     ))}
                 </div>
             </div>

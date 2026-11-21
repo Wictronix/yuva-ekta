@@ -1,13 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { SITE } from "@/lib/constants";
 
 export default function ContactDetails() {
     return (
         <div className="space-y-8">
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -70,9 +70,9 @@ export default function ContactDetails() {
                         </div>
                     </div>
                 </div>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -81,7 +81,7 @@ export default function ContactDetails() {
                 <p className="text-xs text-brand-brown/60 leading-relaxed font-inter italic">
                     * We are a field organisation. The fastest way to reach us is WhatsApp or email. We typically respond within 1–2 working days.
                 </p>
-            </motion.div>
+            </m.div>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import { BadgeCheck, ArrowRight } from "lucide-react";
 import { useDonation } from "../providers/DonationProvider";
@@ -39,7 +39,7 @@ export default function ProjectDetail({
             <div className="container">
                 <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start ${reverse ? 'lg:flex-row-reverse' : ''}`}>
                     {/* Image Column */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
@@ -60,10 +60,10 @@ export default function ProjectDetail({
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </m.div>
 
                     {/* Content Column */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, x: reverse ? -30 : 30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -115,7 +115,7 @@ export default function ProjectDetail({
                                 <ArrowRight size={16} />
                             </button>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
         </section>

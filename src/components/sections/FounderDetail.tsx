@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import { BadgeCheck } from "lucide-react";
 
@@ -10,7 +10,7 @@ export default function FounderDetail() {
             <div className="container">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
                     {/* Image Side */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
@@ -27,10 +27,10 @@ export default function FounderDetail() {
                             <p className="text-sm uppercase tracking-[0.3em] font-bold mb-2">Founder & Social Worker</p>
                             <h3 className="text-4xl font-black font-playfair tracking-tight text-white">Balram Kumar</h3>
                         </div>
-                    </motion.div>
+                    </m.div>
 
                     {/* Text Side */}
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, x: 30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -74,7 +74,7 @@ export default function FounderDetail() {
                                 Balram Kumar
                             </cite>
                         </div>
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
         </section>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, ShieldCheck, MapPin, Users } from "lucide-react";
@@ -32,14 +32,14 @@ export default function CampaignsHero({ title, subtitle, imageUrl, breadcrumb }:
 
             <div className="container relative z-20 px-6">
                 <div className="max-w-4xl mx-auto text-center">
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: "easeOut" }}
                     >
                         {/* Status Badges e.g. Glassmorphism */}
                         <div className="flex flex-wrap justify-center gap-4 mb-8">
-                            <motion.div 
+                            <m.div 
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.4 }}
@@ -47,8 +47,8 @@ export default function CampaignsHero({ title, subtitle, imageUrl, breadcrumb }:
                             >
                                 <ShieldCheck size={14} className="text-brand-green" />
                                 80G Tax Exempted
-                            </motion.div>
-                            <motion.div 
+                            </m.div>
+                            <m.div 
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.5 }}
@@ -56,8 +56,8 @@ export default function CampaignsHero({ title, subtitle, imageUrl, breadcrumb }:
                             >
                                 <MapPin size={14} className="text-brand-pink" />
                                 Based in Gurugram
-                            </motion.div>
-                            <motion.div 
+                            </m.div>
+                            <m.div 
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.6 }}
@@ -65,7 +65,7 @@ export default function CampaignsHero({ title, subtitle, imageUrl, breadcrumb }:
                             >
                                 <Users size={14} className="text-blue-400" />
                                 10,000+ Lives Impacted
-                            </motion.div>
+                            </m.div>
                         </div>
 
                         {/* Breadcrumbs */}
@@ -92,7 +92,7 @@ export default function CampaignsHero({ title, subtitle, imageUrl, breadcrumb }:
                             {subtitle}
                         </p>
 
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
 

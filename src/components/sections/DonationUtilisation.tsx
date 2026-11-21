@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const utilisationData = [
     { head: "Nutrition (Daily Meals for 100 Children)", percentage: "35%", focus: "Swastha Sohna" },
@@ -27,7 +27,7 @@ export default function DonationUtilisation() {
                         </p>
                     </div>
 
-                    <motion.div
+                    <m.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
@@ -51,7 +51,7 @@ export default function DonationUtilisation() {
                                 ))}
                             </tbody>
                         </table>
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
         </section>
